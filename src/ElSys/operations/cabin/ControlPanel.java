@@ -1,4 +1,4 @@
-package ElSys.operations;
+package ElSys.operations.cabin;
 
 
 public class ControlPanel {
