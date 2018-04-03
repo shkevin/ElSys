@@ -27,14 +27,14 @@ public class buildingHandler {
 			//This interprets mouse clicks as a command for that elevator to go to that floor
 			//Mostly for testing
 			int elevator = -1;
-			if (event.getX() >= buildSpecs.floorWidth && event.getX() < canvas.getWidth() - buildSpecs.floorWidth) {
-				elevator = ((int) event.getX() - buildSpecs.floorWidth) / (buildSpecs.floorHeight);
+			if (event.getX() >= buildSpecs.FLOOR_WIDTH && event.getX() < canvas.getWidth() - buildSpecs.FLOOR_WIDTH) {
+				elevator = ((int) event.getX() - buildSpecs.FLOOR_WIDTH) / (buildSpecs.FLOOR_HEIGHT);
 			}
 
 			//Finds the row that we are in within the 2D array
 			int floor = -1;
-			if (event.getY() >= 0 && event.getY() <= canvas.getHeight() - buildSpecs.floorHeight) {
-				floor = 9 - ((int) event.getY()) / (buildSpecs.floorWSeparator);
+			if (event.getY() >= 0 && event.getY() <= canvas.getHeight() - buildSpecs.FLOOR_HEIGHT) {
+				floor = 9 - ((int) event.getY()) / (buildSpecs.FLOOR_W_SEP);
 			}
 
 			if (floor >= 0 && elevator >= 0) {

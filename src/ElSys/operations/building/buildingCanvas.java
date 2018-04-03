@@ -41,24 +41,24 @@ public class buildingCanvas extends Canvas {
 
 		//Draw Ground
 		gc.setFill(Color.BROWN);
-		gc.fillRect(0, 800, w, 100);
+		gc.fillRect(0, w, w, 100);
 
 		//Draw Building
 		gc.setFill(Color.GREY);
-		gc.fillRect(100, 0, w - buildSpecs.floorWidth, h - buildSpecs.floorHeight);
+		gc.fillRect(100, 0, w - buildSpecs.FLOOR_WIDTH, h - buildSpecs.FLOOR_HEIGHT);
 
 		//Draws the floors
-		for (int x = buildSpecs.floorWidth; x < w - buildSpecs.floorWidth; x += buildSpecs.floorHeight) {
-			for (int y = buildSpecs.floorHSeparator, p = 0; y < h - buildSpecs.floorHeight; y += buildSpecs.floorWSeparator, p++) {
+		for (int x = buildSpecs.FLOOR_WIDTH; x < w - buildSpecs.FLOOR_WIDTH; x += buildSpecs.FLOOR_HEIGHT) {
+			for (int y = buildSpecs.FLOOR_H_SEP, p = 0; y < h - buildSpecs.FLOOR_HEIGHT; y += buildSpecs.FLOOR_W_SEP, p++) {
 				gc.setFill(Color.YELLOW);
-				gc.fillRect(x, y, buildSpecs.cabinWidth, buildSpecs.cabinHeight);
+				gc.fillRect(x, y, buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
 			}
 		}
 
 		//Draw Elevator
 		for (Cabin cabin : cabins) {
 			gc.setFill(Color.BLACK);
-			gc.fillRect(row += buildSpecs.floorHeight, ((9 - cabin.getFloor() + w) - 55), buildSpecs.cabinWidth, buildSpecs.cabinHeight);
+			gc.fillRect(row += buildSpecs.FLOOR_HEIGHT, ((9 - cabin.getFloor() + w)), buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
 		}
 
 	}
