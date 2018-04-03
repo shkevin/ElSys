@@ -2,9 +2,12 @@ package ElSys.operations.building;
 
 import ElSys.Controller;
 import ElSys.Main;
+import ElSys.operations.cabin.Cabin;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
 
 /**
  * @author snord
@@ -14,14 +17,16 @@ public class buildingCanvas extends Canvas {
 	private Controller controller;
 	private GraphicsContext gc;
  	int startingFloor = 10;
+ 	private ArrayList<Cabin> cabins;
 
-	public buildingCanvas(Controller controller) {
+	public buildingCanvas(ArrayList<Cabin> cabins, Controller controller) {
 		this.controller = controller;
-		widthProperty().addListener(event -> drawCanvas());
-	 	widthProperty().addListener(event -> drawCanvas());
+		this.cabins = cabins;
+		widthProperty().addListener(event -> drawCanvas(cabins));
+	 	widthProperty().addListener(event -> drawCanvas(cabins));
 	}
 
-	public void drawCanvas() {
+	public void drawCanvas(ArrayList<Cabin> cabins) {
 
 //		double w = widthProperty().get();
 //		double h = heightProperty().get();
@@ -49,6 +54,14 @@ public class buildingCanvas extends Canvas {
 				gc.fillRect(x, y, 55, 55);
 			}
 		}
+
+		//Draw Elevator
+		for (Cabin cabin : cabins) {
+			gc.setFill(Color.BLACK);
+			//This does nothing right now
+			gc.fillRect(0, 0, 55, 55);
+		}
+
 	}
 
 }

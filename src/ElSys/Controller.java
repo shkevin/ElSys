@@ -18,16 +18,15 @@ public class Controller {
 
 	@FXML private BorderPane pane = new BorderPane();
 	@FXML private ComboBox<String> elevatorCombo = new ComboBox<>();
-	private buildingCanvas canvas = new buildingCanvas(this);
+	private ArrayList<Cabin> cabins = setupCabins(4);
+	private buildingCanvas canvas = new buildingCanvas(cabins, this);
 	private buildingHandler handler = new buildingHandler(canvas, this);
 	private Pane canvasPane = new Pane();
-	private ArrayList<Cabin> cabins;
 
 	@FXML
 	public void initialize() {
 		setupCanvas();
 		createCombo();
-		setupCabins(4);
 	}
 
 	private void createCombo() {
@@ -43,7 +42,7 @@ public class Controller {
 		new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				canvas.drawCanvas();
+				canvas.drawCanvas(cabins);
 			}
 		}.start();
 		canvasPane.addEventFilter(MouseEvent.MOUSE_CLICKED, handler.getOnMouseEventHandler());
@@ -52,12 +51,13 @@ public class Controller {
 		pane.setCenter(canvasPane);
 	}
 
-	private void setupCabins(int numberOfCabins) {
+	private ArrayList<Cabin> setupCabins(int numberOfCabins) {
 		cabins = new ArrayList<Cabin>();
 		for (int i = 0; i < 4; i++)
 		{
 			cabins.add(new Cabin());
 		}
+		return cabins;
 	}
 
 	//This will eventually be called by the scheduler that handles cabin and floor requests,
@@ -65,6 +65,7 @@ public class Controller {
 	public void moveElevator(int elevator, int floor) {
 		Cabin cab = cabins.get(elevator);
 		cab.startMotion(floor);
+		canvas.drawCanvas(cabins);
 		System.out.println("Elevator " + elevator + " now at: " + cab.getFloor());
 		System.out.println();
 	}
