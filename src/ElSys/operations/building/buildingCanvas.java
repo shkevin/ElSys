@@ -45,7 +45,7 @@ public class buildingCanvas extends Canvas {
 
 		//Draw Building
 		gc.setFill(Color.GREY);
-		gc.fillRect(100, 0, w - buildSpecs.FLOOR_WIDTH, h - buildSpecs.FLOOR_HEIGHT);
+		gc.fillRect(buildSpecs.FLOOR_W_SEP, 0, w - buildSpecs.FLOOR_WIDTH, h - buildSpecs.FLOOR_HEIGHT);
 
 		//Draws the floors
 		for (int x = buildSpecs.FLOOR_WIDTH; x < w - buildSpecs.FLOOR_WIDTH; x += buildSpecs.FLOOR_HEIGHT) {
@@ -57,8 +57,10 @@ public class buildingCanvas extends Canvas {
 
 		//Draw Elevator
 		for (Cabin cabin : cabins) {
+			double floor = (w - 60);
+			if (cabin.getFloor() != 1) floor = ((w - 60) - ((cabin.getFloor() - 1) * 80));
 			gc.setFill(Color.BLACK);
-			gc.fillRect(row += buildSpecs.FLOOR_HEIGHT, 100, buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
+			gc.fillRect(row += buildSpecs.FLOOR_HEIGHT, floor, buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
 		}
 
 	}

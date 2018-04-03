@@ -9,7 +9,7 @@ public class Cabin {
 
 	public Cabin() {
 		//this.floorAlignment = new FloorAlignment();
-		this.motion = new Motion(0);
+		this.motion = new Motion(1);
 	}
 
 	public int getFloor() {
