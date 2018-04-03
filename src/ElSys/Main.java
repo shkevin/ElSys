@@ -19,6 +19,8 @@ public class Main extends Application {
         Parent root = loader.load();
 
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
+        primaryStage.setMinWidth(1100);
+        primaryStage.setMinHeight(925);
         primaryStage.show();
     }
 

@@ -37,7 +37,7 @@ public class buildingHandler {
 //				System.out.print("Row: " + row);
 			}
 
-			System.out.println();
+//			System.out.println();
 		}
 	};
 
