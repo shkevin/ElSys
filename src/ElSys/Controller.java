@@ -1,6 +1,7 @@
 package ElSys;
 
 import ElSys.operations.building.buildingCanvas;
+import ElSys.operations.cabin.MotionTypes;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -55,7 +56,7 @@ public class Controller {
 		cabins = new ArrayList<Cabin>();
 		for (int i = 0; i < numberOfCabins; i++)
 		{
-			cabins.add(new Cabin());
+			cabins.add(new Cabin(i));
 		}
 		return cabins;
 	}
@@ -64,10 +65,9 @@ public class Controller {
 	//but for now it call the startMotion function, which moves the elevator based on a GUI click
 	public void moveElevator(int elevator, int floor) {
 		Cabin cab = cabins.get(elevator);
+		System.out.println("(Controller) Move elevator " + (elevator + 1) + " from " + cab.getFloor() + " to " + floor);
 		cab.startMotion(floor);
 		canvas.drawCanvas(cabins);
-		System.out.println("Elevator " + elevator + " now at: " + cab.getFloor());
-		System.out.println();
 	}
 
 }

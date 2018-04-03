@@ -38,7 +38,7 @@ public class buildingHandler {
 			}
 
 			if (floor >= 0 && elevator >= 0) {
-				System.out.println("Move elevator " + elevator + " to " + floor);
+				//System.out.println("Move elevator " + elevator + " to " + floor);
 				controller.moveElevator(elevator, floor);
 			}
 		}

@@ -10,17 +10,16 @@ public enum MotionTypes {
     MOVINGDOWN,
     NOTMOVING;
 
-    @Override
-    public String toString() {
+    public double toVal() {
         switch(this) {
             case MOVINGUP:
-                return "Up";
+                return 1.0;
             case MOVINGDOWN:
-                return "Down";
+                return -1.0;
             case NOTMOVING:
-                return "Still";
+                return 0.0;
             default:
-                return null;
+                return 0.0;
         }
     }
 }

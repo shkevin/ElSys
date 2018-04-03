@@ -2,7 +2,7 @@ package ElSys.operations.building;
 
 import ElSys.Controller;
 import ElSys.Main;
-import ElSys.operations.cabin.Cabin;
+import ElSys.operations.cabin.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -59,7 +59,18 @@ public class buildingCanvas extends Canvas {
 		for (Cabin cabin : cabins) {
 			double floor = (w - 60);
 			if (cabin.getFloor() != 1) floor = ((w - 60) - ((cabin.getFloor() - 1) * 80));
-			gc.setFill(Color.BLACK);
+			MotionTypes cabinMoving = MotionTypes.NOTMOVING;
+			Motion cabinMotion = cabin.getMotion();
+			if (cabinMotion != null) {
+				cabinMoving = cabinMotion.getMotionType();
+			}
+			if(cabinMoving == MotionTypes.NOTMOVING) {
+				gc.setFill(Color.BLACK);
+			}else if (cabinMoving == MotionTypes.MOVINGUP) {
+				gc.setFill(Color.GREEN);
+			}else if (cabinMoving == MotionTypes.MOVINGDOWN) {
+				gc.setFill(Color.RED);
+			}
 			gc.fillRect(row += buildSpecs.FLOOR_HEIGHT, floor, buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
 		}
 
