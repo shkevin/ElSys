@@ -28,7 +28,7 @@ public class buildingHandler {
 			//Mostly for testing
 			int elevator = -1;
 			if (event.getX() >= buildSpecs.FLOOR_WIDTH && event.getX() < canvas.getWidth() - buildSpecs.FLOOR_WIDTH) {
-				elevator = (((int) event.getX() - buildSpecs.FLOOR_WIDTH) / (buildSpecs.FLOOR_HEIGHT)) + 1;
+				elevator = (((int) event.getX() - buildSpecs.FLOOR_WIDTH) / (buildSpecs.FLOOR_HEIGHT));
 			}
 
 			//Finds the row that we are in within the 2D array
