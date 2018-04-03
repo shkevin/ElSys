@@ -58,7 +58,7 @@ public class buildingCanvas extends Canvas {
 		//Draw Elevator
 		for (Cabin cabin : cabins) {
 			gc.setFill(Color.BLACK);
-			gc.fillRect(row += buildSpecs.FLOOR_HEIGHT, ((9 - cabin.getFloor() + w)), buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
+			gc.fillRect(row += buildSpecs.FLOOR_HEIGHT, 100, buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
 		}
 
 	}

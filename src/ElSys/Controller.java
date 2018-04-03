@@ -53,7 +53,7 @@ public class Controller {
 
 	private ArrayList<Cabin> setupCabins(int numberOfCabins) {
 		cabins = new ArrayList<Cabin>();
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < numberOfCabins; i++)
 		{
 			cabins.add(new Cabin());
 		}
