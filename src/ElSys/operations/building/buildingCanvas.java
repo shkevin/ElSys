@@ -16,12 +16,10 @@ public class buildingCanvas extends Canvas {
 
 	private Controller controller;
 	private GraphicsContext gc;
- 	int startingFloor = 10;
- 	private ArrayList<Cabin> cabins;
+	int startingFloor = 10;
 
 	public buildingCanvas(ArrayList<Cabin> cabins, Controller controller) {
 		this.controller = controller;
-		this.cabins = cabins;
 		widthProperty().addListener(event -> drawCanvas(cabins));
 	 	widthProperty().addListener(event -> drawCanvas(cabins));
 	}
@@ -32,6 +30,8 @@ public class buildingCanvas extends Canvas {
 //		double h = heightProperty().get();
 		double w = Main.WIDTH;
 		double h = Main.HEIGHT;
+		int row = 100;
+
 		gc = getGraphicsContext2D();
 		gc.clearRect(0, 0, w, h);
 
@@ -45,21 +45,20 @@ public class buildingCanvas extends Canvas {
 
 		//Draw Building
 		gc.setFill(Color.GREY);
-		gc.fillRect(100, 0, w - 200, h - 100);
+		gc.fillRect(100, 0, w - buildSpecs.floorWidth, h - buildSpecs.floorHeight);
 
 		//Draws the floors
-		for (int x = 200; x < w - 200; x += 100) {
-			for (int y = 20, p = 0; y < h - 100; y += 80, p++) {
+		for (int x = buildSpecs.floorWidth; x < w - buildSpecs.floorWidth; x += buildSpecs.floorHeight) {
+			for (int y = buildSpecs.floorHSeparator, p = 0; y < h - buildSpecs.floorHeight; y += buildSpecs.floorWSeparator, p++) {
 				gc.setFill(Color.YELLOW);
-				gc.fillRect(x, y, 55, 55);
+				gc.fillRect(x, y, buildSpecs.cabinWidth, buildSpecs.cabinHeight);
 			}
 		}
 
 		//Draw Elevator
 		for (Cabin cabin : cabins) {
 			gc.setFill(Color.BLACK);
-			//This does nothing right now
-			gc.fillRect(0, 0, 55, 55);
+			gc.fillRect(row += buildSpecs.floorHeight, ((9 - cabin.getFloor() + w) - 55), buildSpecs.cabinWidth, buildSpecs.cabinHeight);
 		}
 
 	}
