@@ -21,7 +21,6 @@ public class Controller {
 	private buildingCanvas canvas = new buildingCanvas(this);
 	private buildingHandler handler = new buildingHandler(canvas, this);
 	private Pane canvasPane = new Pane();
-	private ObservableList<String> elevatorList;
 	private ArrayList<Cabin> cabins;
 
 	@FXML
@@ -32,7 +31,7 @@ public class Controller {
 	}
 
 	private void createCombo() {
-		elevatorList = FXCollections.observableArrayList("Elevator: 1",
+		ObservableList<String> elevatorList = FXCollections.observableArrayList("Elevator: 1",
 						"Elevator: 2", "Elevator: 3", "Elevator: 4");
 		elevatorCombo.setItems(elevatorList);
 	}
@@ -47,7 +46,7 @@ public class Controller {
 				canvas.drawCanvas();
 			}
 		}.start();
-		canvasPane.addEventFilter(MouseEvent.ANY, handler.getOnMouseEventHandler());
+		canvasPane.addEventFilter(MouseEvent.MOUSE_CLICKED, handler.getOnMouseEventHandler());
 
 		canvasPane.getChildren().add(canvas);
 		pane.setCenter(canvasPane);
