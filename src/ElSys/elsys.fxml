@@ -38,10 +38,10 @@
             </AnchorPane>
           <AnchorPane minWidth="200.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <ComboBox fx:id="elevatorCombo" layoutX="89.0" layoutY="52.0" prefWidth="150.0" promptText="Elevator" AnchorPane.topAnchor="52.0" />
+                  <ComboBox fx:id="elevatorCombo" layoutX="89.0" layoutY="52.0" onAction="#selectElevator" prefWidth="150.0" promptText="Elevator" AnchorPane.topAnchor="52.0" />
                   <Label layoutX="108.0" layoutY="14.0" text="Master Control Panel" />
-                  <Button layoutX="89.0" layoutY="127.0" minWidth="53.0" mnemonicParsing="false" text="Lock" />
-                  <Button layoutX="187.0" layoutY="127.0" minWidth="53.0" mnemonicParsing="false" text="Unlock" />
+                  <Button layoutX="89.0" layoutY="127.0" minWidth="53.0" mnemonicParsing="false" onAction="#lock" text="Lock" />
+                  <Button layoutX="187.0" layoutY="127.0" minWidth="53.0" mnemonicParsing="false" onAction="#unlock" text="Unlock" />
                </children></AnchorPane>
         </items>
       </SplitPane>

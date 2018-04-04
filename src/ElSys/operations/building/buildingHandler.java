@@ -47,10 +47,18 @@ public class buildingHandler {
 		@Override
 		public void handle(ActionEvent event) {
 			String buttonText = ((Button)event.getSource()).getText();
-			if (!buttonText.equalsIgnoreCase("Lock") && !buttonText.equalsIgnoreCase("Unlock")) {
-				int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
+			Boolean lock = buttonText.equalsIgnoreCase("Lock");
+			Boolean unlock = buttonText.equalsIgnoreCase("Unlock");
+			int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex() + 1;
+
+			if (!lock && !unlock) {
 				int floor = Integer.parseInt(buttonText);
 				controller.moveElevator(elevator, floor);
+			}
+			else {
+				if (lock) {
+					controller.getCabins().get(elevator).setIsLocked(true);
+				}
 			}
 		}
 	};

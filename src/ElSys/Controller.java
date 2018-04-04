@@ -15,7 +15,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Controller {
@@ -50,6 +52,26 @@ public class Controller {
 		setupButtons();
 	}
 
+	@FXML
+	private void lock() {
+		cabins.get(elevatorCombo.getSelectionModel().getSelectedIndex()).setIsLocked(true);
+		buttonList.forEach(button -> button.setDisable(true));
+	}
+
+	@FXML
+	private void unlock() {
+		cabins.get(elevatorCombo.getSelectionModel().getSelectedIndex()).setIsLocked(false);
+		buttonList.forEach(button -> button.setDisable(false));
+	}
+
+	@FXML
+	private void selectElevator() {
+		if (cabins.get(elevatorCombo.getSelectionModel().getSelectedIndex()).getIsLocked()) {
+			buttonList.forEach(button -> button.setDisable(true));
+		}
+		else buttonList.forEach(button -> button.setDisable(false));
+	}
+
 	private void setupButtons() {
 
 		buttonList.add(button1);
@@ -66,7 +88,6 @@ public class Controller {
 		for (Button button : buttonList) {
 			button.setOnAction(handler.getOnButtonEventHandler());
 		}
-
 	}
 
 	private void createCombo() {
@@ -122,6 +143,14 @@ public class Controller {
 		cab.startMotion(floor);
 		System.out.println("Elevator " + elevator + " now at: " + cab.getFloor());
 		System.out.println();
+	}
+
+	public List<Button> getElevatorButtons() {
+		return buttonList;
+	}
+
+	public List<Cabin> getCabins() {
+		return cabins;
 	}
 
 }
