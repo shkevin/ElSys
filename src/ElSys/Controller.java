@@ -81,13 +81,9 @@ public class Controller {
 		return cabins;
 	}
 
-	//This will eventually be called by the scheduler that handles cabin and floor requests,
-	//but for now it call the startMotion function, which moves the elevator based on a GUI click
-	public void moveElevator(int elevator, int floor) {
+	public void cabinRequest(int elevator, int floor){
 		Cabin cab = cabins.get(elevator);
-		cab.startMotion(floor);
-		System.out.println("Elevator " + elevator + " now at: " + cab.getFloor());
-		System.out.println();
+		cab.tryRequest(floor);
 	}
 
 }
