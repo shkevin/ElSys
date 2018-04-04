@@ -1,26 +1,40 @@
 package ElSys;
 
+import ElSys.operations.building.buildSpecs;
 import ElSys.operations.building.buildingCanvas;
+import ElSys.operations.building.buildingHandler;
+import ElSys.operations.cabin.Cabin;
 import ElSys.operations.cabin.cabinCanvas;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import ElSys.operations.building.buildingHandler;
 import java.util.ArrayList;
-import ElSys.operations.cabin.Cabin;
 
 
 public class Controller {
 
 	@FXML private BorderPane buildingPane = new BorderPane();
 	@FXML private AnchorPane cabinPane = new AnchorPane();
-	@FXML private ComboBox<String> elevatorCombo = new ComboBox<>();
+	@FXML private Button button1;
+	@FXML private Button button2;
+	@FXML private Button button3;
+	@FXML private Button button4;
+	@FXML private Button button5;
+	@FXML private Button button6;
+	@FXML private Button button7;
+	@FXML private Button button8;
+	@FXML private Button button9;
+	@FXML private Button button10;
+
+	public ComboBox<String> elevatorCombo = new ComboBox<>();
+	private ArrayList<Button> buttonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
 	private ArrayList<Cabin> cabins = setupCabins(4);
 	private buildingCanvas buildingCanvas = new buildingCanvas(cabins, this);
 	private cabinCanvas cabinCanvas = new cabinCanvas(12, cabins);
@@ -33,6 +47,26 @@ public class Controller {
 		setupBuildingCanvas();
 		setupCabinCanvas();
 		createCombo();
+		setupButtons();
+	}
+
+	private void setupButtons() {
+
+		buttonList.add(button1);
+		buttonList.add(button2);
+		buttonList.add(button3);
+		buttonList.add(button4);
+		buttonList.add(button5);
+		buttonList.add(button6);
+		buttonList.add(button7);
+		buttonList.add(button8);
+		buttonList.add(button9);
+		buttonList.add(button10);
+
+		for (Button button : buttonList) {
+			button.setOnAction(handler.getOnButtonEventHandler());
+		}
+
 	}
 
 	private void createCombo() {

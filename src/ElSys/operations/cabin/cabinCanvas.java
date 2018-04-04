@@ -1,13 +1,10 @@
 package ElSys.operations.cabin;
 
-import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.List;
 

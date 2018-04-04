@@ -1,12 +1,11 @@
 package ElSys.operations.building;
 
 import ElSys.Controller;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
-/**
- * @author snord
- */
 public class buildingHandler {
 
 	private Controller controller;
@@ -44,6 +43,18 @@ public class buildingHandler {
 		}
 	};
 
+	private EventHandler<ActionEvent> onButtonEventHandler = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			String buttonText = ((Button)event.getSource()).getText();
+			if (!buttonText.equalsIgnoreCase("Lock") && !buttonText.equalsIgnoreCase("Unlock")) {
+				int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
+				int floor = Integer.parseInt(buttonText);
+				controller.moveElevator(elevator, floor);
+			}
+		}
+	};
+
 		/**
 		 * simple getter for mouse handler within canvas.
 		 * @return mouse handler
@@ -51,5 +62,7 @@ public class buildingHandler {
 		public EventHandler<MouseEvent> getOnMouseEventHandler() {
 			return onMouseEventHandler;
 		}
+
+		public EventHandler<ActionEvent> getOnButtonEventHandler() { return onButtonEventHandler;}
 
 	}

@@ -9,9 +9,6 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
-/**
- * @author snord
- */
 public class buildingCanvas extends Canvas {
 
 	private Controller controller;
