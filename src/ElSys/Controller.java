@@ -23,7 +23,7 @@ public class Controller {
 	@FXML private ComboBox<String> elevatorCombo = new ComboBox<>();
 	private ArrayList<Cabin> cabins = setupCabins(4);
 	private buildingCanvas buildingCanvas = new buildingCanvas(cabins, this);
-	private cabinCanvas cabinCanvas = new cabinCanvas(12);
+	private cabinCanvas cabinCanvas = new cabinCanvas(12, cabins);
 	private buildingHandler handler = new buildingHandler(buildingCanvas, this);
 	private Pane buildingCanvasPane = new Pane();
 	private Pane cabinCanvasPane = new Pane();
@@ -45,6 +45,7 @@ public class Controller {
 	private void setupBuildingCanvas() {
 		buildingCanvas.widthProperty().bind(buildingCanvasPane.widthProperty());
 		buildingCanvas.heightProperty().bind(buildingCanvasPane.heightProperty());
+		buildingCanvasPane.addEventFilter(MouseEvent.MOUSE_CLICKED, handler.getOnMouseEventHandler());
 
 		new AnimationTimer() {
 			@Override
@@ -52,7 +53,6 @@ public class Controller {
 				buildingCanvas.drawCanvas(cabins);
 			}
 		}.start();
-		buildingCanvasPane.addEventFilter(MouseEvent.MOUSE_CLICKED, handler.getOnMouseEventHandler());
 
 		buildingCanvasPane.getChildren().add(buildingCanvas);
 		buildingPane.setCenter(buildingCanvasPane);
@@ -62,7 +62,12 @@ public class Controller {
 		cabinCanvas.widthProperty().bind(cabinPane.widthProperty());
 		cabinCanvas.heightProperty().bind(cabinPane.heightProperty());
 
-		cabinCanvas.drawCanvas(cabins.get(1));
+		new AnimationTimer() {
+			public void handle(long now) {
+				cabinCanvas.drawCanvas(elevatorCombo.getSelectionModel().getSelectedIndex());
+			}
+		}.start();
+
 		cabinCanvasPane.getChildren().add(cabinCanvas);
 		cabinPane.getChildren().add(cabinCanvasPane);
 	}
@@ -81,8 +86,6 @@ public class Controller {
 	public void moveElevator(int elevator, int floor) {
 		Cabin cab = cabins.get(elevator);
 		cab.startMotion(floor);
-		buildingCanvas.drawCanvas(cabins);
-		cabinCanvas.drawCanvas(cab);
 		System.out.println("Elevator " + elevator + " now at: " + cab.getFloor());
 		System.out.println();
 	}
