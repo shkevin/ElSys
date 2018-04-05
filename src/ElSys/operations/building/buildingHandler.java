@@ -49,7 +49,7 @@ public class buildingHandler {
 			String buttonText = ((Button)event.getSource()).getText();
 			Boolean lock = buttonText.equalsIgnoreCase("Lock");
 			Boolean unlock = buttonText.equalsIgnoreCase("Unlock");
-			int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex() + 1;
+			int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
 
 			if (!lock && !unlock) {
 				int floor = Integer.parseInt(buttonText);
