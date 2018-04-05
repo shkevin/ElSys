@@ -5,6 +5,7 @@ import ElSys.operations.building.buildingCanvas;
 import ElSys.operations.building.buildingHandler;
 import ElSys.operations.cabin.Cabin;
 import ElSys.operations.cabin.cabinCanvas;
+import ElSys.operations.cabin.ElButton;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -120,6 +121,14 @@ public class Controller {
 		new AnimationTimer() {
 			public void handle(long now) {
 				cabinCanvas.drawCanvas(elevatorCombo.getSelectionModel().getSelectedIndex());
+				ArrayList<ElButton> buttons = cabins.get(elevatorCombo.getSelectionModel().getSelectedIndex()).getButtons();
+				for (int i = 0; i < 10; i++) {
+					if (buttons.get(i).getPressed()) {
+						buttonList.get(i).setStyle("-fx-body-color: #ffff00;"); //set to yellow
+					} else {
+						buttonList.get(i).setStyle("-fx-body-color: linear-gradient(to bottom,derive(#d0d0d0,34%) 0%, derive(#d0d0d0,-18%) 100%);"); //set back to default
+					}
+				}
 			}
 		}.start();
 
@@ -138,8 +147,10 @@ public class Controller {
 
 	//This will eventually be called by the scheduler that handles cabin and floor requests,
 	//but for now it call the startMotion function, which moves the elevator based on a GUI click
+	//NOTE: this should probably be called something like "send request" or something like that
 	public void moveElevator(int elevator, int floor) {
 		Cabin cab = cabins.get(elevator);
+		cab.getButtons().get(floor - 1).setPressed(true);
 		cab.startMotion(floor);
 		System.out.println("Elevator " + elevator + " now at: " + cab.getFloor());
 		System.out.println();

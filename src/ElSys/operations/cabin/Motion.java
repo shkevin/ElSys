@@ -12,9 +12,11 @@ public class Motion implements Runnable{
     private String cabin;
     public Thread t;
     private MotionTypes motionType = MotionTypes.NOTMOVING;
+    private Cabin cab;
 
-    public Motion(int startingFloor, int cabNum) {
+    public Motion(int startingFloor, int cabNum, Cabin cab) {
         this.currentFloor = startingFloor;
+        this.cab = cab;
         switch(cabNum) {
             case 0:
                 this.cabin = "One";
@@ -84,6 +86,7 @@ public class Motion implements Runnable{
         }
         System.out.println("(Motion) Elevator " +  this.cabin + " done moving.");
         this.motionType = MotionTypes.NOTMOVING;
+        this.cab.getButtons().get(targetFloor-1).setPressed(false); //turn off button on arrival
     }
 
 }

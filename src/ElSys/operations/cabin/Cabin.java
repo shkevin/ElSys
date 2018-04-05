@@ -1,5 +1,7 @@
 package ElSys.operations.cabin;
 
+import java.util.ArrayList;
+
 public class Cabin {
 
 	//	private FloorAlignment floorAlignment; //we'll need this eventually
@@ -7,12 +9,22 @@ public class Cabin {
 	private int cabNum;
 	private int currentFloor;
 	private Boolean isLocked;
+	private ArrayList<ElButton> buttons;
 
 	public Cabin(int cabNum) {
 		//this.floorAlignment = new FloorAlignment();
 		this.cabNum = cabNum;
 		this.currentFloor = 1;
 		this.isLocked = false;
+		this.buttons = new ArrayList<ElButton>();
+		for (int i = 0; i < 10; i++)
+		{
+			buttons.add(new ElButton());
+		}
+	}
+
+	public ArrayList<ElButton> getButtons() {
+		return buttons;
 	}
 
 	//while the elevator is moving, the Motion Thread keeps track of the current floor
@@ -38,7 +50,7 @@ public class Cabin {
 		if (!isLocked) {
 			if (this.motion == null || this.motion.getMotionType() == MotionTypes.NOTMOVING) {
 				System.out.println("(Cabin) creating motion: " + (cabNum + 1));
-				this.motion = new Motion(this.currentFloor, cabNum);
+				this.motion = new Motion(this.currentFloor, cabNum, this);
 				motion.setTargetFloor(targetFloor);
 				motion.start();
 				this.currentFloor = targetFloor;
