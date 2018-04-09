@@ -1,10 +1,13 @@
 package ElSys;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
@@ -22,6 +25,12 @@ public class Main extends Application {
         primaryStage.setMinWidth(1100);
         primaryStage.setMinHeight(925);
         primaryStage.show();
+
+        /* The program will close all threads when the window is closed */
+        primaryStage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     public static void main(String[] args) {
