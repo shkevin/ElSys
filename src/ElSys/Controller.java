@@ -151,7 +151,11 @@ public class Controller {
 	public void moveElevator(int elevator, int floor) {
 		Cabin cab = cabins.get(elevator);
 		cab.getButtons().get(floor - 1).setPressed(true);
-		cab.startMotion(floor);
+
+		//add request to building handler with specified cabin
+		//maps cabin to arrayList of requests for that cabin
+		handler.setCabinRequest(cab,floor);
+		//cab.startMotion(floor);
 		System.out.println("Elevator " + elevator + " now at: " + cab.getFloor());
 		System.out.println();
 	}

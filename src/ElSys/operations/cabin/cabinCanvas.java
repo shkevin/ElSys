@@ -64,12 +64,10 @@ public class cabinCanvas extends Canvas {
 			image.setImage(imageList.get(cabins.get(cabin).getFloor() - 1));
 			gc.drawImage(image.snapshot(null, null),centerX , botY);
 
-			MotionTypes cabinMoving = MotionTypes.NOTMOVING;
-			Motion cabinMotion = cabins.get(cabin).getMotion();
 
-			if (cabinMotion != null) {
-				cabinMoving = cabinMotion.getMotionType();
-			}
+			Motion cabinMotion = cabins.get(cabin).getMotion();
+			MotionTypes	cabinMoving = cabinMotion.getMotionType();
+
 			if (cabinMoving != MotionTypes.NOTMOVING) {
 				if (cabinMoving == MotionTypes.MOVINGUP) {
 					image.setImage(imageList.get(10));

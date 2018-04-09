@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class Cabin {
 
 	//	private FloorAlignment floorAlignment; //we'll need this eventually
-	private Motion motion;
 	private int cabNum;
 	private int currentFloor;
-	private Boolean isLocked;
+	private Boolean isLocked = false;
 	private ArrayList<ElButton> buttons;
+	private Motion motion;
 
 	public Cabin(int cabNum) {
 		//this.floorAlignment = new FloorAlignment();
 		this.cabNum = cabNum;
 		this.currentFloor = 1;
-		this.isLocked = false;
 		this.buttons = new ArrayList<ElButton>();
+		this.motion = new Motion(1,cabNum,this);
 		for (int i = 0; i < 10; i++)
 		{
 			buttons.add(new ElButton());
@@ -48,12 +48,14 @@ public class Cabin {
 	 */
 	public void startMotion(int targetFloor) {
 		if (!isLocked) {
-			if (this.motion == null || this.motion.getMotionType() == MotionTypes.NOTMOVING) {
-				System.out.println("(Cabin) creating motion: " + (cabNum + 1));
-				this.motion = new Motion(this.currentFloor, cabNum, this);
+			if (this.motion.getMotionType() == MotionTypes.NOTMOVING) {
+
 				motion.setTargetFloor(targetFloor);
-				motion.start();
+
+				motion.setHasRequest(true);
+
 				this.currentFloor = targetFloor;
+
 			} else {
 				System.out.println("(Cabin) Elevator " + (cabNum + 1) + " moving, click disregarded");
 			}
@@ -67,4 +69,6 @@ public class Cabin {
 	public void setIsLocked(Boolean val) {
 		this.isLocked = val;
 	}
+
+
 }
