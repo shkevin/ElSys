@@ -52,7 +52,7 @@ public class buildingHandler implements Runnable{
 
 			if (floor >= 0 && elevator >= 0) {
 				//System.out.println("Move elevator " + elevator + " to " + floor);
-				controller.moveElevator(elevator, floor);
+                newCabinRequest(elevator,floor);
 			}
 		}
 	};
@@ -67,7 +67,7 @@ public class buildingHandler implements Runnable{
 
 			if (!lock && !unlock) {
 				int floor = Integer.parseInt(buttonText);
-				controller.moveElevator(elevator, floor);
+				newCabinRequest(elevator, floor);
 			} else {
 				if (lock) {
 					controller.getCabins().get(elevator).setIsLocked(true);
@@ -90,9 +90,16 @@ public class buildingHandler implements Runnable{
 		return onButtonEventHandler;
 	}
 
-	public void setCabinRequest(Cabin cab, int floor) {
-		ArrayList<Integer> Schedule = CabinSchedules.get(cab);
-		MotionTypes direction = cab.getMotion().getMotionType();
+	/*
+	newCabinRequest sets the button to pressed, adds the floor to the list of requests, then sorts
+	the list according to direction
+	 */
+
+	public void newCabinRequest(int cab, int floor) {
+	    Cabin cabin = controller.getCabins().get(cab);
+		cabin.getButtons().get(floor - 1).setPressed(true);
+		ArrayList<Integer> Schedule = CabinSchedules.get(cabin);
+		MotionTypes direction = cabin.getMotion().getMotionType();
 		Schedule.add(floor);
 		Comparator<Integer> floorComparotor;
 

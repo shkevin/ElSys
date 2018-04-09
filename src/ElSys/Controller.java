@@ -145,21 +145,6 @@ public class Controller {
 		return cabins;
 	}
 
-	//This will eventually be called by the scheduler that handles cabin and floor requests,
-	//but for now it call the startMotion function, which moves the elevator based on a GUI click
-	//NOTE: this should probably be called something like "send request" or something like that
-	public void moveElevator(int elevator, int floor) {
-		Cabin cab = cabins.get(elevator);
-		cab.getButtons().get(floor - 1).setPressed(true);
-
-		//add request to building handler with specified cabin
-		//maps cabin to arrayList of requests for that cabin
-		handler.setCabinRequest(cab,floor);
-		//cab.startMotion(floor);
-		System.out.println("Elevator " + elevator + " now at: " + cab.getFloor());
-		System.out.println();
-	}
-
 	public List<Button> getElevatorButtons() {
 		return buttonList;
 	}
