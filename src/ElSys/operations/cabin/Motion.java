@@ -43,11 +43,12 @@ public class Motion implements Runnable{
 
     //must be called before move or starting the thread so the elevator knows where to go
     public void setTargetFloor(int n) {
-        synchronized (this) {
-            this.targetFloor = n;
-        }
+        this.targetFloor = n;
     }
 
+    public int getTargetFloor() {
+        return this.targetFloor;
+    }
 
     public int getCurrentFloor() {
         return currentFloor;
@@ -65,7 +66,7 @@ public class Motion implements Runnable{
         hasRequest = value;
     }
 
-    synchronized boolean getHasRequest(){return hasRequest;}
+    synchronized public boolean getHasRequest(){return hasRequest;}
     /*
     * This thread moves the elevator and will eventually communication with the motor and Floor alignment interfaces.
      * It checks to see if it needs to move up or down, then moves the necessary floors.
@@ -75,37 +76,35 @@ public class Motion implements Runnable{
     public void run() {
         while (true) {
             if (getHasRequest()) {
-                synchronized (this) {
-                    //figure what direction to move the elevator for target floor
-                    if (this.currentFloor < this.targetFloor) {
-                        this.motionType = MotionTypes.MOVINGUP;
-                    } else if (this.currentFloor > this.targetFloor) {
-                        this.motionType = MotionTypes.MOVINGDOWN;
-                    } else {
-                        this.motionType = MotionTypes.NOTMOVING;
-                    }
-
+                int floorDiff = this.targetFloor - this.currentFloor;
+                if (floorDiff > 0) {
+                    this.motionType = MotionTypes.MOVINGUP;
+                } else if (floorDiff < 0) {
+                    this.motionType = MotionTypes.MOVINGDOWN;
+                } else {
+                    this.motionType = MotionTypes.NOTMOVING;
+                }
+                if (floorDiff != 0) {
                     try {
-                        int floorDiff = Math.abs(this.targetFloor - this.currentFloor);
-                        for (int i = 0; i < floorDiff; i++) {
-                            System.out.println("(Motion) Elevator " + this.cabin + " moving from " + this.currentFloor
-                                    + " to " + (int) (this.currentFloor + motionType.toVal()));
-                            Thread.sleep(1000);
-                            this.currentFloor += motionType.toVal();
-                        }
-
+                        System.out.println("(Motion) Elevator " + this.cabin + " moving from " + this.currentFloor
+                                + " to " + (int) (this.currentFloor + motionType.toVal()));
+                        Thread.sleep(1000);
+                        this.currentFloor += motionType.toVal();
                     } catch (InterruptedException e) {
                         System.out.println("(Motion) Elevator " + this.cabin + " interrupted.");
                     }
+                } else {
+                    this.cab.getButtons().get(currentFloor - 1).setPressed(false); //turn off button on arrival
                     System.out.println("(Motion) Elevator " + this.cabin + " done moving.");
                     this.motionType = MotionTypes.NOTMOVING;
-                    this.cab.getButtons().get(targetFloor - 1).setPressed(false); //turn off button on arrival
-                }
-                setHasRequest(false);
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    setHasRequest(false);
+                    try {
+                        this.motionType = MotionTypes.DOORS;
+                        Thread.sleep(5000); //this is simulating the doors opening and closing
+                        this.motionType = MotionTypes.NOTMOVING;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 //right here we need to ensure the doors open and close before the motion checks for another request
             }

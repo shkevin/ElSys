@@ -47,19 +47,8 @@ public class Cabin {
 	* creates a new motion thread, sets the target floor, and then starts the thread.
 	 */
 	public void startMotion(int targetFloor) {
-		if (!isLocked) {
-			if (this.motion.getMotionType() == MotionTypes.NOTMOVING) {
-
-				motion.setTargetFloor(targetFloor);
-
-				motion.setHasRequest(true);
-
-				this.currentFloor = targetFloor;
-
-			} else {
-				System.out.println("(Cabin) Elevator " + (cabNum + 1) + " moving, click disregarded");
-			}
-		}
+        motion.setTargetFloor(targetFloor);
+        motion.setHasRequest(true);
 	}
 
 	public Boolean getIsLocked() {

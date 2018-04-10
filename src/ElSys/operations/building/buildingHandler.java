@@ -128,17 +128,72 @@ public class buildingHandler implements Runnable{
 		List<Cabin> cabins = controller.getCabins();
 		while (true) {
 			for (Cabin cab : cabins) {
-
-				if (!cab.getIsLocked() && cab.getMotion().getMotionType() == MotionTypes.NOTMOVING) {
-					ArrayList<Integer> schedule = CabinSchedules.get(cab);
-
-					if (!schedule.isEmpty()) {
+                ArrayList<Integer> schedule = CabinSchedules.get(cab);
+				if (!schedule.isEmpty() && !cab.getIsLocked()){
+				    if (cab.getMotion().getMotionType() == MotionTypes.NOTMOVING && !cab.getMotion().getHasRequest()) {
 						cab.startMotion(schedule.remove(0));
-					}
-				}
-
+					} else {
+				        //checks for request between current and target floor, if one is found, recreate target floor request
+                        //and set current request to the first in between floor
+				        if (cab.getMotion().getMotionType() == MotionTypes.MOVINGUP) {
+				            int between = getBetweenUp(schedule,cab.getMotion().getCurrentFloor(),cab.getMotion().getTargetFloor());
+                            if (between != 0) {
+                                newCabinRequest(0, cab.getMotion().getTargetFloor());
+                                cab.startMotion(schedule.remove(schedule.indexOf(between)));
+                            }
+                        } else if (cab.getMotion().getMotionType() == MotionTypes.MOVINGDOWN) {
+				            int between = getBetweenDown(schedule,cab.getMotion().getCurrentFloor(),cab.getMotion().getTargetFloor());
+                            if (between != 0) {
+                                newCabinRequest(0, cab.getMotion().getTargetFloor());
+                                cab.startMotion(schedule.remove(schedule.indexOf(between)));
+                            }
+                        }
+                    }
+                }
 			}
 		}
 	}
+
+    /*
+     * returns the first request that's between the current floor and the target floor,
+     * null if there isn't one. Used when the elevator is moving down
+     */
+
+    public Integer getBetweenDown(ArrayList<Integer> schedule, int current, int target) {
+        for (Integer i : schedule) {
+            if (i < current && i > target){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    /*
+    * returns the first request that's between the current floor and the target floor,
+    * null if there isn't one. Used when the elevator is moving up
+     */
+
+	public Integer getBetweenUp(ArrayList<Integer> schedule, int current, int target) {
+	    for (Integer i : schedule) {
+	        if (i > current && i < target){
+	            return i;
+            }
+        }
+        return 0;
+    }
+
+    /*
+    * Utility function to print a schedule
+     */
+
+	public void printSchedule(ArrayList<Integer> schedule){
+	    if (!schedule.isEmpty()) {
+            System.out.print("Schedule: ");
+            for (Integer i : schedule) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
+        }
+    }
 
 }

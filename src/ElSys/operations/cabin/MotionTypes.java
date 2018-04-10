@@ -8,7 +8,8 @@ package ElSys.operations.cabin;
 public enum MotionTypes {
     MOVINGUP,
     MOVINGDOWN,
-    NOTMOVING;
+    NOTMOVING,
+    DOORS;
 
     public double toVal() {
         switch(this) {
