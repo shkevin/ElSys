@@ -52,7 +52,9 @@ public class buildingHandler implements Runnable{
 
 			if (floor >= 0 && elevator >= 0) {
 				//System.out.println("Move elevator " + elevator + " to " + floor);
-                newCabinRequest(elevator,floor);
+                if(!controller.getCabins().get(elevator).getIsLocked()) {
+                    newCabinRequest(elevator, floor);
+                }
 			}
 		}
 	};
