@@ -91,7 +91,7 @@ public class Motion implements Runnable{
                     try {
                         System.out.println("(Motion) Elevator " + this.cabin + " moving from " + this.currentFloor
                                 + " to " + (int) (this.currentFloor + motionType.toVal()));
-                        Thread.sleep(1000);
+                        Thread.sleep(700);
                         synchronized (this) {
                             this.currentFloor += (int) motionType.toVal();
                         }
@@ -105,7 +105,7 @@ public class Motion implements Runnable{
                     setHasRequest(false);
                     try {
                         this.motionType = MotionTypes.DOORS;
-                        Thread.sleep(5000); //this is simulating the doors opening and closing
+                        Thread.sleep(2500); //this is simulating the doors opening and closing
                         this.motionType = MotionTypes.NOTMOVING;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
