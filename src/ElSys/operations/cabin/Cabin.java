@@ -6,7 +6,7 @@ public class Cabin {
 
 	//	private FloorAlignment floorAlignment; //we'll need this eventually
 	private int cabNum;
-	private int currentFloor;
+	private Integer currentFloor;
 	private Boolean isLocked = false;
 	private ArrayList<ElButton> buttons;
 	private Motion motion;
@@ -30,7 +30,7 @@ public class Cabin {
 	//while the elevator is moving, the Motion Thread keeps track of the current floor
 	//but when it's not, the cabin will keep this info.
 
-	public int getFloor() {
+	public Integer getFloor() {
 		if (this.motion != null) {
 			return this.motion.getCurrentFloor();
 		} else {

@@ -102,12 +102,25 @@ public class buildingHandler implements Runnable{
 		MotionTypes direction = cabin.getMotion().getMotionType();
 		Schedule.add(floor);
 		Comparator<Integer> floorComparotor;
+		Object floorlock = cabin.getMotion();
 
+		Integer currentfloor;
+		synchronized (floorlock) {
+			currentfloor = cabin.getFloor();
+		}
 		if (direction == MotionTypes.MOVINGUP) {
 			floorComparotor = new Comparator<Integer>() {
 				@Override
 				public int compare(Integer o1, Integer o2) {
-					return o1.compareTo(o2);
+
+					synchronized (floorlock) {
+						if (o1 <= currentfloor) {
+							return 1;
+						} else {
+
+							return o1.compareTo(o2);
+						}
+					}
 				}
 			};
 
@@ -115,7 +128,14 @@ public class buildingHandler implements Runnable{
 			floorComparotor = new Comparator<Integer>() {
 				@Override
 				public int compare(Integer o1, Integer o2) {
-					return o2.compareTo(o1);
+
+					synchronized (floorlock) {
+						if (o1 >= currentfloor) {
+							return 1;
+						} else {
+							return o2.compareTo(o1);
+						}
+					}
 				}
 			};
 		}

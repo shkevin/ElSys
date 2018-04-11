@@ -1,7 +1,5 @@
 package ElSys.operations.cabin;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 /*
 * Each Cabin will start a Motion thread when it gets a command to move that will track where in the elevator
 * the cabin is and communicate with the MotorControl while running
@@ -9,7 +7,7 @@ import java.util.Comparator;
 
 public class Motion implements Runnable{
 
-    private int currentFloor;
+    private Integer currentFloor;
     private int targetFloor;
 
     private String cabin;
@@ -43,7 +41,9 @@ public class Motion implements Runnable{
 
     //must be called before move or starting the thread so the elevator knows where to go
     public void setTargetFloor(int n) {
-        this.targetFloor = n;
+        synchronized (this) {
+            this.targetFloor = n;
+        }
     }
 
     public int getTargetFloor() {
@@ -76,7 +76,10 @@ public class Motion implements Runnable{
     public void run() {
         while (true) {
             if (getHasRequest()) {
-                int floorDiff = this.targetFloor - this.currentFloor;
+                int floorDiff;
+                synchronized (this) {
+                    floorDiff = this.targetFloor - this.currentFloor;
+                }
                 if (floorDiff > 0) {
                     this.motionType = MotionTypes.MOVINGUP;
                 } else if (floorDiff < 0) {
@@ -89,7 +92,9 @@ public class Motion implements Runnable{
                         System.out.println("(Motion) Elevator " + this.cabin + " moving from " + this.currentFloor
                                 + " to " + (int) (this.currentFloor + motionType.toVal()));
                         Thread.sleep(1000);
-                        this.currentFloor += motionType.toVal();
+                        synchronized (this) {
+                            this.currentFloor += (int) motionType.toVal();
+                        }
                     } catch (InterruptedException e) {
                         System.out.println("(Motion) Elevator " + this.cabin + " interrupted.");
                     }
