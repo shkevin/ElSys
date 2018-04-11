@@ -156,13 +156,13 @@ public class buildingHandler implements Runnable{
 				        //checks for request between current and target floor, if one is found, recreate target floor request
                         //and set current request to the first in between floor
 				        if (cab.getMotion().getMotionType() == MotionTypes.MOVINGUP) {
-				            int between = getBetweenUp(schedule,cab.getMotion().getCurrentFloor(),cab.getMotion().getTargetFloor());
+				            int between = getBetweenUp(schedule,cab.getFloor(),cab.getMotion().getTargetFloor());
                             if (between != 0) {
                                 newCabinRequest(0, cab.getMotion().getTargetFloor());
                                 cab.startMotion(schedule.remove(schedule.indexOf(between)));
                             }
                         } else if (cab.getMotion().getMotionType() == MotionTypes.MOVINGDOWN) {
-				            int between = getBetweenDown(schedule,cab.getMotion().getCurrentFloor(),cab.getMotion().getTargetFloor());
+				            int between = getBetweenDown(schedule,cab.getFloor(),cab.getMotion().getTargetFloor());
                             if (between != 0) {
                                 newCabinRequest(0, cab.getMotion().getTargetFloor());
                                 cab.startMotion(schedule.remove(schedule.indexOf(between)));

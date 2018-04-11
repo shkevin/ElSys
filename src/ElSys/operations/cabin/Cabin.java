@@ -31,11 +31,12 @@ public class Cabin {
 	//but when it's not, the cabin will keep this info.
 
 	public Integer getFloor() {
-		if (this.motion != null) {
+		synchronized (getMotion())
+		{if (this.motion != null) {
 			return this.motion.getCurrentFloor();
 		} else {
 			return this.currentFloor;
-		}
+		}}
 	}
 
 	public Motion getMotion() {
