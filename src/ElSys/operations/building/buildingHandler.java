@@ -103,7 +103,7 @@ public class buildingHandler implements Runnable{
 		cabin.getButtons().get(floor - 1).setPressed(true);
 		CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cabin);
 		MotionTypes direction = cabin.getMotion().getMotionType();
-		Schedule.add(floor);
+		Schedule.addIfAbsent(floor);
 		Comparator<Integer> floorComparotor;
 		Object floorlock = cabin.getMotion();
 
