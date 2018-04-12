@@ -38,7 +38,7 @@ public class Controller {
 	@FXML private Button button10;
 
 	public ComboBox<String> elevatorCombo = new ComboBox<>();
-	private ArrayList<Button> buttonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
+	static ArrayList<Button> buttonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
 	private ArrayList<Cabin> cabins = setupCabins(4);
 	private buildingCanvas buildingCanvas = new buildingCanvas(cabins, this);
 	private cabinCanvas cabinCanvas = new cabinCanvas(12, cabins);
@@ -124,7 +124,7 @@ public class Controller {
 			public void handle(long now) {
 				cabinCanvas.drawCanvas(elevatorCombo.getSelectionModel().getSelectedIndex());
 				ArrayList<ElButton> buttons = cabins.get(elevatorCombo.getSelectionModel().getSelectedIndex()).getButtons();
-				buttonPane.requestFocus();
+
 				for (int i = 0; i < 10; i++) {
 					if (buttons.get(i).getPressed()) {
 						buttonList.get(i).setStyle("-fx-body-color: #ffff00;"); //set to yellow

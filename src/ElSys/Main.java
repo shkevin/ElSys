@@ -32,6 +32,7 @@ public class Main extends Application {
             System.exit(0);
         });
 
+        Controller.buttonList.get(0).requestFocus();
     }
 
     public static void main(String[] args) {
