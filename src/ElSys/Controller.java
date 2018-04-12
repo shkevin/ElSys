@@ -25,6 +25,7 @@ public class Controller {
 
 	@FXML private BorderPane buildingPane = new BorderPane();
 	@FXML private AnchorPane cabinPane = new AnchorPane();
+	@FXML private AnchorPane buttonPane = new AnchorPane();
 	@FXML private Button button1;
 	@FXML private Button button2;
 	@FXML private Button button3;
@@ -119,9 +120,11 @@ public class Controller {
 		cabinCanvas.heightProperty().bind(cabinPane.heightProperty());
 
 		new AnimationTimer() {
+			@Override
 			public void handle(long now) {
 				cabinCanvas.drawCanvas(elevatorCombo.getSelectionModel().getSelectedIndex());
 				ArrayList<ElButton> buttons = cabins.get(elevatorCombo.getSelectionModel().getSelectedIndex()).getButtons();
+				buttonPane.requestFocus();
 				for (int i = 0; i < 10; i++) {
 					if (buttons.get(i).getPressed()) {
 						buttonList.get(i).setStyle("-fx-body-color: #ffff00;"); //set to yellow

@@ -66,7 +66,6 @@ public class buildingHandler implements Runnable{
 			Boolean lock = buttonText.equalsIgnoreCase("Lock");
 			Boolean unlock = buttonText.equalsIgnoreCase("Unlock");
 			int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
-
 			if (!lock && !unlock) {
 				int floor = Integer.parseInt(buttonText);
 				newCabinRequest(elevator, floor);
