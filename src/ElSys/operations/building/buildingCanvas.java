@@ -55,7 +55,7 @@ public class buildingCanvas extends Canvas {
 		//Draw Elevator
 		for (Cabin cabin : cabins) {
 			double floor = (w - 60);
-			if (cabin.getFloor() != 1) floor = ((w - 60) - ((cabin.getPosition() - 1) * 80));
+			if (cabin.getPosition() != 1.0) floor = ((w - 60) - ((cabin.getPosition() - 1) * 80));
 			MotionTypes cabinMoving = MotionTypes.NOTMOVING;
 			Motion cabinMotion = cabin.getMotion();
 			if (cabinMotion != null) {
