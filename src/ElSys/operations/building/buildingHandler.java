@@ -9,22 +9,24 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class buildingHandler implements Runnable{
 
 	private Controller controller;
 	private buildingCanvas canvas;
-	private HashMap<Cabin,ArrayList<Integer>> CabinSchedules = new HashMap<>();
+	private HashMap<Cabin,CopyOnWriteArrayList<Integer>> CabinSchedules = new HashMap<>();
 	private Thread buildingThread = new Thread(this,"buildingThread");
 	public buildingHandler(buildingCanvas canvas, Controller controller) {
 		this.controller = controller;
 		this.canvas = canvas;
 
 		for(Cabin cab: controller.getCabins()) {
-		    ArrayList<Integer> emptyList = new ArrayList<>();
+		    CopyOnWriteArrayList<Integer> emptyList = new CopyOnWriteArrayList<>();
 		    CabinSchedules.put(cab,emptyList);
         }
         buildingThread.start();
@@ -99,7 +101,7 @@ public class buildingHandler implements Runnable{
 	public void newCabinRequest(int cab, int floor) {
 	    Cabin cabin = controller.getCabins().get(cab);
 		cabin.getButtons().get(floor - 1).setPressed(true);
-		ArrayList<Integer> Schedule = CabinSchedules.get(cabin);
+		CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cabin);
 		MotionTypes direction = cabin.getMotion().getMotionType();
 		Schedule.add(floor);
 		Comparator<Integer> floorComparotor;
@@ -152,7 +154,7 @@ public class buildingHandler implements Runnable{
 		List<Cabin> cabins = controller.getCabins();
 		while (true) {
 			for (Cabin cab : cabins) {
-                ArrayList<Integer> schedule = CabinSchedules.get(cab);
+                CopyOnWriteArrayList<Integer> schedule = CabinSchedules.get(cab);
 				if (!schedule.isEmpty() && !cab.getIsLocked()){
 				    if (cab.getMotion().getMotionType() == MotionTypes.NOTMOVING && !cab.getMotion().getHasRequest()) {
 						cab.startMotion(schedule.remove(0));
@@ -183,7 +185,7 @@ public class buildingHandler implements Runnable{
      * null if there isn't one. Used when the elevator is moving down
      */
 
-    public Integer getBetweenDown(ArrayList<Integer> schedule, int current, int target) {
+    public Integer getBetweenDown(CopyOnWriteArrayList<Integer> schedule, int current, int target) {
         for (Integer i : schedule) {
             if (i < current && i > target){
                 return i;
@@ -197,7 +199,7 @@ public class buildingHandler implements Runnable{
     * null if there isn't one. Used when the elevator is moving up
      */
 
-	public Integer getBetweenUp(ArrayList<Integer> schedule, int current, int target) {
+	public Integer getBetweenUp(CopyOnWriteArrayList<Integer> schedule, int current, int target) {
 	    for (Integer i : schedule) {
 	        if (i > current && i < target){
 	            return i;
