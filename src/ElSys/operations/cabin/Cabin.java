@@ -39,6 +39,15 @@ public class Cabin {
 		}}
 	}
 
+	public double getPosition() {
+		synchronized (getMotion())
+		{if (this.motion != null) {
+			return this.motion.getPosition();
+		} else {
+			return this.currentFloor;
+		}}
+	}
+
 	public Motion getMotion() {
 		return this.motion;
 	}

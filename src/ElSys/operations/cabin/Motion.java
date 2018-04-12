@@ -7,7 +7,7 @@ package ElSys.operations.cabin;
 
 public class Motion implements Runnable{
 
-    private Integer currentFloor;
+    private double currentFloor;
     private int targetFloor;
 
     private String cabin;
@@ -17,7 +17,7 @@ public class Motion implements Runnable{
     private Cabin cab;
 
 
-    public Motion(int startingFloor, int cabNum, Cabin cab) {
+    public Motion(double startingFloor, int cabNum, Cabin cab) {
         this.currentFloor = startingFloor;
         this.cab = cab;
         switch(cabNum) {
@@ -51,7 +51,11 @@ public class Motion implements Runnable{
     }
 
     public int getCurrentFloor() {
-        return currentFloor;
+        return (int) Math.floor(currentFloor);
+    }
+
+    public double getPosition() {
+        return this.currentFloor;
     }
 
     public MotionTypes getMotionType() {
@@ -76,7 +80,7 @@ public class Motion implements Runnable{
     public void run() {
         while (true) {
             if (getHasRequest()) {
-                int floorDiff;
+                double floorDiff;
                 synchronized (this) {
                     floorDiff = this.targetFloor - this.currentFloor;
                 }
@@ -87,19 +91,19 @@ public class Motion implements Runnable{
                 } else {
                     this.motionType = MotionTypes.NOTMOVING;
                 }
-                if (floorDiff != 0) {
+                if (Math.abs(floorDiff) >= MotionTypes.MOVINGUP.toVal()/2) {
                     try {
-                        System.out.println("(Motion) Elevator " + this.cabin + " moving from " + this.currentFloor
-                                + " to " + (int) (this.currentFloor + motionType.toVal()));
-                        Thread.sleep(700);
+                        Thread.sleep(70);
                         synchronized (this) {
-                            this.currentFloor += (int) motionType.toVal();
+                            //System.out.println("(Motion) Elevator " + this.cabin + " moving from " + this.currentFloor
+                            //        + " to " + (this.currentFloor + motionType.toVal()));
+                            this.currentFloor = Math.round((this.currentFloor + motionType.toVal()) * 10.0) / 10.0;
                         }
                     } catch (InterruptedException e) {
                         System.out.println("(Motion) Elevator " + this.cabin + " interrupted.");
                     }
                 } else {
-                    this.cab.getButtons().get(currentFloor - 1).setPressed(false); //turn off button on arrival
+                    this.cab.getButtons().get((int)Math.floor(currentFloor) - 1).setPressed(false); //turn off button on arrival
                     System.out.println("(Motion) Elevator " + this.cabin + " done moving.");
                     this.motionType = MotionTypes.NOTMOVING;
                     setHasRequest(false);

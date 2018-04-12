@@ -14,9 +14,9 @@ public enum MotionTypes {
     public double toVal() {
         switch(this) {
             case MOVINGUP:
-                return 1.0;
+                return 0.1;
             case MOVINGDOWN:
-                return -1.0;
+                return -0.1;
             case NOTMOVING:
                 return 0.0;
             default:
