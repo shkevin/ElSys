@@ -141,7 +141,10 @@ public class buildingHandler implements Runnable{
 			};
 		}
 		//will need additional case of not moving for later implementation
-		Schedule.sort(floorComparotor);
+		synchronized (floorlock)
+		{
+			Schedule.sort(floorComparotor);
+		}
 	}
 
 	@Override
