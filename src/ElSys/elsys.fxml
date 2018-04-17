@@ -46,5 +46,30 @@
         </AnchorPane>
       </items>
     </SplitPane>
+    <AnchorPane fx:id="floorButtonPane" disable="false" focusTraversable="false" layoutX="683.5" layoutY="5.0" prefHeight="700.0" prefWidth="75.0" style="-fx-border-style: solid; -fx-background-color: silver;">
+      <children>
+        <Button fx:id="upbutton10" layoutX="20.0" layoutY="15.0" minWidth="35.0" mnemonicParsing="false" text="10" textFill="RED" />
+        <Button fx:id="upbutton9" layoutX="20.0" layoutY="95.0" minWidth="35.0" mnemonicParsing="false" text="9" textFill="RED" />
+        <Button fx:id="upbutton7" layoutX="20.0" layoutY="255.0" minWidth="35.0" mnemonicParsing="false" text="7" textFill="RED" />
+        <Button fx:id="upbutton8" layoutX="20.0" layoutY="175.0" minWidth="35.0" mnemonicParsing="false" text="8" textFill="RED" />
+        <Button fx:id="upbutton5" layoutX="20.0" layoutY="415.0" minWidth="35.0" mnemonicParsing="false" text="5" textFill="RED" />
+        <Button fx:id="upbutton6" layoutX="20.0" layoutY="335.0" minWidth="35.0" mnemonicParsing="false" text="6" textFill="RED" />
+        <Button fx:id="upbutton3" layoutX="20.0" layoutY="575.0" minWidth="35.0" mnemonicParsing="false" text="3" textFill="RED" />
+        <Button fx:id="upbutton4" layoutX="20.0" layoutY="495.0" minWidth="35.0" mnemonicParsing="false" text="4" textFill="RED" />
+        <Button fx:id="upbutton1" defaultButton="false" focusTraversable="true" layoutX="20.0" layoutY="735.0" minWidth="35.0" mnemonicParsing="false" text="1" textFill="RED" />
+        <Button fx:id="upbutton2" layoutX="20.0" layoutY="655.0" minWidth="35.0" mnemonicParsing="false" text="2" textFill="RED" />
+
+        <Button fx:id="downbutton10" layoutX="20.0" layoutY="45.0" minWidth="35.0" mnemonicParsing="false" text="10" textFill="RED" />
+        <Button fx:id="downbutton9" layoutX="20.0" layoutY="125.0" minWidth="35.0" mnemonicParsing="false" text="9" textFill="RED" />
+        <Button fx:id="downbutton7" layoutX="20.0" layoutY="285.0" minWidth="35.0" mnemonicParsing="false" text="7" textFill="RED" />
+        <Button fx:id="downbutton8" layoutX="20.0" layoutY="205.0" minWidth="35.0" mnemonicParsing="false" text="8" textFill="RED" />
+        <Button fx:id="downbutton5" layoutX="20.0" layoutY="445.0" minWidth="35.0" mnemonicParsing="false" text="5" textFill="RED" />
+        <Button fx:id="downbutton6" layoutX="20.0" layoutY="365.0" minWidth="35.0" mnemonicParsing="false" text="6" textFill="RED" />
+        <Button fx:id="downbutton3" layoutX="20.0" layoutY="605.0" minWidth="35.0" mnemonicParsing="false" text="3" textFill="RED" />
+        <Button fx:id="downbutton4" layoutX="20.0" layoutY="525.0" minWidth="35.0" mnemonicParsing="false" text="4" textFill="RED" />
+        <Button fx:id="downbutton1" defaultButton="false" focusTraversable="true" layoutX="20.0" layoutY="765.0" minWidth="35.0" mnemonicParsing="false" text="1" textFill="RED" />
+        <Button fx:id="downbutton2" layoutX="20.0" layoutY="685.0" minWidth="35.0" mnemonicParsing="false" text="2" textFill="RED" />
+      </children>
+    </AnchorPane>
   </children>
 </AnchorPane>

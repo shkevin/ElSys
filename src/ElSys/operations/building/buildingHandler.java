@@ -67,7 +67,7 @@ public class buildingHandler implements Runnable{
 		}
 	};
 
-	private EventHandler<ActionEvent> onButtonEventHandler = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> onCabinButtonEventHandler = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
 			String buttonText = ((Button) event.getSource()).getText();
@@ -86,6 +86,25 @@ public class buildingHandler implements Runnable{
 	};
 
 
+	private EventHandler<ActionEvent> onFloorDownButtonEventHandler = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			String buttonText = ((Button) event.getSource()).getText();
+			int floor = Integer.parseInt(buttonText);
+			newFloorRequest(floor, "down");
+		}
+	};
+
+	private EventHandler<ActionEvent> onFloorUpButtonEventHandler = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			String buttonText = ((Button) event.getSource()).getText();
+			int floor = Integer.parseInt(buttonText);
+			newFloorRequest(floor, "up");
+		}
+	};
+
+
 	/**
 	 * simple getter for mouse handler within canvas.
 	 *
@@ -95,8 +114,16 @@ public class buildingHandler implements Runnable{
 		return onMouseEventHandler;
 	}
 
-	public EventHandler<ActionEvent> getOnButtonEventHandler() {
-		return onButtonEventHandler;
+	public EventHandler<ActionEvent> getOnCabinButtonEventHandler() {
+		return onCabinButtonEventHandler;
+	}
+
+	public EventHandler<ActionEvent> getOnFloorDownButtonEventHandler() {
+		return onFloorDownButtonEventHandler;
+	}
+
+	public EventHandler<ActionEvent> getOnFloorUpButtonEventHandler() {
+		return onFloorUpButtonEventHandler;
 	}
 
 	/*
@@ -153,6 +180,10 @@ public class buildingHandler implements Runnable{
 		{
 			Schedule.sort(floorComparotor);
 		}
+	}
+
+	public void newFloorRequest(int floor, String direction){
+		System.out.println("New floor request: " + floor + " going " + direction);
 	}
 
 	@Override

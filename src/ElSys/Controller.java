@@ -37,10 +37,33 @@ public class Controller {
 	@FXML private Button button9;
 	@FXML private Button button10;
 
+	@FXML private Button upbutton1;
+	@FXML private Button upbutton2;
+	@FXML private Button upbutton3;
+	@FXML private Button upbutton4;
+	@FXML private Button upbutton5;
+	@FXML private Button upbutton6;
+	@FXML private Button upbutton7;
+	@FXML private Button upbutton8;
+	@FXML private Button upbutton9;
+	@FXML private Button upbutton10;
+	@FXML private Button downbutton1;
+	@FXML private Button downbutton2;
+	@FXML private Button downbutton3;
+	@FXML private Button downbutton4;
+	@FXML private Button downbutton5;
+	@FXML private Button downbutton6;
+	@FXML private Button downbutton7;
+	@FXML private Button downbutton8;
+	@FXML private Button downbutton9;
+	@FXML private Button downbutton10;
+
 
 
 	public ComboBox<String> elevatorCombo = new ComboBox<>();
 	static ArrayList<Button> buttonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
+	static ArrayList<Button> floorUpButtonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
+	static ArrayList<Button> floorDownButtonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
 	private ArrayList<Cabin> cabins = setupCabins(4);
 	private buildingCanvas buildingCanvas = new buildingCanvas(cabins, this);
 	private cabinCanvas cabinCanvas = new cabinCanvas(12, cabins);
@@ -90,7 +113,37 @@ public class Controller {
 		buttonList.add(button10);
 
 		for (Button button : buttonList) {
-			button.setOnAction(handler.getOnButtonEventHandler());
+			button.setOnAction(handler.getOnCabinButtonEventHandler());
+		}
+		
+		floorUpButtonList.add(upbutton1);
+		floorUpButtonList.add(upbutton2);
+		floorUpButtonList.add(upbutton3);
+		floorUpButtonList.add(upbutton4);
+		floorUpButtonList.add(upbutton5);
+		floorUpButtonList.add(upbutton6);
+		floorUpButtonList.add(upbutton7);
+		floorUpButtonList.add(upbutton8);
+		floorUpButtonList.add(upbutton9);
+		floorUpButtonList.add(upbutton10);
+
+		for (Button button : floorUpButtonList) {
+			button.setOnAction(handler.getOnFloorUpButtonEventHandler());
+		}
+
+		floorDownButtonList.add(downbutton1);
+		floorDownButtonList.add(downbutton2);
+		floorDownButtonList.add(downbutton3);
+		floorDownButtonList.add(downbutton4);
+		floorDownButtonList.add(downbutton5);
+		floorDownButtonList.add(downbutton6);
+		floorDownButtonList.add(downbutton7);
+		floorDownButtonList.add(downbutton8);
+		floorDownButtonList.add(downbutton9);
+		floorDownButtonList.add(downbutton10);
+
+		for (Button button : floorDownButtonList) {
+			button.setOnAction(handler.getOnFloorDownButtonEventHandler());
 		}
 	}
 

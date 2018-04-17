@@ -27,7 +27,7 @@ public class FloorAlignment {
 
     public void signal(int signaledfloor) {
         this.signal = true;
-        System.out.println("FloorSignalCalled at floor " + signaledfloor);
+        //System.out.println("FloorSignalCalled at floor " + signaledfloor);
         this.floor = signaledfloor;
     }
 
