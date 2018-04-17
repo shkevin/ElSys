@@ -1,7 +1,9 @@
 package ElSys.operations.building;
 
 import ElSys.Controller;
+import ElSys.interfaces.InterfaceSimulator;
 import ElSys.operations.cabin.Cabin;
+import ElSys.operations.cabin.Motion;
 import ElSys.operations.cabin.MotionTypes;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,6 +23,8 @@ public class buildingHandler implements Runnable{
 	private buildingCanvas canvas;
 	private HashMap<Cabin,CopyOnWriteArrayList<Integer>> CabinSchedules = new HashMap<>();
 	private Thread buildingThread = new Thread(this,"buildingThread");
+
+
 	public buildingHandler(buildingCanvas canvas, Controller controller) {
 		this.controller = controller;
 		this.canvas = canvas;
@@ -28,7 +32,9 @@ public class buildingHandler implements Runnable{
 		for(Cabin cab: controller.getCabins()) {
 		    CopyOnWriteArrayList<Integer> emptyList = new CopyOnWriteArrayList<>();
 		    CabinSchedules.put(cab,emptyList);
+			new InterfaceSimulator(cab.getMotion()); //maybe store a reference to each of the four initialized here
         }
+
         buildingThread.start();
 	}
 
