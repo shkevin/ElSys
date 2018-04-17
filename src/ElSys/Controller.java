@@ -19,7 +19,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import ElSys.interfaces.*;
 
 public class Controller {
 
@@ -36,6 +36,8 @@ public class Controller {
 	@FXML private Button button8;
 	@FXML private Button button9;
 	@FXML private Button button10;
+
+
 
 	public ComboBox<String> elevatorCombo = new ComboBox<>();
 	static ArrayList<Button> buttonList = new ArrayList<>(buildSpecs.MAX_FLOORS);

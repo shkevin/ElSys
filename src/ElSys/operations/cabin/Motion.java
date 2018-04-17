@@ -1,5 +1,6 @@
 package ElSys.operations.cabin;
-
+import ElSys.interfaces.motor;
+import ElSys.interfaces.FloorAlignment;
 /*
 * Each Cabin will start a Motion thread when it gets a command to move that will track where in the elevator
 * the cabin is and communicate with the MotorControl while running
@@ -15,7 +16,8 @@ public class Motion implements Runnable{
     private MotionTypes motionType = MotionTypes.NOTMOVING;
     private boolean hasRequest = false;
     private Cabin cab;
-
+    private motor motionMotor = new motor();
+    private FloorAlignment floorAlignment = new FloorAlignment(this);
 
     public Motion(double startingFloor, int cabNum, Cabin cab) {
         this.currentFloor = startingFloor;
@@ -95,9 +97,8 @@ public class Motion implements Runnable{
                     try {
                         Thread.sleep(70);
                         synchronized (this) {
-                            //System.out.println("(Motion) Elevator " + this.cabin + " moving from " + this.currentFloor
-                            //        + " to " + (this.currentFloor + motionType.toVal()));
-                            this.currentFloor = Math.round((this.currentFloor + motionType.toVal()) * 10.0) / 10.0;
+                            this.currentFloor = Math.round((this.currentFloor +  motionType.toVal()) * 10.0) / 10.0;
+                            motionMotor.move(Math.round(motionType.toVal() * 10.0));
                         }
                     } catch (InterruptedException e) {
                         System.out.println("(Motion) Elevator " + this.cabin + " interrupted.");
@@ -115,8 +116,35 @@ public class Motion implements Runnable{
                         e.printStackTrace();
                     }
                 }
+
+
+
+/*
+
+                if(getHasRequest()){//Not moving to moving
+                    synchronized (this){
+                    try{
+                        do{
+                            this.currentFloor = Math.round(this.currentFloor + motor.move(motionType.toVal()) * 10.0);
+                            //check floor alignment
+                        }while(true)
+                    }catch(FloorAlignment fae){
+                        }
+
+                }
+*/
+
+
                 //right here we need to ensure the doors open and close before the motion checks for another request
             }
         }
+    }
+
+    public motor getMotor() {
+        return motionMotor;
+    }
+
+    public FloorAlignment getFloorAlignment() {
+        return floorAlignment;
     }
 }

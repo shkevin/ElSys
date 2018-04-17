@@ -1,20 +1,41 @@
 package ElSys.interfaces;
-
+import ElSys.operations.building.buildSpecs;
+import ElSys.operations.cabin.Motion;
+import ElSys.operations.cabin.MotionTypes;
 /*
  * FloorAlignment must give the floor number and whether the elevator reached top or bottom floor
  * This should probably have 'increment floor' 'decrement floor' methods or something... i'm not really sure
  * how we are supposed to get a value from this. from the controller maybe
  */
 
-public class FloorAlignment {
+public class FloorAlignment extends Exception{
 
+
+    private Motion MotionController;
     private int floor;
+    private int height;
+    private boolean signal = false;
 
-    public void setFloor(int n) {
-        this.floor = n;
+    public FloorAlignment(){}
+
+    public FloorAlignment(Motion motion){
+        MotionController = motion;
+        floor = MotionController.getCurrentFloor();
     }
 
-    public int getFloor() {
-        return floor;
+
+
+    public void signal() {
+        this.signal = true;
+        System.out.println("FloorSignalCalled at floor " + floor);
     }
+
+    public void check() throws FloorAlignment {
+        if(signal){
+            signal = false;
+            throw this;
+        }
+    }
+
+
 }
