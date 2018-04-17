@@ -77,6 +77,9 @@ public class Controller {
 		setupCabinCanvas();
 		createCombo();
 		setupButtons();
+		for (Cabin cab : cabins) {
+			cab.setHandler(this.handler);
+		}
 	}
 
 	@FXML
@@ -185,6 +188,22 @@ public class Controller {
 						buttonList.get(i).setStyle("-fx-body-color: #ffff00;"); //set to yellow
 					} else {
 						buttonList.get(i).setStyle("-fx-body-color: linear-gradient(to bottom,derive(#d0d0d0,34%) 0%, derive(#d0d0d0,-18%) 100%);"); //set back to default
+					}
+				}
+
+				for (int i = 0; i < 10; i++) {
+					if (handler.getUpButtonList().get(i).getPressed()) {
+						floorUpButtonList.get(i).setStyle("-fx-body-color: #ffff00;"); //set to yellow
+					} else {
+						floorUpButtonList.get(i).setStyle("-fx-body-color: linear-gradient(to bottom,derive(#d0d0d0,34%) 0%, derive(#d0d0d0,-18%) 100%);"); //set back to default
+					}
+				}
+
+				for (int i = 0; i < 10; i++) {
+					if (handler.getDownButtonList().get(i).getPressed()) {
+						floorDownButtonList.get(i).setStyle("-fx-body-color: #ffff00;"); //set to yellow
+					} else {
+						floorDownButtonList.get(i).setStyle("-fx-body-color: linear-gradient(to bottom,derive(#d0d0d0,34%) 0%, derive(#d0d0d0,-18%) 100%);"); //set back to default
 					}
 				}
 			}

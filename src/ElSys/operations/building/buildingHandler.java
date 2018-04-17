@@ -3,6 +3,7 @@ package ElSys.operations.building;
 import ElSys.Controller;
 import ElSys.interfaces.InterfaceSimulator;
 import ElSys.operations.cabin.Cabin;
+import ElSys.operations.cabin.ElButton;
 import ElSys.operations.cabin.Motion;
 import ElSys.operations.cabin.MotionTypes;
 import javafx.event.ActionEvent;
@@ -23,11 +24,20 @@ public class buildingHandler implements Runnable{
 	private buildingCanvas canvas;
 	private HashMap<Cabin,CopyOnWriteArrayList<Integer>> CabinSchedules = new HashMap<>();
 	private Thread buildingThread = new Thread(this,"buildingThread");
+	private ArrayList<ElButton> upButtonList;
+	private ArrayList<ElButton> downButtonList;
 
 
 	public buildingHandler(buildingCanvas canvas, Controller controller) {
 		this.controller = controller;
 		this.canvas = canvas;
+		this.upButtonList = new ArrayList<ElButton>();
+		this.downButtonList = new ArrayList<ElButton>();
+		for (int i = 0; i < 10; i++)
+		{
+			upButtonList.add(new ElButton());
+			downButtonList.add(new ElButton());
+		}
 
 		for(Cabin cab: controller.getCabins()) {
 		    CopyOnWriteArrayList<Integer> emptyList = new CopyOnWriteArrayList<>();
@@ -36,6 +46,14 @@ public class buildingHandler implements Runnable{
         }
 
         buildingThread.start();
+	}
+
+	public ArrayList<ElButton> getUpButtonList() {
+		return this.upButtonList;
+	}
+
+	public ArrayList<ElButton> getDownButtonList() {
+		return this.downButtonList;
 	}
 
 	/**
@@ -184,6 +202,19 @@ public class buildingHandler implements Runnable{
 
 	public void newFloorRequest(int floor, String direction){
 		System.out.println("New floor request: " + floor + " going " + direction);
+		if (direction == "up") {
+			upButtonList.get(floor-1).setPressed(true);
+		} else {
+			downButtonList.get(floor-1).setPressed(true);
+		}
+		List<Cabin> cabins = controller.getCabins();
+		for (Cabin cab : cabins) {
+			CopyOnWriteArrayList<Integer> schedule = CabinSchedules.get(cab);
+			if(cab.getMotion().getMotionType() == MotionTypes.NOTMOVING && schedule.isEmpty()) {
+				newCabinRequest(cabins.indexOf(cab), floor);
+				return;
+			}
+		}
 	}
 
 	@Override

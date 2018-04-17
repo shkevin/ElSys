@@ -112,6 +112,7 @@ public class Motion implements Runnable {
                         if ((int) currentFloor == targetFloor) {
                             this.cab.getButtons().get((int) Math.floor(currentFloor) - 1).setPressed(false); //turn off button on arrival
                             System.out.println("(Motion) Elevator " + this.cabin + " done moving. ");
+                            this.cab.arrived((int)currentFloor);
                             this.motionType = MotionTypes.NOTMOVING;
                             setHasRequest(false);
                             try {
