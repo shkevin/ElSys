@@ -36,6 +36,10 @@ public class Cabin {
 	public void arrived(int floor){
 		handler.getDownButtonList().get(floor-1).setPressed(false);
 		handler.getUpButtonList().get(floor-1).setPressed(false);
+		this.buttons.get(floor-1).setPressed(false);
+		this.motion.setMotionType(MotionTypes.NOTMOVING);
+		this.motion.setHasRequest(false);
+		System.out.println("(Cabin) Elevator " + (this.cabNum + 1) + " done moving.");
 	}
 
 	//while the elevator is moving, the Motion Thread keeps track of the current floor

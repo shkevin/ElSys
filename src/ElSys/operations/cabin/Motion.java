@@ -110,18 +110,8 @@ public class Motion implements Runnable {
                     motionMotor.move(Math.round(motionType.toVal() * 10.0) / 10.0);
                     if (floorAlignment.check()) {
                         if (currentFloor == (double)targetFloor) {
-                            this.cab.getButtons().get((int) Math.floor(currentFloor) - 1).setPressed(false); //turn off button on arrival
-                            System.out.println("(Motion) Elevator " + this.cabin + " done moving. ");
                             this.cab.arrived((int)currentFloor);
-                            this.motionType = MotionTypes.NOTMOVING;
-                            setHasRequest(false);
-                            try {
-                                this.motionType = MotionTypes.DOORS;
-                                Thread.sleep(2500); //this is simulating the doors opening and closing
-                                this.motionType = MotionTypes.NOTMOVING;
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                            this.openCloseDoors();
                         }
                     }
             }
@@ -134,6 +124,19 @@ public class Motion implements Runnable {
 
     public motor getMotor() {
         return motionMotor;
+    }
+
+    /*
+    This could be implemented in Cabin if helpful with synchronization with the motor
+     */
+    public void openCloseDoors() {
+        try {
+            this.motionType = MotionTypes.DOORS;
+            Thread.sleep(2500); //this is simulating the doors opening and closing
+            this.motionType = MotionTypes.NOTMOVING;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public FloorAlignment getFloorAlignment() {
