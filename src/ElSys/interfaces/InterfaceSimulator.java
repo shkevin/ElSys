@@ -14,7 +14,6 @@ public class InterfaceSimulator implements Runnable {
     private motor cabinMotor;
     private FloorAlignment cabinFloorAlighnment;
     private double currentFloor;
-    private MotionTypes direction;
     public InterfaceSimulator(Motion motion) {
         cabinMotor = motion.getMotor();
         cabinFloorAlighnment = motion.getFloorAlignment();
@@ -30,16 +29,20 @@ public class InterfaceSimulator implements Runnable {
             double distance = cabinMotor.getDistance();
             currentFloor += distance;
 
-            if (roundDouble(currentFloor % 1.0) == 0){
-                if((int)currentFloor != (int)cabinFloorAlighnment.getFloor()){
+            currentFloor = roundDouble(currentFloor);
+            if (checkThreshold((currentFloor % 1.0),0.0,.09)){
+                if(roundDouble(currentFloor) != cabinFloorAlighnment.getFloor()){
                     cabinFloorAlighnment.signal((int)currentFloor);
                 }
             }
         }
     }
 
-    public int roundDouble(double value){
-        return (int)(Math.round(value * 10.0) / 10.0);
+    private boolean checkThreshold(double value, double min, double max){
+        return value <= max && value >= min;
+    }
+    public double roundDouble(double value){
+        return (Math.round(value * 10.0) / 10.0);
     }
 }
 
