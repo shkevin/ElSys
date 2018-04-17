@@ -18,15 +18,15 @@ public class InterfaceSimulator implements Runnable{
     }
 
     public void setup(ArrayList<Motion> motions){
-        for(Motion currentMotion: motions){
+        for(Motion currentMotion: motions) {
             motor currentMotor = currentMotion.getMotor();
             cabinMotors.add(currentMotor);
-            cabinFloorAlignments.put(currentMotor,currentMotion.getFloorAlignment());
+            cabinFloorAlignments.put(currentMotor, currentMotion.getFloorAlignment());
+        }
+        Thread t = new Thread(this,"interfaceSimulatorThread");
 
-            Thread t = new Thread(this,"interfaceSimulatorThread");
-           synchronized (this){
-               THREAD_COUNT++;
-           }
+        synchronized (this){
+           THREAD_COUNT++;
 
             t.start();
         }
