@@ -3,52 +3,44 @@ package ElSys.interfaces;
 
 import ElSys.operations.cabin.Motion;
 import ElSys.operations.building.buildSpecs;
+import ElSys.operations.cabin.MotionTypes;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class InterfaceSimulator implements Runnable{
+public class InterfaceSimulator implements Runnable {
 
-    private ArrayList<motor> cabinMotors = new ArrayList<>(4);
-    private HashMap<motor,FloorAlignment> cabinFloorAlignments = new HashMap<>(4);
-    private volatile static int THREAD_COUNT = 0;
-
-    public InterfaceSimulator(){
-
+    private motor cabinMotor;
+    private FloorAlignment cabinFloorAlighnment;
+    private double currentFloor;
+    private MotionTypes direction;
+    public InterfaceSimulator(Motion motion) {
+        cabinMotor = motion.getMotor();
+        cabinFloorAlighnment = motion.getFloorAlignment();
+        currentFloor = motion.getCurrentFloor();
+        Thread t = new Thread(this, "interfaceSimulatorThread");
+        t.start();
     }
 
-    public void setup(ArrayList<Motion> motions){
-        for(Motion currentMotion: motions) {
-            motor currentMotor = currentMotion.getMotor();
-            cabinMotors.add(currentMotor);
-            cabinFloorAlignments.put(currentMotor, currentMotion.getFloorAlignment());
-        }
-        Thread t = new Thread(this,"interfaceSimulatorThread");
-
-        synchronized (this){
-           THREAD_COUNT++;
-
-            t.start();
-        }
-    }
 
     @Override
     public void run() {
         while (true) {
-            double totalDistance = 0;
-            for (motor cabinMotor : cabinMotors) {
-                FloorAlignment cabinFloorAlighnment = cabinFloorAlignments.get(cabinMotor);
-                totalDistance = 0;
+            double distance = cabinMotor.getDistance();
+            currentFloor += distance;
 
-                while (Math.abs(totalDistance) <= buildSpecs.FLOOR_HEIGHT) {
-                    totalDistance += cabinMotor.getDistance();
+            if (roundDouble(currentFloor % 1.0) == 0){
+                if((int)currentFloor != (int)cabinFloorAlighnment.getFloor()){
+                    cabinFloorAlighnment.signal((int)currentFloor);
                 }
-
-                cabinFloorAlighnment.signal();
-
-
             }
         }
     }
+
+    public int roundDouble(double value){
+        return (int)(Math.round(value * 10.0) / 10.0);
+    }
 }
+
 

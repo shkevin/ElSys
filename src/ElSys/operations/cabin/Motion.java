@@ -98,14 +98,14 @@ public class Motion implements Runnable{
                         Thread.sleep(70);
                         synchronized (this) {
                             this.currentFloor = Math.round((this.currentFloor +  motionType.toVal()) * 10.0) / 10.0;
-                            motionMotor.move(Math.round(motionType.toVal() * 10.0));
+                            motionMotor.move(Math.round(motionType.toVal() * 10.0)/10.0);
                         }
                     } catch (InterruptedException e) {
                         System.out.println("(Motion) Elevator " + this.cabin + " interrupted.");
                     }
                 } else {
                     this.cab.getButtons().get((int)Math.floor(currentFloor) - 1).setPressed(false); //turn off button on arrival
-                    System.out.println("(Motion) Elevator " + this.cabin + " done moving.");
+                    System.out.println("(Motion) Elevator " + this.cabin + " done moving. ");
                     this.motionType = MotionTypes.NOTMOVING;
                     setHasRequest(false);
                     try {
@@ -126,7 +126,7 @@ public class Motion implements Runnable{
                     try{
                         do{
                             this.currentFloor = Math.round(this.currentFloor + motor.move(motionType.toVal()) * 10.0);
-                            //check floor alignment
+                            floorAlighnment.check();//check floor alignment
                         }while(true)
                     }catch(FloorAlignment fae){
                         }

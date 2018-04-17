@@ -8,11 +8,11 @@ import ElSys.operations.cabin.MotionTypes;
  * how we are supposed to get a value from this. from the controller maybe
  */
 
-public class FloorAlignment extends Exception{
+public class FloorAlignment {
 
 
-    private Motion MotionController;
     private int floor;
+    private Motion MotionController;
     private int height;
     private boolean signal = false;
 
@@ -23,18 +23,20 @@ public class FloorAlignment extends Exception{
         floor = MotionController.getCurrentFloor();
     }
 
+    public int getFloor(){return floor;}
 
-
-    public void signal() {
+    public void signal(int signaledfloor) {
         this.signal = true;
-        System.out.println("FloorSignalCalled at floor " + floor);
+        System.out.println("FloorSignalCalled at floor " + signaledfloor);
+        this.floor = signaledfloor;
     }
 
-    public void check() throws FloorAlignment {
+    public boolean check(){
         if(signal){
             signal = false;
-            throw this;
+            return true;
         }
+        return false;
     }
 
 

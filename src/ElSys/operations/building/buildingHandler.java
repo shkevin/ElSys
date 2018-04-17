@@ -23,22 +23,19 @@ public class buildingHandler implements Runnable{
 	private buildingCanvas canvas;
 	private HashMap<Cabin,CopyOnWriteArrayList<Integer>> CabinSchedules = new HashMap<>();
 	private Thread buildingThread = new Thread(this,"buildingThread");
-	private InterfaceSimulator InterfaceController = new InterfaceSimulator();
+
+
 	public buildingHandler(buildingCanvas canvas, Controller controller) {
 		this.controller = controller;
 		this.canvas = canvas;
-		ArrayList<Motion> motions = new ArrayList<>(4);
 
 		for(Cabin cab: controller.getCabins()) {
 		    CopyOnWriteArrayList<Integer> emptyList = new CopyOnWriteArrayList<>();
 		    CabinSchedules.put(cab,emptyList);
-		    motions.add(cab.getMotion());
+			new InterfaceSimulator(cab.getMotion()); //maybe store a reference to each of the four initialized here
         }
 
-
-        //InterfaceController = new InterfaceSimulator(motions);
         buildingThread.start();
-		InterfaceController.setup(motions);
 	}
 
 	/**
