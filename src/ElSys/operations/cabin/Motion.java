@@ -11,6 +11,7 @@ public class Motion implements Runnable {
 
     private double currentFloor;
     private int targetFloor;
+    private double speed;
 
     private String cabin;
     public Thread t;
@@ -84,41 +85,54 @@ public class Motion implements Runnable {
     @Override
     public void run() {
         while (true) {
-
             if (getHasRequest()) {
+                double floorDiff;
+                synchronized (this) {
+                    floorDiff = this.targetFloor - this.currentFloor;
+                }
+                if (floorDiff > 0.0) {
+                    this.motionType = MotionTypes.MOVINGUP;
+                } else if (floorDiff < 0.0) {
+                    this.motionType = MotionTypes.MOVINGDOWN;
+                }
 
-
-                    double floorDiff;
-                    synchronized (this) {
-                        floorDiff = this.targetFloor - this.currentFloor;
-                    }
-                    if (floorDiff > 0) {
-                        this.motionType = MotionTypes.MOVINGUP;
-                    } else if (floorDiff < 0) {
-                        this.motionType = MotionTypes.MOVINGDOWN;
-                    } else {
-                        this.motionType = MotionTypes.NOTMOVING;
-                    }
-
-
-                    try {
-                        Thread.sleep(70);
-                    } catch (InterruptedException e) {
-                    }
-
-                    this.currentFloor = Math.round((this.currentFloor + motionType.toVal()) * 10.0) / 10.0;
-                    motionMotor.move(Math.round(motionType.toVal() * 10.0) / 10.0);
-                    if (floorAlignment.check()) {
-                        if (currentFloor == (double)targetFloor) {
-                            this.cab.arrived((int)currentFloor);
-                            this.openCloseDoors();
+                if (this.motionType == MotionTypes.MOVINGUP) {
+                    if (Math.abs(floorDiff) <= 0.5 && this.speed >= 0.01) {
+                        this.speed *= 0.65;
+                    } else if (Math.abs(floorDiff) >= 0.5 && this.speed <= motionType.toVal()){
+                        if (this.speed == 0) this.speed += 0.005;
+                        else {
+                            this.speed *= 1.45;
                         }
                     }
+                } else if (this.motionType == MotionTypes.MOVINGDOWN) {
+                    if (Math.abs(floorDiff) <= 0.5 && this.speed <= -0.01) {
+                        this.speed *= 0.65;
+                    } else if (Math.abs(floorDiff) >= 0.5 && this.speed >= motionType.toVal()){
+                        if (this.speed == 0) this.speed -= 0.005;
+                        else {
+                            this.speed *= 1.45;
+                        }
+                    }
+                }
+
+                try {
+                    Thread.sleep(70);
+                } catch (InterruptedException e) {
+                }
+
+                this.currentFloor = Math.round((this.currentFloor + speed) * 100.0) / 100.0;
+                motionMotor.move(Math.round(speed * 100.0) / 100.0);
+                if (floorAlignment.check()) {
+                    if (Math.abs(currentFloor - (double)targetFloor) < 0.05) {
+                        this.currentFloor = targetFloor;
+                        this.cab.arrived((int)currentFloor);
+                        this.speed = 0;
+                        this.openCloseDoors();
+                    }
+                }
             }
-
-
-
-                //right here we need to ensure the doors open and close before the motion checks for another request
+            //right here we need to ensure the doors open and close before the motion checks for another request
         }
     }
 

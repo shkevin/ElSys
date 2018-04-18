@@ -30,8 +30,8 @@ public class InterfaceSimulator implements Runnable {
             currentFloor += distance;
 
             currentFloor = roundDouble(currentFloor);
-            if (checkThreshold((currentFloor % 1.0),0.0,.09)){
-                if(roundDouble(currentFloor) != cabinFloorAlighnment.getFloor()){
+            if (checkThreshold((currentFloor % 1.0),0.0,.009)){
+                if(currentFloor != cabinFloorAlighnment.getFloor()){
                     cabinFloorAlighnment.signal((int)currentFloor);
                 }
             }
@@ -42,7 +42,7 @@ public class InterfaceSimulator implements Runnable {
         return value <= max && value >= min;
     }
     public double roundDouble(double value){
-        return (Math.round(value * 10.0) / 10.0);
+        return (Math.round(value * 100.0) / 100.0);
     }
 }
 
