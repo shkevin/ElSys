@@ -128,7 +128,6 @@ public class Motion implements Runnable {
                         this.currentFloor = targetFloor;
                         this.cab.arrived((int)currentFloor);
                         this.speed = 0;
-                        this.openCloseDoors();
                     }
                 }
             }
@@ -144,14 +143,31 @@ public class Motion implements Runnable {
     This could be implemented in Cabin if helpful with synchronization with the motor
      */
     public void openCloseDoors() {
+        openDoors();
+        closeDoors();
+    }
+
+    public void openDoors(){
         try {
             this.motionType = MotionTypes.DOORS;
-            Thread.sleep(2500); //this is simulating the doors opening and closing
-            this.motionType = MotionTypes.NOTMOVING;
+            this.speed = 0; //might eventually be doorsopening
+            Thread.sleep(1250);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("Thread interrupted while opening doors");
+
         }
     }
+
+    public void closeDoors(){
+        try {
+            this.motionType = MotionTypes.DOORS; //might eventually be doorsopening
+            Thread.sleep(1250);
+            this.motionType = MotionTypes.NOTMOVING;
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted while closing doors");
+        }
+    }
+
 
     public FloorAlignment getFloorAlignment() {
         return floorAlignment;

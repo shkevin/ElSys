@@ -7,6 +7,7 @@ import ElSys.operations.cabin.ElButton;
 import ElSys.operations.cabin.Motion;
 import ElSys.operations.cabin.MotionTypes;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -122,6 +123,13 @@ public class buildingHandler implements Runnable{
 		}
 	};
 
+	private EventHandler<ActionEvent> onFireAlarmHandler = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			fireAlarm();
+		}
+	};
+
 
 	/**
 	 * simple getter for mouse handler within canvas.
@@ -213,6 +221,29 @@ public class buildingHandler implements Runnable{
 			if(cab.getMotion().getMotionType() == MotionTypes.NOTMOVING && schedule.isEmpty()) {
 				newCabinRequest(cabins.indexOf(cab), floor);
 				return;
+			}
+		}
+	}
+
+	public EventHandler<ActionEvent> getOnFireAlarmHandler() {
+		return this.onFireAlarmHandler;
+	}
+
+	public void fireAlarm() {
+		System.out.println("fire alarm");
+		List<Cabin> cabins = controller.getCabins();
+		for(Cabin cab : cabins) {
+			cab.setFireAlarm(true);
+			Motion cabMotion = cab.getMotion();
+			CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cab);
+			Schedule.clear();
+			if(cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
+				cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) + 1);
+				newCabinRequest(cab.getCabNum(), 1);
+			} else if(cabMotion.getMotionType() == MotionTypes.MOVINGDOWN) {
+				cabMotion.setTargetFloor(1);
+			} else {
+				newCabinRequest(cab.getCabNum(), 1);
 			}
 		}
 	}

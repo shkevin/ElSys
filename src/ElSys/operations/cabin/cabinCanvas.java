@@ -61,7 +61,9 @@ public class cabinCanvas extends Canvas {
 		image.setSmooth(true);
 
 		if (cabins != null) {
-			image.setImage(imageList.get(cabins.get(cabin).getFloor() - 1));
+			if(cabins.get(cabin).getFloor() != 0) {
+				image.setImage(imageList.get(cabins.get(cabin).getFloor() - 1));
+			}
 			gc.drawImage(image.snapshot(null, null),centerX , botY);
 
 

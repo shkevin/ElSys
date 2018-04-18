@@ -128,11 +128,12 @@ public class Controller {
 		floorUpButtonList.add(upbutton7);
 		floorUpButtonList.add(upbutton8);
 		floorUpButtonList.add(upbutton9);
-		floorUpButtonList.add(upbutton10);
+		//floorUpButtonList.add(upbutton10);
 
 		for (Button button : floorUpButtonList) {
 			button.setOnAction(handler.getOnFloorUpButtonEventHandler());
 		}
+		upbutton10.setOnAction(handler.getOnFireAlarmHandler());
 
 		floorDownButtonList.add(downbutton1);
 		floorDownButtonList.add(downbutton2);
@@ -191,7 +192,7 @@ public class Controller {
 					}
 				}
 
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 9; i++) {
 					if (handler.getUpButtonList().get(i).getPressed()) {
 						floorUpButtonList.get(i).setStyle("-fx-body-color: #ffff00;"); //set to yellow
 					} else {

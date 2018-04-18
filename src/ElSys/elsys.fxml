@@ -48,7 +48,7 @@
     </SplitPane>
     <AnchorPane fx:id="floorButtonPane" disable="false" focusTraversable="false" layoutX="683.5" layoutY="5.0" prefHeight="700.0" prefWidth="75.0" style="-fx-border-style: solid; -fx-background-color: silver;">
       <children>
-        <Button fx:id="upbutton10" layoutX="20.0" layoutY="15.0" minWidth="35.0" mnemonicParsing="false" text="10" textFill="RED" />
+        <Button fx:id="upbutton10" layoutX="20.0" layoutY="15.0" minWidth="35.0" mnemonicParsing="false" text="Fire" textFill="RED" />
         <Button fx:id="upbutton9" layoutX="20.0" layoutY="95.0" minWidth="35.0" mnemonicParsing="false" text="9" textFill="RED" />
         <Button fx:id="upbutton7" layoutX="20.0" layoutY="255.0" minWidth="35.0" mnemonicParsing="false" text="7" textFill="RED" />
         <Button fx:id="upbutton8" layoutX="20.0" layoutY="175.0" minWidth="35.0" mnemonicParsing="false" text="8" textFill="RED" />

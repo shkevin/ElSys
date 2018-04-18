@@ -12,6 +12,7 @@ public class Cabin {
 	private ArrayList<ElButton> buttons;
 	private Motion motion;
 	private buildingHandler handler;
+	private boolean firealarm = false;
 
 	public Cabin(int cabNum) {
 		//this.floorAlignment = new FloorAlignment();
@@ -29,6 +30,10 @@ public class Cabin {
 		this.handler = handler;
 	}
 
+	public int getCabNum() {
+	    return this.cabNum;
+    }
+
 	public ArrayList<ElButton> getButtons() {
 		return buttons;
 	}
@@ -38,8 +43,13 @@ public class Cabin {
 		handler.getUpButtonList().get(floor-1).setPressed(false);
 		this.buttons.get(floor-1).setPressed(false);
 		this.motion.setMotionType(MotionTypes.NOTMOVING);
-		this.motion.setHasRequest(false);
-		System.out.println("(Cabin) Elevator " + (this.cabNum + 1) + " done moving.");
+		if (!firealarm) {
+            this.motion.openCloseDoors();
+        } if (firealarm && floor == 1) {
+		    this.motion.openDoors();
+        }
+        this.motion.setHasRequest(false);
+		System.out.println("(Cabin) Elevator " + (this.cabNum + 1) + " done moving. " + getFloor());
 	}
 
 	//while the elevator is moving, the Motion Thread keeps track of the current floor
@@ -66,6 +76,10 @@ public class Cabin {
 	public Motion getMotion() {
 		return this.motion;
 	}
+
+	public void setFireAlarm(boolean val) {
+	    this.firealarm = val;
+    }
 
 	/*
 	* startMotion is whats called when a request for a floor is made. If the elevator isn't moving already, it
