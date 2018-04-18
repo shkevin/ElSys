@@ -12,11 +12,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class buildingHandler implements Runnable{
@@ -79,8 +75,9 @@ public class buildingHandler implements Runnable{
 
 			if (floor >= 0 && elevator >= 0) {
 				//System.out.println("Move elevator " + elevator + " to " + floor);
-                if(!controller.getCabins().get(elevator).getIsLocked()) {
-                    newCabinRequest(elevator, floor);
+                Cabin cab = controller.getCabins().get(elevator);
+				if(!cab.getIsLocked()) {
+                    newCabinRequest(cab, floor);
                 }
 			}
 		}
@@ -95,7 +92,7 @@ public class buildingHandler implements Runnable{
 			int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
 			if (!lock && !unlock) {
 				int floor = Integer.parseInt(buttonText);
-				newCabinRequest(elevator, floor);
+				newCabinRequest(controller.getCabins().get(elevator), floor);
 			} else {
 				if (lock) {
 					controller.getCabins().get(elevator).setIsLocked(true);
@@ -157,8 +154,7 @@ public class buildingHandler implements Runnable{
 	the list according to direction
 	 */
 
-	public void newCabinRequest(int cab, int floor) {
-	    Cabin cabin = controller.getCabins().get(cab);
+	public void newCabinRequest(Cabin cabin, int floor) {
 		cabin.getButtons().get(floor - 1).setPressed(true);
 		CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cabin);
 		MotionTypes direction = cabin.getMotion().getMotionType();
@@ -210,18 +206,65 @@ public class buildingHandler implements Runnable{
 
 	public void newFloorRequest(int floor, String direction){
 		System.out.println("New floor request: " + floor + " going " + direction);
-		if (direction == "up") {
+		MotionTypes requestedDirection;
+		if (direction.equalsIgnoreCase("up")) {
 			upButtonList.get(floor-1).setPressed(true);
+			requestedDirection = MotionTypes.MOVINGUP;
 		} else {
 			downButtonList.get(floor-1).setPressed(true);
+			requestedDirection = MotionTypes.MOVINGDOWN;
 		}
-		List<Cabin> cabins = controller.getCabins();
-		for (Cabin cab : cabins) {
+
+		Cabin cabin = getBestCabin(floor,requestedDirection);
+		if(cabin == null){
+			System.err.println("Null value");
+			System.exit(0);
+		}
+		newCabinRequest(cabin,floor);
+
+
+
+
+		/*		List<Cabin> cabins = controller.getCabins();
+
+			for (Cabin cab : cabins) {
 			CopyOnWriteArrayList<Integer> schedule = CabinSchedules.get(cab);
 			if(cab.getMotion().getMotionType() == MotionTypes.NOTMOVING && schedule.isEmpty()) {
 				newCabinRequest(cabins.indexOf(cab), floor);
 				return;
 			}
+		}*/
+	}
+
+	private Cabin getBestCabin(int floorRequest, MotionTypes direction){
+		PriorityQueue<Cabin> avail_cabins = new PriorityQueue<>(new Comparator<Cabin>() {
+			@Override
+			public int compare(Cabin o1, Cabin o2) {
+				int distance1 = Math.abs(o1.getFloor() - floorRequest);
+				int distance2 = Math.abs(o2.getFloor() - floorRequest);
+				if(distance1 < distance2) {
+					return -1;
+				}else if(distance1 > distance2){
+					return 1;
+				}else{
+					return 0;
+				}
+			}
+		});
+		for(Cabin cab: controller.getCabins()){
+			MotionTypes cabinDirection = cab.getMotion().getMotionType();
+			double cabinFloor = cab.getFloor();
+			if(direction.equals(cabinDirection)){
+				avail_cabins.add(cab);
+			}else if(cabinDirection.valid(floorRequest,(int)cabinFloor,direction)) {
+				avail_cabins.add(cab);
+			}
+		}
+
+		if(!avail_cabins.isEmpty()){
+			return avail_cabins.peek();
+		}else{
+			return null;
 		}
 	}
 
@@ -239,11 +282,11 @@ public class buildingHandler implements Runnable{
 			Schedule.clear();
 			if(cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
 				cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) + 1);
-				newCabinRequest(cab.getCabNum(), 1);
+				newCabinRequest(cab, 1);
 			} else if(cabMotion.getMotionType() == MotionTypes.MOVINGDOWN) {
 				cabMotion.setTargetFloor(1);
 			} else {
-				newCabinRequest(cab.getCabNum(), 1);
+				newCabinRequest(cab, 1);
 			}
 		}
 	}
@@ -260,19 +303,18 @@ public class buildingHandler implements Runnable{
 					} else {
 				        //checks for request between current and target floor, if one is found, recreate target floor request
                         //and set current request to the first in between floor
-				        if (cab.getMotion().getMotionType() == MotionTypes.MOVINGUP) {
-				            int between = getBetweenUp(schedule,cab.getFloor(),cab.getMotion().getTargetFloor());
-                            if (between != 0) {
-                                newCabinRequest(0, cab.getMotion().getTargetFloor());
-                                cab.startMotion(schedule.remove(schedule.indexOf(between)));
-                            }
+				        int between = 0;
+						if (cab.getMotion().getMotionType() == MotionTypes.MOVINGUP) {
+							between = getBetweenUp(schedule,cab.getFloor(),cab.getMotion().getTargetFloor());
                         } else if (cab.getMotion().getMotionType() == MotionTypes.MOVINGDOWN) {
-				            int between = getBetweenDown(schedule,cab.getFloor(),cab.getMotion().getTargetFloor());
-                            if (between != 0) {
-                                newCabinRequest(0, cab.getMotion().getTargetFloor());
-                                cab.startMotion(schedule.remove(schedule.indexOf(between)));
-                            }
+							between = getBetweenDown(schedule,cab.getFloor(),cab.getMotion().getTargetFloor());
+
                         }
+
+						if (between != 0) {
+							newCabinRequest(cab, cab.getMotion().getTargetFloor());
+							cab.startMotion(schedule.remove(schedule.indexOf(between)));
+						}
                     }
                 }
 			}
