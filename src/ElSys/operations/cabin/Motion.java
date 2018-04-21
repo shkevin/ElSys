@@ -1,7 +1,8 @@
 package ElSys.operations.cabin;
 
-import ElSys.interfaces.motor;
+import ElSys.interfaces.Motor;
 import ElSys.interfaces.FloorAlignment;
+import ElSys.operations.building.BuildSpecs;
 /*
  * Each Cabin will start a Motion thread when it gets a command to move that will track where in the elevator
  * the cabin is and communicate with the MotorControl while running
@@ -18,7 +19,7 @@ public class Motion implements Runnable {
     private MotionTypes motionType = MotionTypes.NOTMOVING;
     private boolean hasRequest = false;
     private Cabin cab;
-    private motor motionMotor = new motor();
+    private Motor motionMotor = new Motor();
     private FloorAlignment floorAlignment = new FloorAlignment(this);
 
     public Motion(double startingFloor, int cabNum, Cabin cab) {
@@ -78,7 +79,7 @@ public class Motion implements Runnable {
         return hasRequest;
     }
     /*
-     * This thread moves the elevator and will eventually communication with the motor and Floor alignment interfaces.
+     * This thread moves the elevator and will eventually communication with the Motor and Floor alignment interfaces.
      * It checks to see if it needs to move up or down, then moves the necessary floors.
      */
 
@@ -135,12 +136,12 @@ public class Motion implements Runnable {
         }
     }
 
-    public motor getMotor() {
+    public Motor getMotor() {
         return motionMotor;
     }
 
     /*
-    This could be implemented in Cabin if helpful with synchronization with the motor
+    This could be implemented in Cabin if helpful with synchronization with the Motor
      */
     public void openCloseDoors() {
         openDoors();
@@ -151,17 +152,17 @@ public class Motion implements Runnable {
         try {
             this.motionType = MotionTypes.DOORS;
             this.speed = 0; //might eventually be doorsopening
-            Thread.sleep(1250);
+            Thread.sleep(BuildSpecs.doorSpeed);
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted while opening doors");
 
         }
     }
 
-    public void closeDoors(){
+    private void closeDoors(){
         try {
             this.motionType = MotionTypes.DOORS; //might eventually be doorsopening
-            Thread.sleep(1250);
+            Thread.sleep(BuildSpecs.doorSpeed);
             this.motionType = MotionTypes.NOTMOVING;
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted while closing doors");

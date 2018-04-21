@@ -9,13 +9,13 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
-public class buildingCanvas extends Canvas {
+public class BuildingCanvas extends Canvas {
 
 	private Controller controller;
 	private GraphicsContext gc;
 	int startingFloor = 10;
 
-	public buildingCanvas(ArrayList<Cabin> cabins, Controller controller) {
+	public BuildingCanvas(ArrayList<Cabin> cabins, Controller controller) {
 		this.controller = controller;
 		widthProperty().addListener(event -> drawCanvas(cabins));
 	 	widthProperty().addListener(event -> drawCanvas(cabins));
@@ -37,18 +37,18 @@ public class buildingCanvas extends Canvas {
 		gc.fillRect(0, 0, w, h);
 
 		//Draw Ground
-		gc.setFill(Color.BROWN);
+		gc.setFill(Color.SADDLEBROWN);
 		gc.fillRect(0, w, w, 100);
 
 		//Draw Building
 		gc.setFill(Color.GREY);
-		gc.fillRect(buildSpecs.FLOOR_W_SEP, 0, w - buildSpecs.FLOOR_WIDTH, h - buildSpecs.FLOOR_HEIGHT);
+		gc.fillRect(BuildSpecs.FLOOR_W_SEP, 0, w - BuildSpecs.FLOOR_WIDTH, h - BuildSpecs.FLOOR_HEIGHT);
 
 		//Draws the floors
-		for (int x = buildSpecs.FLOOR_WIDTH; x < w - buildSpecs.FLOOR_WIDTH; x += buildSpecs.FLOOR_HEIGHT) {
-			for (int y = buildSpecs.FLOOR_H_SEP, p = 0; y < h - buildSpecs.FLOOR_HEIGHT; y += buildSpecs.FLOOR_W_SEP, p++) {
+		for (int x = BuildSpecs.FLOOR_WIDTH; x < w - BuildSpecs.FLOOR_WIDTH; x += BuildSpecs.FLOOR_HEIGHT) {
+			for (int y = BuildSpecs.FLOOR_H_SEP, p = 0; y < h - BuildSpecs.FLOOR_HEIGHT; y += BuildSpecs.FLOOR_W_SEP, p++) {
 				gc.setFill(Color.YELLOW);
-				gc.fillRect(x, y, buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
+				gc.fillRect(x, y, BuildSpecs.CABIN_WIDTH, BuildSpecs.CABIN_HEIGHT);
 			}
 		}
 
@@ -70,7 +70,7 @@ public class buildingCanvas extends Canvas {
 			}else if (cabinMoving == MotionTypes.DOORS) {
 				gc.setFill(Color.ORANGE);
 			}
-			gc.fillRect(row += buildSpecs.FLOOR_HEIGHT, floor, buildSpecs.CABIN_WIDTH, buildSpecs.CABIN_HEIGHT);
+			gc.fillRect(row += BuildSpecs.FLOOR_HEIGHT, floor, BuildSpecs.CABIN_WIDTH, BuildSpecs.CABIN_HEIGHT);
 		}
 
 	}

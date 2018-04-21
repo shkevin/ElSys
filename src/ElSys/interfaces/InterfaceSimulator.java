@@ -2,16 +2,10 @@ package ElSys.interfaces;
 
 
 import ElSys.operations.cabin.Motion;
-import ElSys.operations.building.buildSpecs;
-import ElSys.operations.cabin.MotionTypes;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
 public class InterfaceSimulator implements Runnable {
 
-    private motor cabinMotor;
+    private Motor cabinMotor;
     private FloorAlignment cabinFloorAlighnment;
     private double currentFloor;
     public InterfaceSimulator(Motion motion) {

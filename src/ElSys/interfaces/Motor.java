@@ -1,10 +1,10 @@
 package ElSys.interfaces;
 
-public class motor {
+public class Motor {
 
     private double distance = 0;
 
-    public motor(){
+    public Motor(){
 
     }
 

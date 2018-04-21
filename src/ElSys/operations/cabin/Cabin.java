@@ -1,7 +1,7 @@
 package ElSys.operations.cabin;
 
 import java.util.ArrayList;
-import ElSys.operations.building.buildingHandler;
+import ElSys.operations.building.BuildingHandler;
 
 public class Cabin {
 
@@ -11,7 +11,7 @@ public class Cabin {
 	private Boolean isLocked = false;
 	private ArrayList<ElButton> buttons;
 	private Motion motion;
-	private buildingHandler handler;
+	private BuildingHandler handler;
 	private boolean firealarm = false;
 
 	public Cabin(int cabNum) {
@@ -26,7 +26,7 @@ public class Cabin {
 		}
 	}
 
-	public void setHandler(buildingHandler handler) {
+	public void setHandler(BuildingHandler handler) {
 		this.handler = handler;
 	}
 

@@ -1,7 +1,5 @@
 package ElSys.interfaces;
-import ElSys.operations.building.buildSpecs;
 import ElSys.operations.cabin.Motion;
-import ElSys.operations.cabin.MotionTypes;
 /*
  * FloorAlignment must give the floor number and whether the elevator reached top or bottom floor
  * This should probably have 'increment floor' 'decrement floor' methods or something... i'm not really sure

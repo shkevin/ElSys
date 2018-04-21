@@ -7,7 +7,6 @@ import ElSys.operations.cabin.ElButton;
 import ElSys.operations.cabin.Motion;
 import ElSys.operations.cabin.MotionTypes;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -15,17 +14,16 @@ import javafx.scene.input.MouseEvent;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class buildingHandler implements Runnable{
+public class BuildingHandler implements Runnable{
 
 	private Controller controller;
-	private buildingCanvas canvas;
+	private BuildingCanvas canvas;
 	private HashMap<Cabin,CopyOnWriteArrayList<Integer>> CabinSchedules = new HashMap<>();
 	private Thread buildingThread = new Thread(this,"buildingThread");
 	private ArrayList<ElButton> upButtonList;
 	private ArrayList<ElButton> downButtonList;
 
-
-	public buildingHandler(buildingCanvas canvas, Controller controller) {
+	public BuildingHandler(BuildingCanvas canvas, Controller controller) {
 		this.controller = controller;
 		this.canvas = canvas;
 		this.upButtonList = new ArrayList<ElButton>();
@@ -63,14 +61,14 @@ public class buildingHandler implements Runnable{
 			//This interprets mouse clicks as a command for that elevator to go to that floor
 			//Mostly for testing
 			int elevator = -1;
-			if (event.getX() >= buildSpecs.FLOOR_WIDTH && event.getX() < canvas.getWidth() - buildSpecs.FLOOR_WIDTH) {
-				elevator = (((int) event.getX() - buildSpecs.FLOOR_WIDTH) / (buildSpecs.FLOOR_HEIGHT));
+			if (event.getX() >= BuildSpecs.FLOOR_WIDTH && event.getX() < canvas.getWidth() - BuildSpecs.FLOOR_WIDTH) {
+				elevator = (((int) event.getX() - BuildSpecs.FLOOR_WIDTH) / (BuildSpecs.FLOOR_HEIGHT));
 			}
 
 			//Finds the row that we are in within the 2D array
 			int floor = -1;
-			if (event.getY() >= 0 && event.getY() <= canvas.getHeight() - buildSpecs.FLOOR_HEIGHT) {
-				floor = (buildSpecs.MAX_FLOORS - ((int) event.getY()) / (buildSpecs.FLOOR_W_SEP));
+			if (event.getY() >= 0 && event.getY() <= canvas.getHeight() - BuildSpecs.FLOOR_HEIGHT) {
+				floor = (BuildSpecs.MAX_FLOORS - ((int) event.getY()) / (BuildSpecs.FLOOR_W_SEP));
 			}
 
 			if (floor >= 0 && elevator >= 0) {

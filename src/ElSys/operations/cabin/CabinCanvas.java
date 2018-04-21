@@ -1,28 +1,37 @@
 package ElSys.operations.cabin;
 
-import javafx.animation.FadeTransition;
+import ElSys.operations.building.BuildSpecs;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Kevin
  */
-public class cabinCanvas extends Canvas {
+public class CabinCanvas extends Canvas {
 
 	private List<Cabin> cabins;
 	private GraphicsContext gc;
+    private GraphicsContext doorGC;
 	private List<Image> imageList;
 	private ImageView image;
+    private Canvas doorCanvas;
+
+	//This can be used to scale the images in the drawCanvas method.
 	private int scaleHeight = 60;
 	private int scaleWidth = 60;
-	private FadeTransition fade;
 
-	public cabinCanvas(int numCells, List<Cabin> cabins) {
+	public CabinCanvas(int numCells, List<Cabin> cabins) {
 		this.cabins = cabins;
+		doorCanvas = new Canvas();
+		doorCanvas.widthProperty().addListener(event -> drawDoors(0));
+        doorCanvas.heightProperty().addListener(event -> drawDoors(0));
 		widthProperty().addListener(event -> drawCanvas(0));
 		heightProperty().addListener(event -> drawCanvas(0));
 
@@ -83,5 +92,20 @@ public class cabinCanvas extends Canvas {
 		}
 		else gc.drawImage(image.snapshot(null, null), centerX, botY);
 	}
+
+	public void drawDoors(int Cabin) {
+        double w = doorCanvas.widthProperty().get();
+        double h = doorCanvas.heightProperty().get();
+
+		doorGC = getGraphicsContext2D();
+		doorGC.clearRect(0, 0, w, h);
+
+        doorGC.setFill(Color.GREY);
+        doorGC.fillRect(0, 0, w, h);
+	}
+
+    public Canvas getDoorCanvas() {
+        return doorCanvas;
+    }
 
 }

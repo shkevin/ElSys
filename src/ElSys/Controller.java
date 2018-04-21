@@ -1,10 +1,10 @@
 package ElSys;
 
-import ElSys.operations.building.buildSpecs;
-import ElSys.operations.building.buildingCanvas;
-import ElSys.operations.building.buildingHandler;
+import ElSys.operations.building.BuildSpecs;
+import ElSys.operations.building.BuildingCanvas;
+import ElSys.operations.building.BuildingHandler;
 import ElSys.operations.cabin.Cabin;
-import ElSys.operations.cabin.cabinCanvas;
+import ElSys.operations.cabin.CabinCanvas;
 import ElSys.operations.cabin.ElButton;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
@@ -19,13 +19,12 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
-import ElSys.interfaces.*;
 
 public class Controller {
 
-	@FXML private BorderPane buildingPane = new BorderPane();
-	@FXML private AnchorPane cabinPane = new AnchorPane();
-	@FXML private AnchorPane buttonPane = new AnchorPane();
+	@FXML private BorderPane buildingPane;
+	@FXML private AnchorPane cabinPane;
+	@FXML private AnchorPane doorPane;
 	@FXML private Button button1;
 	@FXML private Button button2;
 	@FXML private Button button3;
@@ -61,13 +60,13 @@ public class Controller {
 
 
 	public ComboBox<String> elevatorCombo = new ComboBox<>();
-	static ArrayList<Button> buttonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
-	static ArrayList<Button> floorUpButtonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
-	static ArrayList<Button> floorDownButtonList = new ArrayList<>(buildSpecs.MAX_FLOORS);
+	static ArrayList<Button> buttonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
+	static ArrayList<Button> floorUpButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
+	static ArrayList<Button> floorDownButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
 	private ArrayList<Cabin> cabins = setupCabins(4);
-	private buildingCanvas buildingCanvas = new buildingCanvas(cabins, this);
-	private cabinCanvas cabinCanvas = new cabinCanvas(12, cabins);
-	private buildingHandler handler = new buildingHandler(buildingCanvas, this);
+	private BuildingCanvas BuildingCanvas = new BuildingCanvas(cabins, this);
+	private CabinCanvas cabinCanvas = new CabinCanvas(12, cabins);
+	private BuildingHandler handler = new BuildingHandler(BuildingCanvas, this);
 	private Pane buildingCanvasPane = new Pane();
 	private Pane cabinCanvasPane = new Pane();
 
@@ -159,29 +158,32 @@ public class Controller {
 	}
 
 	private void setupBuildingCanvas() {
-		buildingCanvas.widthProperty().bind(buildingCanvasPane.widthProperty());
-		buildingCanvas.heightProperty().bind(buildingCanvasPane.heightProperty());
+		BuildingCanvas.widthProperty().bind(buildingCanvasPane.widthProperty());
+		BuildingCanvas.heightProperty().bind(buildingCanvasPane.heightProperty());
 		buildingCanvasPane.addEventFilter(MouseEvent.MOUSE_CLICKED, handler.getOnMouseEventHandler());
 
 		new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				buildingCanvas.drawCanvas(cabins);
+				BuildingCanvas.drawCanvas(cabins);
 			}
 		}.start();
 
-		buildingCanvasPane.getChildren().add(buildingCanvas);
+		buildingCanvasPane.getChildren().add(BuildingCanvas);
 		buildingPane.setCenter(buildingCanvasPane);
 	}
 
 	private void setupCabinCanvas() {
 		cabinCanvas.widthProperty().bind(cabinPane.widthProperty());
 		cabinCanvas.heightProperty().bind(cabinPane.heightProperty());
+		cabinCanvas.getDoorCanvas().widthProperty().bind(doorPane.widthProperty());
+        cabinCanvas.getDoorCanvas().heightProperty().bind(doorPane.heightProperty());
 
 		new AnimationTimer() {
 			@Override
 			public void handle(long now) {
 				cabinCanvas.drawCanvas(elevatorCombo.getSelectionModel().getSelectedIndex());
+				cabinCanvas.drawDoors(elevatorCombo.getSelectionModel().getSelectedIndex());
 				ArrayList<ElButton> buttons = cabins.get(elevatorCombo.getSelectionModel().getSelectedIndex()).getButtons();
 
 				for (int i = 0; i < 10; i++) {
@@ -212,6 +214,7 @@ public class Controller {
 
 		cabinCanvasPane.getChildren().add(cabinCanvas);
 		cabinPane.getChildren().add(cabinCanvasPane);
+		doorPane.getChildren().add(cabinCanvas.getDoorCanvas());
 	}
 
 	private ArrayList<Cabin> setupCabins(int numberOfCabins) {
