@@ -67,7 +67,7 @@ public class Controller {
 	private ArrayList<Cabin> cabins = setupCabins(4);
 	private BuildingCanvas BuildingCanvas = new BuildingCanvas(cabins, this);
 	private CabinCanvas cabinCanvas = new CabinCanvas(12, cabins);
-	private DoorCanvas doorCanvas = new DoorCanvas();
+	private DoorCanvas doorCanvas = new DoorCanvas(cabins, this);
 	private BuildingHandler handler = new BuildingHandler(BuildingCanvas, this);
 	private Pane buildingCanvasPane = new Pane();
 	private Pane cabinCanvasPane = new Pane();

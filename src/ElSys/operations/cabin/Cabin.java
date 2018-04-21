@@ -14,6 +14,8 @@ public class Cabin {
 	private BuildingHandler handler;
 	private boolean firealarm = false;
 
+	private double doorValue = 100;
+
 	public Cabin(int cabNum) {
 		//this.floorAlignment = new FloorAlignment();
 		this.cabNum = cabNum;
@@ -98,5 +100,12 @@ public class Cabin {
 		this.isLocked = val;
 	}
 
+	public double getDoorValue() {
+		return doorValue;
+	}
+
+	public void setDoorValue(double doorValue) {
+		this.doorValue = doorValue;
+	}
 
 }

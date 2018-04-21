@@ -26,8 +26,8 @@ public class BuildingHandler implements Runnable{
 	public BuildingHandler(BuildingCanvas canvas, Controller controller) {
 		this.controller = controller;
 		this.canvas = canvas;
-		this.upButtonList = new ArrayList<ElButton>();
-		this.downButtonList = new ArrayList<ElButton>();
+		this.upButtonList = new ArrayList<>();
+		this.downButtonList = new ArrayList<>();
 		for (int i = 0; i < 10; i++)
 		{
 			upButtonList.add(new ElButton());

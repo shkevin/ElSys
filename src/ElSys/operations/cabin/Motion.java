@@ -161,7 +161,7 @@ public class Motion implements Runnable {
 
     private void closeDoors(){
         try {
-            this.motionType = MotionTypes.DOORS; //might eventually be doorsopening
+            this.motionType = MotionTypes.DOORS; //might eventually be doorsclosing
             Thread.sleep(BuildSpecs.doorSpeed);
             this.motionType = MotionTypes.NOTMOVING;
         } catch (InterruptedException e) {
