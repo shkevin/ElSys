@@ -67,7 +67,9 @@ public class BuildingCanvas extends Canvas {
 				gc.setFill(Color.GREEN);
 			}else if (cabinMoving == MotionTypes.MOVINGDOWN) {
 				gc.setFill(Color.RED);
-			}else if (cabinMoving == MotionTypes.DOORS) {
+			}else if (cabinMoving == MotionTypes.DOORSOPENING) {
+				gc.setFill(Color.ORANGE);
+			} else if (cabinMoving == MotionTypes.DOORSCLOSING) {
 				gc.setFill(Color.ORANGE);
 			}
 			gc.fillRect(row += BuildSpecs.FLOOR_HEIGHT, floor, BuildSpecs.CABIN_WIDTH, BuildSpecs.CABIN_HEIGHT);

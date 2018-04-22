@@ -14,14 +14,15 @@ public class Cabin {
 	private BuildingHandler handler;
 	private boolean firealarm = false;
 
-	private double doorValue = 100;
+	private double doorValue;
 
 	public Cabin(int cabNum) {
 		//this.floorAlignment = new FloorAlignment();
 		this.cabNum = cabNum;
 		this.currentFloor = 1;
-		this.buttons = new ArrayList<ElButton>();
+		this.buttons = new ArrayList<>();
 		this.motion = new Motion(1,cabNum,this);
+		this.doorValue = motion.outerDoorVal;
 		for (int i = 0; i < 10; i++)
 		{
 			buttons.add(new ElButton());

@@ -16,5 +16,7 @@ public class BuildSpecs {
 
 	public static final int MAX_FLOORS = 10;
 
-	public static final int doorSpeed = 1250;
+	public static final int DOOR_SPEED = 1250;
+
+	public static final	int NUM_DOOR_THREADS = 2;
 }

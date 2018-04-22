@@ -4,7 +4,6 @@ import ElSys.Controller;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-
 import java.util.List;
 
 public class DoorCanvas extends Canvas {
@@ -39,10 +38,11 @@ public class DoorCanvas extends Canvas {
 
         Motion cabinMotion = cabins.get(cabin).getMotion();
         MotionTypes	cabinMoving = cabinMotion.getMotionType();
+        cabinMotion.outerDoorVal = getWidth() - elevWPlacement;
 
         //Draw the doors
-        double width = controller.getCabins().get(cabin).getDoorValue();
-        if (cabinMoving == MotionTypes.DOORS) {
+        double width = cabinMotion.outerDoorVal;
+        if (cabinMoving == MotionTypes.DOORSCLOSING) {
             gc.setFill(Color.ORANGE);
             gc.fillRect(doorX, doorY, width, h-elevHPlacement);
             controller.getCabins().get(cabin).setDoorValue(width-20);

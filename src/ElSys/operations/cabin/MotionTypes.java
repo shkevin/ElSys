@@ -9,7 +9,8 @@ public enum MotionTypes {
     MOVINGUP,
     MOVINGDOWN,
     NOTMOVING,
-    DOORS;
+    DOORSCLOSING,
+    DOORSOPENING;
 
     public double toVal() {
         switch(this) {
