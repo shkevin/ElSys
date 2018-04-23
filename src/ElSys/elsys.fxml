@@ -12,14 +12,14 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: Gray;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ElSys.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: Gray;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ElSys.Controller">
   <children>
     <BorderPane fx:id="buildingPane" minHeight="900.0" minWidth="760.0" prefHeight="900.0" prefWidth="761.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="0.0" />
     <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="611.0" prefWidth="246.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="761.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
         <AnchorPane minHeight="0.0" minWidth="325.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: gray;">
           <children>
-            <Label layoutX="119.0" layoutY="6.0" text="Elevator Controls" />
+            <Label layoutX="109.0" layoutY="7.0" text="Elevator Controls" />
             <AnchorPane fx:id="cabinPane" layoutX="24.0" layoutY="32.0" prefHeight="157.0" prefWidth="280.0" style="-fx-background-color: Black;" />
             <AnchorPane id="buttonPane" disable="false" focusTraversable="false" layoutX="24.0" layoutY="212.0" prefHeight="218.0" prefWidth="280.0" style="-fx-border-style: solid; -fx-background-color: silver;">
               <children>
@@ -41,13 +41,12 @@
         <AnchorPane focusTraversable="false" minWidth="200.0" prefHeight="100.0" prefWidth="160.0">
           <children>
             <ComboBox fx:id="elevatorCombo" layoutX="89.0" onAction="#selectElevator" prefWidth="150.0" promptText="Elevator" AnchorPane.topAnchor="52.0" />
-            <Label layoutX="108.0" layoutY="14.0" text="Master Control Panel" />
-            <AnchorPane fx:id="doorPane" layoutX="12.0" prefHeight="275.0" prefWidth="301.0" style=" -fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="161.0" />
-            <Button layoutX="89.0" layoutY="83.0" mnemonicParsing="false" prefWidth="150.0" text="Show Door" textAlignment="LEFT" />
-            <Button layoutX="75.0" layoutY="129.0" minWidth="57.0" mnemonicParsing="false" onAction="#lock" text="Lock" />
-            <Button layoutX="197.0" layoutY="129.0" minWidth="53.0" mnemonicParsing="false" onAction="#unlock" text="Unlock" />
-            <Button fx:id="fireImage1" layoutX="16.0" layoutY="57.0" prefHeight="55.0" prefWidth="55.0"/>
-            <Button fx:id="fireImage2" layoutX="254.0" layoutY="57.0" prefHeight="55.0" prefWidth="55.0"/>
+            <Label layoutX="95.0" layoutY="14.0" text="Master Control Panel" />
+            <AnchorPane fx:id="doorPane" layoutX="12.0" layoutY="119.0" prefHeight="316.0" prefWidth="301.0" style=" -fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="119.0" />
+            <Button layoutX="89.0" layoutY="85.0" minWidth="57.0" mnemonicParsing="false" onAction="#lock" text="Lock" />
+            <Button layoutX="176.0" layoutY="85.0" minWidth="53.0" mnemonicParsing="false" onAction="#unlock" text="Unlock" />
+            <Button fx:id="fireImage1" layoutX="14.0" layoutY="50.0" prefHeight="61.0" prefWidth="55.0" style="-fx-background-color: RED;" />
+            <Button fx:id="fireImage2" layoutX="258.0" layoutY="50.0" prefHeight="61.0" prefWidth="55.0" style="-fx-background-color: RED;" />
           </children>
         </AnchorPane>
       </items>
