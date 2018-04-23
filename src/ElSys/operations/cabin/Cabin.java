@@ -13,6 +13,7 @@ public class Cabin {
 	private Motion motion;
 	private BuildingHandler handler;
 	private boolean firealarm = false;
+	private boolean maintenance = false;
 
 	private double doorValue;
 
@@ -32,6 +33,14 @@ public class Cabin {
 	public void setHandler(BuildingHandler handler) {
 		this.handler = handler;
 	}
+
+	public boolean getMaintenance() {
+	    return this.maintenance;
+    }
+
+    public void setMaintenance(boolean val) {
+	    this.maintenance = val;
+    }
 
 	public int getCabNum() {
 	    return this.cabNum;

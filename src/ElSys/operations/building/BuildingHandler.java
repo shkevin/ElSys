@@ -125,7 +125,15 @@ public class BuildingHandler implements Runnable{
 		}
 	};
 
-
+	private EventHandler<ActionEvent> maintenanceKeyHandler = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
+			Cabin cab = controller.getCabins().get(elevator);
+			cab.setMaintenance(!cab.getMaintenance());
+			System.out.println("Maintenance key pressed in cabin: " + elevator + " value: " + cab.getMaintenance());
+		}
+	};
 	/**
 	 * simple getter for mouse handler within canvas.
 	 *
@@ -147,6 +155,10 @@ public class BuildingHandler implements Runnable{
 		return onFloorUpButtonEventHandler;
 	}
 
+
+	public EventHandler<ActionEvent> getMaintenanceKeyHandler() {
+		return maintenanceKeyHandler;
+	}
 	/*
 	newCabinRequest sets the button to pressed, adds the floor to the list of requests, then sorts
 	the list according to direction

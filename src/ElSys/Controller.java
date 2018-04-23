@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -57,7 +58,7 @@ public class Controller {
 	@FXML private Button downbutton8;
 	@FXML private Button downbutton9;
 	@FXML private Button downbutton10;
-
+	@FXML private Button maintenanceKey;
 
 
 	public ComboBox<String> elevatorCombo = new ComboBox<>();
@@ -150,6 +151,9 @@ public class Controller {
 		for (Button button : floorDownButtonList) {
 			button.setOnAction(handler.getOnFloorDownButtonEventHandler());
 		}
+		maintenanceKey.getStyleClass().clear();
+		maintenanceKey.setStyle("-fx-background-image: url('/maintenance/0.png'); -fx-background-repeat: no-repeat;");
+		maintenanceKey.setOnAction(handler.getMaintenanceKeyHandler());
 	}
 
 	private void createCombo() {
@@ -184,9 +188,10 @@ public class Controller {
 		new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				cabinCanvas.drawCanvas(elevatorCombo.getSelectionModel().getSelectedIndex());
-				doorCanvas.drawDoors(elevatorCombo.getSelectionModel().getSelectedIndex());
-				ArrayList<ElButton> buttons = cabins.get(elevatorCombo.getSelectionModel().getSelectedIndex()).getButtons();
+				int elevator = elevatorCombo.getSelectionModel().getSelectedIndex();
+				cabinCanvas.drawCanvas(elevator);
+				doorCanvas.drawDoors(elevator);
+				ArrayList<ElButton> buttons = cabins.get(elevator).getButtons();
 
 				for (int i = 0; i < 10; i++) {
 					if (buttons.get(i).getPressed()) {
@@ -211,6 +216,13 @@ public class Controller {
 						floorDownButtonList.get(i).setStyle("-fx-body-color: linear-gradient(to bottom,derive(#d0d0d0,34%) 0%, derive(#d0d0d0,-18%) 100%);"); //set back to default
 					}
 				}
+
+				if (cabins.get(elevator).getMaintenance()) {
+					maintenanceKey.setStyle("-fx-background-image: url('/maintenance/1.png'); -fx-background-repeat: no-repeat;");
+				} else {
+					maintenanceKey.setStyle("-fx-background-image: url('/maintenance/0.png'); -fx-background-repeat: no-repeat;");
+				}
+
 			}
 		}.start();
 
