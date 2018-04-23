@@ -59,7 +59,8 @@ public class Controller {
 	@FXML private Button downbutton9;
 	@FXML private Button downbutton10;
 	@FXML private Button maintenanceKey;
-
+	@FXML private Button fireImage1;
+	@FXML private Button fireImage2;
 
 	public ComboBox<String> elevatorCombo = new ComboBox<>();
 	static ArrayList<Button> buttonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
@@ -151,9 +152,17 @@ public class Controller {
 		for (Button button : floorDownButtonList) {
 			button.setOnAction(handler.getOnFloorDownButtonEventHandler());
 		}
+		
+		fireImage1.getStyleClass().clear();
+		fireImage2.getStyleClass().clear();
 		maintenanceKey.getStyleClass().clear();
 		maintenanceKey.setStyle("-fx-background-image: url('/maintenance/0.png'); -fx-background-repeat: no-repeat;");
 		maintenanceKey.setOnAction(handler.getMaintenanceKeyHandler());
+	}
+
+	public void fireAlarm(){
+		fireImage1.setStyle("-fx-background-image: url('/fire/redalarm.jpg'); -fx-background-repeat: no-repeat;");
+		fireImage2.setStyle("-fx-background-image: url('/fire/redalarm.jpg'); -fx-background-repeat: no-repeat;");
 	}
 
 	private void createCombo() {

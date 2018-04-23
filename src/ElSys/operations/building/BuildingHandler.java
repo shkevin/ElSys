@@ -284,6 +284,7 @@ public class BuildingHandler implements Runnable{
 
 	public void fireAlarm() {
 		System.out.println("fire alarm");
+		controller.fireAlarm();
 		List<Cabin> cabins = controller.getCabins();
 		for(Cabin cab : cabins) {
 			cab.setFireAlarm(true);
