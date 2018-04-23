@@ -43,7 +43,7 @@ public class DoorCanvas extends Canvas {
         //Draw the doors
         double outerWidth = cabinMotion.outerDoorVal;
         double innerWidth = cabinMotion.innerDoorVal;
-        if (cabinMoving == MotionTypes.DOORSCLOSING || cabinMoving == MotionTypes.DOORSOPENING) {
+        if (cabinMoving == MotionTypes.DOORSCLOSING || cabinMoving == MotionTypes.DOORSOPENING || cabinMoving == MotionTypes.DOORSOPEN) {
             gc.setFill(Color.ORANGE);
             gc.fillRect(doorX, doorY, outerWidth, ((h-elevHPlacement)/4));
             gc.setFill(Color.RED);
