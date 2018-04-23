@@ -15,7 +15,7 @@ import java.util.concurrent.CyclicBarrier;
 public class Motion implements Runnable {
 
     private double currentFloor;
-    private int targetFloor;
+    private int targetFloor = 1;
     private double speed;
     private String cabin;
     private Thread t;
@@ -101,6 +101,7 @@ public class Motion implements Runnable {
      * This thread moves the elevator and will eventually communication with the Motor and Floor alignment interfaces.
      * It checks to see if it needs to move up or down, then moves the necessary floors.
      */
+
 
     @Override
     public void run() {
@@ -206,7 +207,6 @@ public class Motion implements Runnable {
         if (this.motionType == MotionTypes.DOORSOPENING) {
             try {
                 this.speed = 0;
-//                Thread.sleep(BuildSpecs.DOOR_SPEED);
                 Thread.sleep(BuildSpecs.DOOR_SPEED);
             } catch (InterruptedException e) {
                 System.out.println("Thread interrupted while opening doors");
@@ -226,7 +226,6 @@ public class Motion implements Runnable {
     public FloorAlignment getFloorAlignment() {
         return floorAlignment;
     }
-
 
     /**
      * Door Thread class.

@@ -2,6 +2,7 @@ package ElSys.operations.cabin;
 
 import java.util.ArrayList;
 import ElSys.operations.building.BuildingHandler;
+import static ElSys.operations.cabin.ServiceDirection.*;
 
 public class Cabin {
 
@@ -13,7 +14,7 @@ public class Cabin {
 	private Motion motion;
 	private BuildingHandler handler;
 	private boolean firealarm = false;
-
+	private ServiceDirection cabinDirection = NONE;
 	private double doorValue;
 
 	public Cabin(int cabNum) {
@@ -90,6 +91,11 @@ public class Cabin {
 	 */
 	public void startMotion(int targetFloor) {
         motion.setTargetFloor(targetFloor);
+        if(this.getFloor() < targetFloor){
+            motion.setMotionType(MotionTypes.MOVINGUP);
+        }else{
+            motion.setMotionType(MotionTypes.MOVINGDOWN);
+        }
         motion.setHasRequest(true);
 	}
 
@@ -109,4 +115,7 @@ public class Cabin {
 		this.doorValue = doorValue;
 	}
 
+	public void setCabinDirection(ServiceDirection direction){this.cabinDirection = direction;}
+
+	public ServiceDirection getCabinDirection(){return this.cabinDirection;}
 }

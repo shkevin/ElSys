@@ -25,14 +25,5 @@ public enum MotionTypes {
         }
     }
 
-    public boolean valid(int floorRequest, int cabFloor, MotionTypes otherMotion){
-        switch(this){
-            case MOVINGUP:
-                if(otherMotion == MOVINGDOWN){return false;} else{ return cabFloor < floorRequest;}
-            case MOVINGDOWN:
-                if(otherMotion == MOVINGUP){return false;}else { return cabFloor > floorRequest;}
-            default:
-                return true;
-        }
-    }
+
 }
