@@ -152,7 +152,7 @@ public class Controller {
 		for (Button button : floorDownButtonList) {
 			button.setOnAction(handler.getOnFloorDownButtonEventHandler());
 		}
-		
+
 		fireImage1.getStyleClass().clear();
 		fireImage2.getStyleClass().clear();
 		maintenanceKey.getStyleClass().clear();
