@@ -107,6 +107,8 @@ public class Motion implements Runnable {
 
     @Override
     public void run() {
+
+        System.out.println("THIS is happening");
         while (true) {
             if (getHasRequest()) {
                 double floorDiff;

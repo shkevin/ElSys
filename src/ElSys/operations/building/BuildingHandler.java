@@ -132,6 +132,30 @@ public class BuildingHandler implements Runnable{
 			Cabin cab = controller.getCabins().get(elevator);
 			cab.setMaintenance(!cab.getMaintenance());
 			System.out.println("Maintenance key pressed in cabin: " + elevator + " value: " + cab.getMaintenance());
+
+			if(cab.getMaintenance() == true)
+			{
+				CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cab);
+				Schedule.clear();
+
+				Motion cabMotion = cab.getMotion();
+				if(cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
+
+					//System.out.println("cabin spot: "+(int)Math.round(cabMotion.getPosition()) + 1);
+					cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) + 1);
+				} else if(cabMotion.getMotionType() == MotionTypes.MOVINGDOWN) {
+					cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) - 1);
+				}
+				cab.getMotion().setMotionType(MotionTypes.NOTMOVING);
+//System.out.println(cab.getButtons().size());
+
+for(int i =0; i <cab.getButtons().size(); i++)
+{
+	cab.getButtons().get(i).setPressed(false);
+}
+
+			}
+
 		}
 	};
 	/**
@@ -167,6 +191,16 @@ public class BuildingHandler implements Runnable{
 	public void newCabinRequest(Cabin cabin, int floor) {
 		cabin.getButtons().get(floor - 1).setPressed(true);
 		CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cabin);
+		if(cabin.getMaintenance() == true )
+		{
+			Schedule.clear();
+			Motion cabMotion = cabin.getMotion();
+			cabMotion.setTargetFloor(floor);
+
+
+		System.out.println("MAINTENANCE KEY HAS BEEN TURNED!");
+
+		}
 		MotionTypes direction = cabin.getMotion().getMotionType();
 		Schedule.addIfAbsent(floor);
 		Comparator<Integer> floorComparotor;
@@ -212,6 +246,8 @@ public class BuildingHandler implements Runnable{
 		{
 			Schedule.sort(floorComparotor);
 		}
+
+
 	}
 
 	public void newFloorRequest(int floor, String direction){
@@ -250,6 +286,13 @@ public class BuildingHandler implements Runnable{
 		PriorityQueue<Cabin> avail_cabins = new PriorityQueue<>(new Comparator<Cabin>() {
 			@Override
 			public int compare(Cabin o1, Cabin o2) {
+
+				int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
+				Cabin cab = controller.getCabins().get(elevator);
+				cab.setMaintenance(!cab.getMaintenance());
+				System.out.println("CHECKING THE KEY STUFF " + elevator + " value: " + cab.getMaintenance());
+
+
 				int distance1 = Math.abs(o1.getFloor() - floorRequest);
 				int distance2 = Math.abs(o2.getFloor() - floorRequest);
 				if(distance1 < distance2) {
@@ -270,7 +313,6 @@ public class BuildingHandler implements Runnable{
 				avail_cabins.add(cab);
 			}
 		}
-
 		if(!avail_cabins.isEmpty()){
 			return avail_cabins.peek();
 		}else{
