@@ -93,6 +93,10 @@ public class Cabin {
 	    this.firealarm = val;
     }
 
+    public boolean getFireAlarm(){
+		return this.firealarm;
+	}
+
 	/*
 	* startMotion is whats called when a request for a floor is made. If the elevator isn't moving already, it
 	* creates a new motion thread, sets the target floor, and then starts the thread.

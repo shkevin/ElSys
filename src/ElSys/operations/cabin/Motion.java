@@ -107,8 +107,6 @@ public class Motion implements Runnable {
 
     @Override
     public void run() {
-
-        System.out.println("THIS is happening");
         while (true) {
             if (getHasRequest()) {
                 double floorDiff;
@@ -183,7 +181,7 @@ public class Motion implements Runnable {
         iterateDoorThreads(this.motionType);
     }
 
-    private void closeDoors(){
+    public void closeDoors(){
         this.motionType = MotionTypes.DOORSCLOSING;
         iterateDoorThreads(this.motionType);
     }

@@ -160,10 +160,6 @@ public class Controller {
 		maintenanceKey.setOnAction(handler.getMaintenanceKeyHandler());
 	}
 
-	public void fireAlarm(){
-		fireImage1.setStyle("-fx-background-image: url('/fire/redalarm.jpg'); -fx-background-repeat: no-repeat;");
-		fireImage2.setStyle("-fx-background-image: url('/fire/redalarm.jpg'); -fx-background-repeat: no-repeat;");
-	}
 
 	private void createCombo() {
 		ObservableList<String> elevatorList = FXCollections.observableArrayList("Elevator: 1",
@@ -224,6 +220,14 @@ public class Controller {
 					} else {
 						floorDownButtonList.get(i).setStyle("-fx-body-color: linear-gradient(to bottom,derive(#d0d0d0,34%) 0%, derive(#d0d0d0,-18%) 100%);"); //set back to default
 					}
+				}
+
+				if (cabins.get(elevator).getFireAlarm()){
+					fireImage1.setStyle("-fx-background-image: url('/fire/redalarm.jpg'); -fx-background-repeat: no-repeat;");
+					fireImage2.setStyle("-fx-background-image: url('/fire/redalarm.jpg'); -fx-background-repeat: no-repeat;");
+				} else {
+					fireImage1.setStyle(null);
+					fireImage2.setStyle(null);
 				}
 
 				if (cabins.get(elevator).getMaintenance()) {

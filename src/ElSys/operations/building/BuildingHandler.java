@@ -135,6 +135,10 @@ public class BuildingHandler implements Runnable{
 
 			if(cab.getMaintenance() == true)
 			{
+				if (cab.getFireAlarm()) {
+					cab.getMotion().closeDoors();
+					cab.setFireAlarm(false);
+				}
 				CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cab);
 				Schedule.clear();
 
@@ -146,13 +150,11 @@ public class BuildingHandler implements Runnable{
 				} else if(cabMotion.getMotionType() == MotionTypes.MOVINGDOWN) {
 					cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) - 1);
 				}
-				cab.getMotion().setMotionType(MotionTypes.NOTMOVING);
-//System.out.println(cab.getButtons().size());
 
-for(int i =0; i <cab.getButtons().size(); i++)
-{
-	cab.getButtons().get(i).setPressed(false);
-}
+				for(int i =0; i <cab.getButtons().size(); i++)
+				{
+					cab.getButtons().get(i).setPressed(false);
+				}
 
 			}
 
@@ -189,64 +191,62 @@ for(int i =0; i <cab.getButtons().size(); i++)
 	 */
 
 	public void newCabinRequest(Cabin cabin, int floor) {
-		cabin.getButtons().get(floor - 1).setPressed(true);
 		CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cabin);
 		if(cabin.getMaintenance() == true )
 		{
-			Schedule.clear();
-			Motion cabMotion = cabin.getMotion();
-			cabMotion.setTargetFloor(floor);
-
-
-		System.out.println("MAINTENANCE KEY HAS BEEN TURNED!");
-
-		}
-		MotionTypes direction = cabin.getMotion().getMotionType();
-		Schedule.addIfAbsent(floor);
-		Comparator<Integer> floorComparotor;
-		Object floorlock = cabin.getMotion();
-
-		Integer currentfloor;
-		synchronized (floorlock) {
-			currentfloor = cabin.getFloor();
-		}
-		if (direction == MotionTypes.MOVINGUP) {
-			floorComparotor = new Comparator<Integer>() {
-				@Override
-				public int compare(Integer o1, Integer o2) {
-
-					synchronized (floorlock) {
-						if (o1 <= currentfloor) {
-							return 1;
-						} else {
-
-							return o1.compareTo(o2);
-						}
-					}
-				}
-			};
-
+			if(Schedule.isEmpty() && !cabin.getMotion().getHasRequest()) {
+				cabin.getButtons().get(floor - 1).setPressed(true);
+				Motion cabMotion = cabin.getMotion();
+				cabMotion.setTargetFloor(floor);
+				Schedule.addIfAbsent(floor);
+			}
 		} else {
-			floorComparotor = new Comparator<Integer>() {
-				@Override
-				public int compare(Integer o1, Integer o2) {
+			cabin.getButtons().get(floor - 1).setPressed(true);
+			MotionTypes direction = cabin.getMotion().getMotionType();
+			Schedule.addIfAbsent(floor);
+			Comparator<Integer> floorComparotor;
+			Object floorlock = cabin.getMotion();
+			Integer currentfloor;
+			synchronized (floorlock) {
+				currentfloor = cabin.getFloor();
+			}
+			if (direction == MotionTypes.MOVINGUP) {
+				floorComparotor = new Comparator<Integer>() {
+					@Override
+					public int compare(Integer o1, Integer o2) {
 
-					synchronized (floorlock) {
-						if (o1 >= currentfloor) {
-							return 1;
-						} else {
-							return o2.compareTo(o1);
+						synchronized (floorlock) {
+							if (o1 <= currentfloor) {
+								return 1;
+							} else {
+
+								return o1.compareTo(o2);
+							}
 						}
 					}
-				}
-			};
-		}
-		//will need additional case of not moving for later implementation
-		synchronized (floorlock)
-		{
-			Schedule.sort(floorComparotor);
-		}
+				};
 
+			} else {
+				floorComparotor = new Comparator<Integer>() {
+					@Override
+					public int compare(Integer o1, Integer o2) {
+
+						synchronized (floorlock) {
+							if (o1 >= currentfloor) {
+								return 1;
+							} else {
+								return o2.compareTo(o1);
+							}
+						}
+					}
+				};
+			}
+
+			//will need additional case of not moving for later implementation
+			synchronized (floorlock) {
+				Schedule.sort(floorComparotor);
+			}
+		}
 
 	}
 
@@ -326,7 +326,6 @@ for(int i =0; i <cab.getButtons().size(); i++)
 
 	public void fireAlarm() {
 		System.out.println("fire alarm");
-		controller.fireAlarm();
 		List<Cabin> cabins = controller.getCabins();
 		for(Cabin cab : cabins) {
 			cab.setFireAlarm(true);
