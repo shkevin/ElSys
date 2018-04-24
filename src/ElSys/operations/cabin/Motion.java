@@ -117,6 +117,8 @@ public class Motion implements Runnable {
                     this.motionType = MotionTypes.MOVINGUP;
                 } else if (floorDiff < 0.0) {
                     this.motionType = MotionTypes.MOVINGDOWN;
+                }else if(floorDiff == 0.0){
+                    this.cab.arrived((int)currentFloor);
                 }
 
                 if (this.motionType == MotionTypes.MOVINGUP) {

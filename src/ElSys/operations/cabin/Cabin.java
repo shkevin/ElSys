@@ -107,9 +107,11 @@ public class Cabin {
         motion.setTargetFloor(targetFloor);
         if(this.getFloor() < targetFloor){
             motion.setMotionType(MotionTypes.MOVINGUP);
-        }else{
+        }else if(this.getFloor() > targetFloor){
             motion.setMotionType(MotionTypes.MOVINGDOWN);
-        }
+        }else{
+        	motion.setMotionType(MotionTypes.NOTMOVING);
+		}
         motion.setHasRequest(true);
 	}
 
