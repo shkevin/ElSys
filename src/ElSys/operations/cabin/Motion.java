@@ -103,6 +103,8 @@ public class Motion implements Runnable {
         this.motionType = motion;
     }
 
+    public double getSpeed() { return this.speed; }
+
     synchronized public void setHasRequest(boolean value) {
         hasRequest = value;
     }
@@ -110,7 +112,7 @@ public class Motion implements Runnable {
     synchronized public boolean getHasRequest() {
         return hasRequest;
     }
-    
+
     public void setFireMaint(boolean val) {
         this.fireMaint = val;
     }

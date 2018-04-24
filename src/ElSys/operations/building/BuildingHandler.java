@@ -158,10 +158,10 @@ public class BuildingHandler implements Runnable {
 
 
 				if(cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
-				    if(((int)Math.round(cabMotion.getPosition()) + 1) <= 10){
+				    if(((int)Math.round(cabMotion.getPosition()) + 1) <= 10 && cabMotion.getSpeed() >= cabMotion.getMotionType().toVal()){
                         cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) + 1);
                     }
-				} else if(cabMotion.getMotionType() == MotionTypes.MOVINGDOWN) {
+				} else if(cabMotion.getMotionType() == MotionTypes.MOVINGDOWN  && cabMotion.getSpeed() <= cabMotion.getMotionType().toVal()) {
 				    if(((int)Math.round(cabMotion.getPosition()) - 1) >= 1){
                         cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) - 1);
                     }
@@ -357,7 +357,9 @@ public class BuildingHandler implements Runnable {
                 cab.getButtons().get(i).setPressed(false);
             }
             if (cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
-                cabMotion.setTargetFloor((int) Math.round(cabMotion.getPosition()) + 1);
+                if (cabMotion.getSpeed() >= cabMotion.getMotionType().toVal()) {
+                    cabMotion.setTargetFloor((int) Math.round(cabMotion.getPosition()) + 1);
+                }
                 newCabinRequest(cab, new request(1,ServiceDirection.DOWN));
             } else if (cabMotion.getMotionType() == MotionTypes.MOVINGDOWN) {
                 cabMotion.setTargetFloor(1);
