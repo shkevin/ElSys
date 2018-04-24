@@ -36,6 +36,10 @@ public class Cabin {
 		this.handler = handler;
 	}
 
+	public void setFireMaint(boolean val) {
+		this.motion.setFireMaint(val);
+	}
+
 	public boolean getMaintenance() {
 	    return this.maintenance;
     }

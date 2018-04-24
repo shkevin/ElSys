@@ -149,8 +149,7 @@ public class BuildingHandler implements Runnable {
                             Thread.sleep(10);
                         } catch (InterruptedException e) {}
                     }
-                    cab.getMotion().closeDoors();
-					cab.setFireAlarm(false);
+                    cab.setFireMaint(true);
 				}
 				CopyOnWriteArrayList<request> Schedule = CabinSchedules.get(cab);
 				Schedule.clear();
@@ -353,6 +352,10 @@ public class BuildingHandler implements Runnable {
             Motion cabMotion = cab.getMotion();
             CopyOnWriteArrayList<request> Schedule = CabinSchedules.get(cab);
             Schedule.clear();
+            for(int i =0; i <cab.getButtons().size(); i++)
+            {
+                cab.getButtons().get(i).setPressed(false);
+            }
             if (cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
                 cabMotion.setTargetFloor((int) Math.round(cabMotion.getPosition()) + 1);
                 newCabinRequest(cab, new request(1,ServiceDirection.DOWN));

@@ -19,6 +19,7 @@ public class Motion implements Runnable {
     private double speed;
     private String cabin;
     private Thread t;
+    private boolean fireMaint = false;
     private MotionTypes motionType = MotionTypes.NOTMOVING;
     private boolean hasRequest = false;
     private Cabin cab;
@@ -109,6 +110,10 @@ public class Motion implements Runnable {
     synchronized public boolean getHasRequest() {
         return hasRequest;
     }
+    
+    public void setFireMaint(boolean val) {
+        this.fireMaint = val;
+    }
     /*
      * This thread moves the elevator and will eventually communication with the Motor and Floor alignment interfaces.
      * It checks to see if it needs to move up or down, then moves the necessary floors.
@@ -117,7 +122,11 @@ public class Motion implements Runnable {
     @Override
     public void run() {
         while (true) {
-            if (getHasRequest()) {
+            if (this.motionType == MotionTypes.DOORSOPEN && this.fireMaint) {
+                closeDoors();
+                this.fireMaint = false;
+                this.cab.setFireAlarm(false);
+            } else if (getHasRequest()) {
                 double floorDiff;
                 synchronized (this) {
                     floorDiff = this.targetFloor - this.currentFloor;
