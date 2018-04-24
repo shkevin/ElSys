@@ -132,19 +132,28 @@ public class BuildingHandler implements Runnable {
 			if(cab.getMaintenance() == true)
 			{
 				if (cab.getFireAlarm()) {
-					cab.getMotion().closeDoors();
+                    while (cab.getMotion().getMotionType() != MotionTypes.DOORSOPEN) {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {}
+                    }
+                    cab.getMotion().closeDoors();
 					cab.setFireAlarm(false);
 				}
 				CopyOnWriteArrayList<request> Schedule = CabinSchedules.get(cab);
 				Schedule.clear();
 
 				Motion cabMotion = cab.getMotion();
-				if(cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
 
-					//System.out.println("cabin spot: "+(int)Math.round(cabMotion.getPosition()) + 1);
-					cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) + 1);
+
+				if(cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
+				    if(((int)Math.round(cabMotion.getPosition()) + 1) <= 10){
+                        cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) + 1);
+                    }
 				} else if(cabMotion.getMotionType() == MotionTypes.MOVINGDOWN) {
-					cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) - 1);
+				    if(((int)Math.round(cabMotion.getPosition()) - 1) >= 1){
+                        cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) - 1);
+                    }
 				}
 
 				for(int i =0; i <cab.getButtons().size(); i++)
@@ -187,35 +196,43 @@ public class BuildingHandler implements Runnable {
 	 */
 
     public void newCabinRequest(Cabin cabin, request floor) {
-        cabin.getButtons().get(floor.getFloor() - 1).setPressed(true);
         CopyOnWriteArrayList<request> Schedule = CabinSchedules.get(cabin);
-        MotionTypes direction = cabin.getMotion().getMotionType();
-        Schedule.addIfAbsent(floor);
-        Comparator<request> floorComparotor;
-        Object floorlock = cabin.getMotion();
+        if (cabin.getMaintenance()) {
+            if(Schedule.isEmpty() && !cabin.getMotion().getHasRequest()) {
+                cabin.getButtons().get(floor.getFloor() - 1).setPressed(true);
+                Motion cabMotion = cabin.getMotion();
+                cabMotion.setTargetFloor(floor.getFloor());
+                Schedule.addIfAbsent(floor);
+            }
+        } else {
+            cabin.getButtons().get(floor.getFloor() - 1).setPressed(true);
+            MotionTypes direction = cabin.getMotion().getMotionType();
+            Schedule.addIfAbsent(floor);
+            Comparator<request> floorComparotor;
+            Object floorlock = cabin.getMotion();
 
-        Integer currentfloor;
-        synchronized (floorlock) {
-            currentfloor = cabin.getFloor();
-        }
-        floorComparotor = cabin.getCabinDirection().getComparator(floorlock,currentfloor);
+            Integer currentfloor;
+            synchronized (floorlock) {
+                currentfloor = cabin.getFloor();
+            }
+            floorComparotor = cabin.getCabinDirection().getComparator(floorlock,currentfloor);
 
 
-        //will need additional case of not moving for later implementation
-        synchronized (floorlock) {
-            Schedule.sort(floorComparotor);
+            //will need additional case of not moving for later implementation
+            synchronized (floorlock) {
+                Schedule.sort(floorComparotor);
+            }
         }
     }
 
     public void newFloorRequest(int floor, MotionTypes direction) {
         ServiceDirection requestedDirection;
 
-        if(direction == MotionTypes.MOVINGUP){
+        if (direction == MotionTypes.MOVINGUP) {
             requestedDirection = ServiceDirection.UP;
-        }else {
+        } else {
             requestedDirection = ServiceDirection.DOWN;
         }
-
 
 
         Cabin cabin = getBestCabin(floor, requestedDirection);
@@ -225,9 +242,14 @@ public class BuildingHandler implements Runnable {
             System.exit(0);
         }
 
-        newCabinRequest(cabin, new request(floor,requestedDirection));
+        boolean foundRequest = true;
+        for (request req : CabinSchedules.get(cabin)) {
+            if (req.getFloor() == floor && req.getRequestDirection().equals(requestedDirection)) foundRequest = false;
+        }
+        if (foundRequest) {
+            newCabinRequest(cabin, new request(floor, requestedDirection));
+        }
     }
-
     private Cabin getBestCabin(int floorRequest, ServiceDirection direction) {
 
         //this comparator get's used for the case no cabin can currently service the request.

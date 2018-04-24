@@ -117,6 +117,8 @@ public class Motion implements Runnable {
                     this.motionType = MotionTypes.MOVINGUP;
                 } else if (floorDiff < 0.0) {
                     this.motionType = MotionTypes.MOVINGDOWN;
+                }else if(floorDiff == 0.0){
+                    this.cab.arrived((int)currentFloor);
                 }
 
                 if (this.motionType == MotionTypes.MOVINGUP) {
@@ -175,13 +177,13 @@ public class Motion implements Runnable {
         closeDoors();
     }
 
-    public void openDoors(){
-        this.speed = 0;
-        this.motionType = MotionTypes.DOORSOPENING;
-        iterateDoorThreads(this.motionType);
+    synchronized public void openDoors(){
+            this.speed = 0;
+            this.motionType = MotionTypes.DOORSOPENING;
+            iterateDoorThreads(this.motionType);
     }
 
-    public void closeDoors(){
+    synchronized public void closeDoors(){
         this.motionType = MotionTypes.DOORSCLOSING;
         iterateDoorThreads(this.motionType);
     }
