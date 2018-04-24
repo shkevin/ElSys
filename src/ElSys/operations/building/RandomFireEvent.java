@@ -49,7 +49,7 @@ public class RandomFireEvent{
 
         @Override
         public void run() {
-            System.out.println(new Date());
+            System.out.println("Fire! Fire! Fire!");
 //            controller.getUpbutton10().fire();
             timer.schedule(new fireEvent(controller,timer, random), ThreadLocalRandom.current().nextInt(startInterval, endInterval));
         }
