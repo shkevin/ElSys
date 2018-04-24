@@ -177,13 +177,13 @@ public class Motion implements Runnable {
         closeDoors();
     }
 
-    public void openDoors(){
-        this.speed = 0;
-        this.motionType = MotionTypes.DOORSOPENING;
-        iterateDoorThreads(this.motionType);
+    synchronized public void openDoors(){
+            this.speed = 0;
+            this.motionType = MotionTypes.DOORSOPENING;
+            iterateDoorThreads(this.motionType);
     }
 
-    public void closeDoors(){
+    synchronized public void closeDoors(){
         this.motionType = MotionTypes.DOORSCLOSING;
         iterateDoorThreads(this.motionType);
     }

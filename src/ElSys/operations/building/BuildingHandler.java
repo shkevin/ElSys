@@ -132,7 +132,12 @@ public class BuildingHandler implements Runnable {
 			if(cab.getMaintenance() == true)
 			{
 				if (cab.getFireAlarm()) {
-					cab.getMotion().closeDoors();
+                    while (cab.getMotion().getMotionType() != MotionTypes.DOORSOPEN) {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {}
+                    }
+                    cab.getMotion().closeDoors();
 					cab.setFireAlarm(false);
 				}
 				CopyOnWriteArrayList<request> Schedule = CabinSchedules.get(cab);
