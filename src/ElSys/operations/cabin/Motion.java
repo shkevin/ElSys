@@ -30,13 +30,14 @@ public class Motion implements Runnable {
     double innerDoorVal = 0.0;
     final double DOORCLOSED = 0.0;
     final double DOOROPEN = 250.0;
+    private boolean doorInterfere = false;
 
     public Motion(double startingFloor, int cabNum, Cabin cab) {
         this.currentFloor = startingFloor;
         this.cab = cab;
         this.threads = new ArrayList<>(BuildSpecs.NUM_DOOR_THREADS);
         initializeDoorThreads();
-        this.barrier = new CyclicBarrier(BuildSpecs.NUM_DOOR_THREADS, this::onBarrierBroken);
+        this.barrier = new CyclicBarrier(BuildSpecs.NUM_DOOR_THREADS + 1, this::onBarrierBroken);
         switch (cabNum) {
             case 0:
                 this.cabin = "One";
@@ -54,6 +55,14 @@ public class Motion implements Runnable {
         System.out.println("(Motion) Creating thread for elevator: " + this.cabin);
         t = new Thread(this, ("motion " + cabin));
         t.start();
+    }
+
+    public void setDoorInterfere(boolean val) {
+        this.doorInterfere = val;
+    }
+
+    public boolean getDoorInterfere(){
+        return this.doorInterfere;
     }
 
     private void initializeDoorThreads() {
@@ -169,11 +178,6 @@ public class Motion implements Runnable {
      */
     public void openCloseDoors() {
         openDoors();
-        while (this.motionType != MotionTypes.DOORSOPEN) {
-            try {
-                Thread.sleep(10);
-            }catch (InterruptedException e) {}
-        }
         closeDoors();
     }
 
@@ -181,11 +185,27 @@ public class Motion implements Runnable {
             this.speed = 0;
             this.motionType = MotionTypes.DOORSOPENING;
             iterateDoorThreads(this.motionType);
+            try {
+                this.barrier.await();
+            } catch (BrokenBarrierException | InterruptedException e) {}
+            System.out.println("(Motion) Done opening");
+            try {
+                this.motionType = MotionTypes.DOORSOPEN;
+                Thread.sleep(BuildSpecs.DOOR_SPEED);
+            } catch (InterruptedException e) {}
     }
 
     synchronized public void closeDoors(){
         this.motionType = MotionTypes.DOORSCLOSING;
         iterateDoorThreads(this.motionType);
+        try {
+            this.barrier.await();
+        } catch (BrokenBarrierException | InterruptedException e) {}
+        System.out.println("(Motion) Done closing");
+        if (doorInterfere) {
+            doorInterfere = false;
+            openCloseDoors();
+        }
     }
 
     private void iterateDoorThreads(MotionTypes motion) {
@@ -199,17 +219,10 @@ public class Motion implements Runnable {
 
     private void onBarrierBroken() {
         //Once animation is done, unlock/lock the doors
-        if (this.motionType == MotionTypes.DOORSOPENING) {
-            try {
-                Thread.sleep(BuildSpecs.DOOR_SPEED); //wait open for a while
-            } catch (InterruptedException e) {System.out.println("sleep error");}
-            this.speed = 0;
-            this.motionType = MotionTypes.DOORSOPEN;
-            System.out.println("Done with doors opening");
-        }
-        else if (this.motionType == MotionTypes.DOORSCLOSING) {
+        if (this.doorInterfere) {
+            System.out.println("Elevator: " + this.cabin + " door interference.");
+        } else if (this.motionType == MotionTypes.DOORSCLOSING) {
             this.motionType = MotionTypes.NOTMOVING;
-            System.out.println("Done with doors closing");
         }
     }
 
@@ -234,18 +247,17 @@ public class Motion implements Runnable {
 
         @Override
         public void run() {
-            try {
                 if (this.name.equalsIgnoreCase("InnerDoor")) {
                     if (this.motion == MotionTypes.DOORSOPENING) {
                         System.out.println("Opening inner");
-                        while(innerDoorVal < DOOROPEN){
+                        while(innerDoorVal < DOOROPEN && !doorInterfere){
                             innerDoorVal += this.motion.toVal();
                             sleepThread();
                         }
                     }
                     else if (this.motion == MotionTypes.DOORSCLOSING) {
                         System.out.println("Closing inner");
-                        while(innerDoorVal > DOORCLOSED){
+                        while(innerDoorVal > DOORCLOSED && !doorInterfere){
                             innerDoorVal += this.motion.toVal();
                             sleepThread();
                         }
@@ -254,24 +266,24 @@ public class Motion implements Runnable {
                 else if (this.name.equalsIgnoreCase("OuterDoor")) {
                     if (this.motion == MotionTypes.DOORSOPENING) {
                         System.out.println("Opening outer");
-                        while(outerDoorVal < DOOROPEN){
+                        while(outerDoorVal < DOOROPEN && !doorInterfere){
                             outerDoorVal += this.motion.toVal();
                             sleepThread();
                         }
                     }
                     else if (this.motion == MotionTypes.DOORSCLOSING) {
                         System.out.println("Closing outer");
-                        while(outerDoorVal > DOORCLOSED){
+                        while(outerDoorVal > DOORCLOSED && !doorInterfere){
                             outerDoorVal += this.motion.toVal();
                             sleepThread();
                         }
                     }
                 }
-
-                barrier.await();
-            } catch (InterruptedException | BrokenBarrierException e) {
+                try {
+                    barrier.await();
+                } catch (InterruptedException | BrokenBarrierException e) {
                 System.out.println("Error occurred");
-            }
+                }
         }
 
         private void sleepThread() {

@@ -77,6 +77,18 @@ public class BuildingHandler implements Runnable {
         }
     };
 
+	private EventHandler<MouseEvent> onMouseEventHandlerDoors = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {
+			int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
+			Cabin cab = controller.getCabins().get(elevator);
+			if (cab.getMotion().getMotionType() == MotionTypes.DOORSCLOSING) {
+				controller.getCabins().get(elevator).getMotion().setDoorInterfere(true);
+				System.out.println("Door click");
+			}
+		}
+	};
+
     private EventHandler<ActionEvent> onCabinButtonEventHandler = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -172,6 +184,10 @@ public class BuildingHandler implements Runnable {
 	 */
 	public EventHandler<MouseEvent> getOnMouseEventHandler() {
 		return onMouseEventHandler;
+	}
+
+	public EventHandler<MouseEvent> getOnMouseEventHandlerDoors() {
+		return onMouseEventHandlerDoors;
 	}
 
     public EventHandler<ActionEvent> getOnCabinButtonEventHandler() {

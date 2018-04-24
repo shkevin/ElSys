@@ -85,7 +85,7 @@ public class Controller {
 		for (Cabin cab : cabins) {
 			cab.setHandler(this.handler);
 		}
-		fireEvent = new RandomFireEvent(this);
+		//fireEvent = new RandomFireEvent(this);
 	}
 
 	@FXML
@@ -175,6 +175,8 @@ public class Controller {
 		BuildingCanvas.widthProperty().bind(buildingCanvasPane.widthProperty());
 		BuildingCanvas.heightProperty().bind(buildingCanvasPane.heightProperty());
 		buildingCanvasPane.addEventFilter(MouseEvent.MOUSE_CLICKED, handler.getOnMouseEventHandler());
+
+		doorCanvas.addEventFilter(MouseEvent.MOUSE_CLICKED, handler.getOnMouseEventHandlerDoors());
 
 		new AnimationTimer() {
 			@Override
