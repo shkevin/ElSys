@@ -405,7 +405,7 @@ public class BuildingHandler implements Runnable {
                             cab.startMotion(schedule.remove(schedule.indexOf(between)).getFloor());
                         }
                     }
-                }else if(schedule.isEmpty() && cab.getMotion().getMotionType() == MotionTypes.NOTMOVING){
+                }else if(schedule.isEmpty() && cab.getMotion().getMotionType() != MotionTypes.MOVINGDOWN && cab.getMotion().getMotionType() != MotionTypes.MOVINGUP){
                     cab.setCabinDirection(ServiceDirection.NONE);
                 }
             }

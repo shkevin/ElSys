@@ -70,19 +70,13 @@ public class CabinCanvas extends Canvas {
 			}
 			gc.drawImage(image.snapshot(null, null),centerX , botY);
 
-
-			Motion cabinMotion = cabins.get(cabin).getMotion();
-			MotionTypes	cabinMoving = cabinMotion.getMotionType();
-
-			if (cabinMoving != MotionTypes.NOTMOVING) {
-				if (cabinMoving == MotionTypes.MOVINGUP) {
-					image.setImage(imageList.get(10));
-					gc.drawImage(image.snapshot(null, null),centerX - 80, botY - 10);
-				}
-				else if (cabinMoving == MotionTypes.MOVINGDOWN) {
-					image.setImage(imageList.get(11));
-					gc.drawImage(image.snapshot(null, null),centerX - 80, botY - 10);
-				}
+			Cabin cab = cabins.get(cabin);
+			if(cab.getCabinDirection() == ServiceDirection.UP) {
+				image.setImage(imageList.get(10));
+				gc.drawImage(image.snapshot(null, null),centerX - 80, botY - 10);
+			} else if (cab.getCabinDirection() == ServiceDirection.DOWN) {
+				image.setImage(imageList.get(11));
+				gc.drawImage(image.snapshot(null, null),centerX - 80, botY - 10);
 			}
 		}
 		else gc.drawImage(image.snapshot(null, null), centerX, botY);
