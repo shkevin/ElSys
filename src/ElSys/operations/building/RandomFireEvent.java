@@ -14,6 +14,7 @@ public class RandomFireEvent{
     //The time interval is in milliseconds. 20000 = 20 seconds.
     private static final int startInterval = 20000;
     private static final int endInterval = 30000;
+    public static final Timer timer = new Timer();
 
     /**
      * Constructor for random fire events. Called in controller class.
@@ -21,7 +22,6 @@ public class RandomFireEvent{
      */
     public RandomFireEvent(Controller controller) {
         Random random = new Random();
-        Timer timer = new Timer();
         timer.schedule(new fireEvent(controller, timer, random), random.nextInt(startInterval));
     }
 
@@ -50,7 +50,7 @@ public class RandomFireEvent{
         @Override
         public void run() {
             System.out.println("Fire! Fire! Fire!");
-//            controller.getUpbutton10().fire();
+            controller.getUpbutton10().fire();
             timer.schedule(new fireEvent(controller,timer, random), ThreadLocalRandom.current().nextInt(startInterval, endInterval));
         }
     }

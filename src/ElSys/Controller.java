@@ -20,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class Controller {
 	@FXML private Button button8;
 	@FXML private Button button9;
 	@FXML private Button button10;
+	@FXML private Button eventButton;
 
 	@FXML private Button upbutton1;
 	@FXML private Button upbutton2;
@@ -85,7 +87,22 @@ public class Controller {
 		for (Cabin cab : cabins) {
 			cab.setHandler(this.handler);
 		}
-		//fireEvent = new RandomFireEvent(this);
+	}
+
+	@FXML
+	private void randomEvents() {
+	    if (eventButton.getText().contains("Start")) {
+	        fireEvent = new RandomFireEvent(this);
+            System.out.println("Starting events");
+            eventButton.setText("Cancel Random Events");
+        }
+        else if(eventButton.getText().contains("Cancel")) {
+            System.out.println("Cancelling random events");
+            RandomFireEvent.timer.cancel();
+            RandomFireEvent.timer.purge();
+            eventButton.setText("Start Random Events");
+        }
+
 	}
 
 	@FXML

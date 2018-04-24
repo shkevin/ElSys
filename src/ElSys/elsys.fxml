@@ -38,15 +38,16 @@
             </AnchorPane>
           </children>
         </AnchorPane>
-        <AnchorPane focusTraversable="false" minWidth="200.0" prefHeight="100.0" prefWidth="160.0">
+        <AnchorPane focusTraversable="false" minWidth="200.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: gray;&#10;">
           <children>
             <ComboBox fx:id="elevatorCombo" layoutX="89.0" onAction="#selectElevator" prefWidth="150.0" promptText="Elevator" AnchorPane.topAnchor="52.0" />
-            <Label layoutX="95.0" layoutY="14.0" text="Master Control Panel" />
-            <AnchorPane fx:id="doorPane" layoutX="12.0" prefHeight="316.0" prefWidth="301.0" style=" -fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="119.0" />
-            <Button layoutX="89.0" layoutY="85.0" minWidth="57.0" mnemonicParsing="false" onAction="#lock" text="Lock" />
-            <Button layoutX="182.0" layoutY="85.0" minWidth="53.0" mnemonicParsing="false" onAction="#unlock" text="Unlock" />
-            <Button fx:id="fireImage1" layoutX="14.0" layoutY="50.0" prefHeight="61.0" prefWidth="55.0" style="" />
-            <Button fx:id="fireImage2" layoutX="258.0" layoutY="50.0" prefHeight="61.0" prefWidth="55.0" style="" />
+            <Label layoutX="107.0" layoutY="14.0" text="Master Control Panel" />
+            <AnchorPane fx:id="doorPane" layoutX="12.0" prefHeight="287.9999000000025" prefWidth="301.0" style=" -fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="148.0" />
+            <Button layoutX="89.0" layoutY="81.0" minWidth="57.0" mnemonicParsing="false" onAction="#lock" text="Lock" />
+            <Button layoutX="186.0" layoutY="81.0" minWidth="53.0" mnemonicParsing="false" onAction="#unlock" text="Unlock" />
+            <Button fx:id="fireImage1" layoutX="22.0" layoutY="61.0" prefHeight="61.0" prefWidth="55.0" style="-fx-background-color: white;&#10;" />
+            <Button fx:id="fireImage2" layoutX="259.0" layoutY="59.0" prefHeight="61.0" prefWidth="55.0" style="-fx-background-color: white;" />
+            <Button fx:id="eventButton" layoutX="89.0" layoutY="112.0" mnemonicParsing="false" onAction="#randomEvents" prefWidth="150.0" text="Start Random Events" />
           </children>
         </AnchorPane>
       </items>
