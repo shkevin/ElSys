@@ -135,7 +135,7 @@ public class BuildingHandler implements Runnable {
 					cab.getMotion().closeDoors();
 					cab.setFireAlarm(false);
 				}
-				CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cab);
+				CopyOnWriteArrayList<request> Schedule = CabinSchedules.get(cab);
 				Schedule.clear();
 
 				Motion cabMotion = cab.getMotion();
