@@ -187,23 +187,32 @@ public class BuildingHandler implements Runnable {
 	 */
 
     public void newCabinRequest(Cabin cabin, request floor) {
-        cabin.getButtons().get(floor.getFloor() - 1).setPressed(true);
         CopyOnWriteArrayList<request> Schedule = CabinSchedules.get(cabin);
-        MotionTypes direction = cabin.getMotion().getMotionType();
-        Schedule.addIfAbsent(floor);
-        Comparator<request> floorComparotor;
-        Object floorlock = cabin.getMotion();
+        if (cabin.getMaintenance()) {
+            if(Schedule.isEmpty() && !cabin.getMotion().getHasRequest()) {
+                cabin.getButtons().get(floor.getFloor() - 1).setPressed(true);
+                Motion cabMotion = cabin.getMotion();
+                cabMotion.setTargetFloor(floor.getFloor());
+                Schedule.addIfAbsent(floor);
+            }
+        } else {
+            cabin.getButtons().get(floor.getFloor() - 1).setPressed(true);
+            MotionTypes direction = cabin.getMotion().getMotionType();
+            Schedule.addIfAbsent(floor);
+            Comparator<request> floorComparotor;
+            Object floorlock = cabin.getMotion();
 
-        Integer currentfloor;
-        synchronized (floorlock) {
-            currentfloor = cabin.getFloor();
-        }
-        floorComparotor = cabin.getCabinDirection().getComparator(floorlock,currentfloor);
+            Integer currentfloor;
+            synchronized (floorlock) {
+                currentfloor = cabin.getFloor();
+            }
+            floorComparotor = cabin.getCabinDirection().getComparator(floorlock,currentfloor);
 
 
-        //will need additional case of not moving for later implementation
-        synchronized (floorlock) {
-            Schedule.sort(floorComparotor);
+            //will need additional case of not moving for later implementation
+            synchronized (floorlock) {
+                Schedule.sort(floorComparotor);
+            }
         }
     }
 
