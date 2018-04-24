@@ -14,6 +14,8 @@ public class Cabin {
 	private Motion motion;
 	private BuildingHandler handler;
 	private boolean firealarm = false;
+	private boolean maintenance = false;
+
 	private ServiceDirection cabinDirection = NONE;
 	private double doorValue;
 
@@ -33,6 +35,14 @@ public class Cabin {
 	public void setHandler(BuildingHandler handler) {
 		this.handler = handler;
 	}
+
+	public boolean getMaintenance() {
+	    return this.maintenance;
+    }
+
+    public void setMaintenance(boolean val) {
+	    this.maintenance = val;
+    }
 
 	public int getCabNum() {
 	    return this.cabNum;
@@ -84,6 +94,10 @@ public class Cabin {
 	public void setFireAlarm(boolean val) {
 	    this.firealarm = val;
     }
+
+    public boolean getFireAlarm(){
+		return this.firealarm;
+	}
 
 	/*
 	* startMotion is whats called when a request for a floor is made. If the elevator isn't moving already, it

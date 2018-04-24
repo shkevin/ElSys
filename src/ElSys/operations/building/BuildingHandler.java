@@ -121,15 +121,49 @@ public class BuildingHandler implements Runnable {
         }
     };
 
+	private EventHandler<ActionEvent> maintenanceKeyHandler = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			int elevator = controller.elevatorCombo.getSelectionModel().getSelectedIndex();
+			Cabin cab = controller.getCabins().get(elevator);
+			cab.setMaintenance(!cab.getMaintenance());
+			System.out.println("Maintenance key pressed in cabin: " + elevator + " value: " + cab.getMaintenance());
 
-    /**
-     * simple getter for mouse handler within canvas.
-     *
-     * @return mouse handler
-     */
-    public EventHandler<MouseEvent> getOnMouseEventHandler() {
-        return onMouseEventHandler;
-    }
+			if(cab.getMaintenance() == true)
+			{
+				if (cab.getFireAlarm()) {
+					cab.getMotion().closeDoors();
+					cab.setFireAlarm(false);
+				}
+				CopyOnWriteArrayList<Integer> Schedule = CabinSchedules.get(cab);
+				Schedule.clear();
+
+				Motion cabMotion = cab.getMotion();
+				if(cabMotion.getMotionType() == MotionTypes.MOVINGUP) {
+
+					//System.out.println("cabin spot: "+(int)Math.round(cabMotion.getPosition()) + 1);
+					cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) + 1);
+				} else if(cabMotion.getMotionType() == MotionTypes.MOVINGDOWN) {
+					cabMotion.setTargetFloor((int)Math.round(cabMotion.getPosition()) - 1);
+				}
+
+				for(int i =0; i <cab.getButtons().size(); i++)
+				{
+					cab.getButtons().get(i).setPressed(false);
+				}
+
+			}
+
+		}
+	};
+	/**
+	 * simple getter for mouse handler within canvas.
+	 *
+	 * @return mouse handler
+	 */
+	public EventHandler<MouseEvent> getOnMouseEventHandler() {
+		return onMouseEventHandler;
+	}
 
     public EventHandler<ActionEvent> getOnCabinButtonEventHandler() {
         return onCabinButtonEventHandler;
@@ -143,6 +177,10 @@ public class BuildingHandler implements Runnable {
         return onFloorUpButtonEventHandler;
     }
 
+
+	public EventHandler<ActionEvent> getMaintenanceKeyHandler() {
+		return maintenanceKeyHandler;
+	}
 	/*
 	newCabinRequest sets the button to pressed, adds the floor to the list of requests, then sorts
 	the list according to direction
@@ -199,6 +237,7 @@ public class BuildingHandler implements Runnable {
                 CopyOnWriteArrayList<request> cabin1Schedule = CabinSchedules.get(cabin1);
                 CopyOnWriteArrayList<request> cabin2Schedule = CabinSchedules.get(cabin2);
 
+				//List<Cabin> cabins = controller.getCabins();
 
                 //These are the distances from the floorRequest to each cabins final request.
                 Integer cabin1Distance;

@@ -26,7 +26,10 @@ public class Motion implements Runnable {
     private FloorAlignment floorAlignment = new FloorAlignment(this);
     private CyclicBarrier barrier;
     private ArrayList<DoorThread> threads;
-    double outerDoorVal = 0;
+    double outerDoorVal = 0.0;
+    double innerDoorVal = 0.0;
+    final double DOORCLOSED = 0.0;
+    final double DOOROPEN = 250.0;
 
     public Motion(double startingFloor, int cabNum, Cabin cab) {
         this.currentFloor = startingFloor;
@@ -102,7 +105,6 @@ public class Motion implements Runnable {
      * It checks to see if it needs to move up or down, then moves the necessary floors.
      */
 
-
     @Override
     public void run() {
         while (true) {
@@ -165,30 +167,21 @@ public class Motion implements Runnable {
      */
     public void openCloseDoors() {
         openDoors();
+        while (this.motionType != MotionTypes.DOORSOPEN) {
+            try {
+                Thread.sleep(10);
+            }catch (InterruptedException e) {}
+        }
         closeDoors();
     }
 
     public void openDoors(){
-//        try {
-//            this.motionType = MotionTypes.DOORSOPENING;
-//            this.speed = 0;
-//            Thread.sleep(BuildSpecs.DOOR_SPEED);
-//        } catch (InterruptedException e) {
-//            System.out.println("Thread interrupted while opening doors");
-//
-//        }
+        this.speed = 0;
         this.motionType = MotionTypes.DOORSOPENING;
         iterateDoorThreads(this.motionType);
     }
 
-    private void closeDoors(){
-//        try {
-//            this.motionType = MotionTypes.DOORSCLOSING;
-//            Thread.sleep(BuildSpecs.DOOR_SPEED);
-//            this.motionType = MotionTypes.NOTMOVING;
-//        } catch (InterruptedException e) {
-//            System.out.println("Thread interrupted while closing doors");
-//        }
+    public void closeDoors(){
         this.motionType = MotionTypes.DOORSCLOSING;
         iterateDoorThreads(this.motionType);
     }
@@ -206,26 +199,22 @@ public class Motion implements Runnable {
         //Once animation is done, unlock/lock the doors
         if (this.motionType == MotionTypes.DOORSOPENING) {
             try {
-                this.speed = 0;
-                Thread.sleep(BuildSpecs.DOOR_SPEED);
-            } catch (InterruptedException e) {
-                System.out.println("Thread interrupted while opening doors");
-            }
+                Thread.sleep(BuildSpecs.DOOR_SPEED); //wait open for a while
+            } catch (InterruptedException e) {System.out.println("sleep error");}
+            this.speed = 0;
+            this.motionType = MotionTypes.DOORSOPEN;
+            System.out.println("Done with doors opening");
         }
         else if (this.motionType == MotionTypes.DOORSCLOSING) {
-            try {
-                Thread.sleep(BuildSpecs.DOOR_SPEED);
-                this.motionType = MotionTypes.NOTMOVING;
-            } catch (InterruptedException e) {
-                System.out.println("Thread interrupted while closing doors");
-            }
+            this.motionType = MotionTypes.NOTMOVING;
+            System.out.println("Done with doors closing");
         }
-        System.out.println("Done with doors");
     }
 
     public FloorAlignment getFloorAlignment() {
         return floorAlignment;
     }
+
 
     /**
      * Door Thread class.
@@ -248,17 +237,33 @@ public class Motion implements Runnable {
                 if (this.name.equalsIgnoreCase("InnerDoor")) {
                     if (this.motion == MotionTypes.DOORSOPENING) {
                         System.out.println("Opening inner");
+                        while(innerDoorVal < DOOROPEN){
+                            innerDoorVal += this.motion.toVal();
+                            try { Thread.sleep(70); } catch (InterruptedException ex) {System.out.println("error...");}
+                        }
                     }
                     else if (this.motion == MotionTypes.DOORSCLOSING) {
                         System.out.println("Closing inner");
+                        while(innerDoorVal > DOORCLOSED){
+                            innerDoorVal += this.motion.toVal();
+                            try { Thread.sleep(70); } catch (InterruptedException ex) {System.out.println("error...");}
+                        }
                     }
                 }
                 else if (this.name.equalsIgnoreCase("OuterDoor")) {
                     if (this.motion == MotionTypes.DOORSOPENING) {
                         System.out.println("Opening outer");
+                        while(outerDoorVal < DOOROPEN){
+                            outerDoorVal += this.motion.toVal();
+                            try { Thread.sleep(70); } catch (InterruptedException ex) {System.out.println("error...");}
+                        }
                     }
                     else if (this.motion == MotionTypes.DOORSCLOSING) {
                         System.out.println("Closing outer");
+                        while(outerDoorVal > DOORCLOSED){
+                            outerDoorVal += this.motion.toVal();
+                            try { Thread.sleep(70); } catch (InterruptedException ex) {System.out.println("error...");}
+                        }
                     }
                 }
 

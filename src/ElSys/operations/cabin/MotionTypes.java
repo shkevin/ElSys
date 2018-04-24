@@ -10,6 +10,7 @@ public enum MotionTypes {
     MOVINGDOWN,
     NOTMOVING,
     DOORSCLOSING,
+    DOORSOPEN,
     DOORSOPENING;
 
     public double toVal() {
@@ -20,6 +21,10 @@ public enum MotionTypes {
                 return -0.1;
             case NOTMOVING:
                 return 0.0;
+            case DOORSOPENING:
+                return 5.0;
+            case DOORSCLOSING:
+                return -5.0;
             default:
                 return 0.0;
         }

@@ -38,14 +38,17 @@ public class DoorCanvas extends Canvas {
 
         Motion cabinMotion = cabins.get(cabin).getMotion();
         MotionTypes	cabinMoving = cabinMotion.getMotionType();
-        cabinMotion.outerDoorVal = getWidth() - elevWPlacement;
+        //cabinMotion.outerDoorVal = getWidth() - elevWPlacement;
 
         //Draw the doors
-        double width = cabinMotion.outerDoorVal;
-        if (cabinMoving == MotionTypes.DOORSCLOSING) {
+        double outerWidth = cabinMotion.outerDoorVal;
+        double innerWidth = cabinMotion.innerDoorVal;
+        if (cabinMoving == MotionTypes.DOORSCLOSING || cabinMoving == MotionTypes.DOORSOPENING || cabinMoving == MotionTypes.DOORSOPEN) {
             gc.setFill(Color.ORANGE);
-            gc.fillRect(doorX, doorY, width, h-elevHPlacement);
-            controller.getCabins().get(cabin).setDoorValue(width-20);
+            gc.fillRect(doorX, doorY, outerWidth, ((h-elevHPlacement)/4));
+            gc.setFill(Color.RED);
+            gc.fillRect(doorX, (doorY + 75), innerWidth, ((h-elevHPlacement)/4));
+            //controller.getCabins().get(cabin).setDoorValue(width-20);
         }
     }
 }
