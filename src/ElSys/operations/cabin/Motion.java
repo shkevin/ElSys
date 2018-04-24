@@ -233,20 +233,19 @@ public class Motion implements Runnable {
         @Override
         public void run() {
             try {
-
                 if (this.name.equalsIgnoreCase("InnerDoor")) {
                     if (this.motion == MotionTypes.DOORSOPENING) {
                         System.out.println("Opening inner");
                         while(innerDoorVal < DOOROPEN){
                             innerDoorVal += this.motion.toVal();
-                            try { Thread.sleep(70); } catch (InterruptedException ex) {System.out.println("error...");}
+                            sleepThread();
                         }
                     }
                     else if (this.motion == MotionTypes.DOORSCLOSING) {
                         System.out.println("Closing inner");
                         while(innerDoorVal > DOORCLOSED){
                             innerDoorVal += this.motion.toVal();
-                            try { Thread.sleep(70); } catch (InterruptedException ex) {System.out.println("error...");}
+                            sleepThread();
                         }
                     }
                 }
@@ -255,14 +254,14 @@ public class Motion implements Runnable {
                         System.out.println("Opening outer");
                         while(outerDoorVal < DOOROPEN){
                             outerDoorVal += this.motion.toVal();
-                            try { Thread.sleep(70); } catch (InterruptedException ex) {System.out.println("error...");}
+                            sleepThread();
                         }
                     }
                     else if (this.motion == MotionTypes.DOORSCLOSING) {
                         System.out.println("Closing outer");
                         while(outerDoorVal > DOORCLOSED){
                             outerDoorVal += this.motion.toVal();
-                            try { Thread.sleep(70); } catch (InterruptedException ex) {System.out.println("error...");}
+                            sleepThread();
                         }
                     }
                 }
@@ -272,5 +271,14 @@ public class Motion implements Runnable {
                 System.out.println("Error occurred");
             }
         }
+
+        private void sleepThread() {
+            try {
+                Thread.sleep(70);
+            } catch (InterruptedException ex) {
+                System.out.println("error...");
+            }
+        }
+
     }
 }

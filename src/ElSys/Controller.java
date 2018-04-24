@@ -3,6 +3,7 @@ package ElSys;
 import ElSys.operations.building.BuildSpecs;
 import ElSys.operations.building.BuildingCanvas;
 import ElSys.operations.building.BuildingHandler;
+import ElSys.operations.building.RandomFireEvent;
 import ElSys.operations.cabin.Cabin;
 import ElSys.operations.cabin.CabinCanvas;
 import ElSys.operations.cabin.DoorCanvas;
@@ -47,7 +48,7 @@ public class Controller {
 	@FXML private Button upbutton7;
 	@FXML private Button upbutton8;
 	@FXML private Button upbutton9;
-	@FXML private Button upbutton10;
+    @FXML private Button upbutton10;
 	@FXML private Button downbutton1;
 	@FXML private Button downbutton2;
 	@FXML private Button downbutton3;
@@ -64,8 +65,8 @@ public class Controller {
 
 	public ComboBox<String> elevatorCombo = new ComboBox<>();
 	static ArrayList<Button> buttonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
-	static ArrayList<Button> floorUpButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
-	static ArrayList<Button> floorDownButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
+	private static ArrayList<Button> floorUpButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
+	private static ArrayList<Button> floorDownButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
 	private ArrayList<Cabin> cabins = setupCabins(4);
 	private BuildingCanvas BuildingCanvas = new BuildingCanvas(cabins, this);
 	private CabinCanvas cabinCanvas = new CabinCanvas(12, cabins);
@@ -73,6 +74,7 @@ public class Controller {
 	private BuildingHandler handler = new BuildingHandler(BuildingCanvas, this);
 	private Pane buildingCanvasPane = new Pane();
 	private Pane cabinCanvasPane = new Pane();
+	private RandomFireEvent fireEvent;
 
 	@FXML
 	public void initialize() {
@@ -83,6 +85,7 @@ public class Controller {
 		for (Cabin cab : cabins) {
 			cab.setHandler(this.handler);
 		}
+		fireEvent = new RandomFireEvent(this);
 	}
 
 	@FXML
@@ -260,5 +263,9 @@ public class Controller {
 	public List<Cabin> getCabins() {
 		return cabins;
 	}
+
+    public Button getUpbutton10() {
+        return upbutton10;
+    }
 
 }

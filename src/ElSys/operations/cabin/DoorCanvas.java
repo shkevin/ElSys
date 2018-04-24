@@ -17,9 +17,6 @@ public class DoorCanvas extends Canvas {
         this.controller = controller;
         widthProperty().addListener(event -> drawDoors(0));
         heightProperty().addListener(event -> drawDoors(0));
-        for (Cabin cabin : cabins) {
-            cabin.setDoorValue(200);
-        }
     }
 
     public void drawDoors(int cabin) {
@@ -38,7 +35,6 @@ public class DoorCanvas extends Canvas {
 
         Motion cabinMotion = cabins.get(cabin).getMotion();
         MotionTypes	cabinMoving = cabinMotion.getMotionType();
-        //cabinMotion.outerDoorVal = getWidth() - elevWPlacement;
 
         //Draw the doors
         double outerWidth = cabinMotion.outerDoorVal;
@@ -48,7 +44,6 @@ public class DoorCanvas extends Canvas {
             gc.fillRect(doorX, doorY, outerWidth, ((h-elevHPlacement)/4));
             gc.setFill(Color.RED);
             gc.fillRect(doorX, (doorY + 75), innerWidth, ((h-elevHPlacement)/4));
-            //controller.getCabins().get(cabin).setDoorValue(width-20);
         }
     }
 }
