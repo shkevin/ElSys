@@ -181,7 +181,7 @@ public class Motion implements Runnable {
         closeDoors();
     }
 
-    synchronized public void openDoors(){
+    public void openDoors(){
             this.speed = 0;
             this.motionType = MotionTypes.DOORSOPENING;
             iterateDoorThreads(this.motionType);
@@ -195,7 +195,7 @@ public class Motion implements Runnable {
             } catch (InterruptedException e) {}
     }
 
-    synchronized public void closeDoors(){
+    public void closeDoors(){
         this.motionType = MotionTypes.DOORSCLOSING;
         iterateDoorThreads(this.motionType);
         try {
