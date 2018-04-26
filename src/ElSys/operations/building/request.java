@@ -1,6 +1,7 @@
 package ElSys.operations.building;
 
 import ElSys.operations.cabin.ServiceDirection;
+import org.omg.CORBA.Request;
 
 public class request {
     Integer floor;
@@ -24,4 +25,8 @@ public class request {
     }
 
     public int getFloor(){return floor;}
+
+    public boolean equals(request otherRequest){
+        return otherRequest.getFloor() == this.floor;
+    }
 }
