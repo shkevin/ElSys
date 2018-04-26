@@ -71,12 +71,23 @@ public class CabinCanvas extends Canvas {
 			gc.drawImage(image.snapshot(null, null),centerX , botY);
 
 			Cabin cab = cabins.get(cabin);
-			if(cab.getCabinDirection() == ServiceDirection.UP) {
-				image.setImage(imageList.get(10));
-				gc.drawImage(image.snapshot(null, null),centerX - 80, botY - 10);
-			} else if (cab.getCabinDirection() == ServiceDirection.DOWN) {
-				image.setImage(imageList.get(11));
-				gc.drawImage(image.snapshot(null, null),centerX - 80, botY - 10);
+			MotionTypes cabMotionType = cab.getMotion().getMotionType();
+			if (cabMotionType == MotionTypes.DOORSCLOSING || cabMotionType == MotionTypes.DOORSOPENING || cabMotionType == MotionTypes.DOORSOPEN) {
+				if (cab.getCabinDirection() == ServiceDirection.UP) {
+					image.setImage(imageList.get(10));
+					gc.drawImage(image.snapshot(null, null), centerX - 80, botY - 10);
+				} else if (cab.getCabinDirection() == ServiceDirection.DOWN) {
+					image.setImage(imageList.get(11));
+					gc.drawImage(image.snapshot(null, null), centerX - 80, botY - 10);
+				}
+			} else {
+				if (cabMotionType == MotionTypes.MOVINGUP) {
+					image.setImage(imageList.get(10));
+					gc.drawImage(image.snapshot(null, null), centerX - 80, botY - 10);
+				} else if (cabMotionType == MotionTypes.MOVINGDOWN) {
+					image.setImage(imageList.get(11));
+					gc.drawImage(image.snapshot(null, null), centerX - 80, botY - 10);
+				}
 			}
 		}
 		else gc.drawImage(image.snapshot(null, null), centerX, botY);

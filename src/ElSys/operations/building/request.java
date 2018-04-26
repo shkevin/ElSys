@@ -1,7 +1,7 @@
 package ElSys.operations.building;
 
 import ElSys.operations.cabin.ServiceDirection;
-import org.omg.CORBA.Request;
+//import org.omg.CORBA.Request;
 
 public class request {
     Integer floor;
