@@ -3,7 +3,8 @@ package ElSys;
 import ElSys.operations.building.BuildSpecs;
 import ElSys.operations.building.BuildingCanvas;
 import ElSys.operations.building.BuildingHandler;
-import ElSys.operations.building.RandomFireEvent;
+import ElSys.operations.building.RandomEvents.RandomFireEvent;
+import ElSys.operations.building.RandomEvents.RandomFloorEvent;
 import ElSys.operations.cabin.Cabin;
 import ElSys.operations.cabin.CabinCanvas;
 import ElSys.operations.cabin.DoorCanvas;
@@ -14,13 +15,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,8 @@ public class Controller {
 	@FXML private Button button8;
 	@FXML private Button button9;
 	@FXML private Button button10;
-	@FXML private Button eventButton;
+	@FXML private Button eventFireButton;
+	@FXML private Button eventFloorButton;
 
 	@FXML private Button upbutton1;
 	@FXML private Button upbutton2;
@@ -67,8 +67,8 @@ public class Controller {
 
 	public ComboBox<String> elevatorCombo = new ComboBox<>();
 	static ArrayList<Button> buttonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
-	private static ArrayList<Button> floorUpButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
-	private static ArrayList<Button> floorDownButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
+    private static ArrayList<Button> floorUpButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
+    private static ArrayList<Button> floorDownButtonList = new ArrayList<>(BuildSpecs.MAX_FLOORS);
 	private ArrayList<Cabin> cabins = setupCabins(4);
 	private BuildingCanvas BuildingCanvas = new BuildingCanvas(cabins, this);
 	private CabinCanvas cabinCanvas = new CabinCanvas(12, cabins);
@@ -76,7 +76,8 @@ public class Controller {
 	private BuildingHandler handler = new BuildingHandler(BuildingCanvas, this);
 	private Pane buildingCanvasPane = new Pane();
 	private Pane cabinCanvasPane = new Pane();
-	private RandomFireEvent fireEvent;
+	private RandomFireEvent randomFireEvent;
+	private RandomFloorEvent randomFloorEvent;
 
 	@FXML
 	public void initialize() {
@@ -90,17 +91,40 @@ public class Controller {
 	}
 
 	@FXML
-	private void randomEvents() {
-	    if (eventButton.getText().contains("Start")) {
-	        fireEvent = new RandomFireEvent(this);
-            System.out.println("Starting events");
-            eventButton.setText("Cancel Random Events");
+    private void randomFloorEventButton() {
+
+	    if (eventFloorButton.getText().contains("Start")) {
+
+	        if (randomFloorEvent == null) {
+                randomFloorEvent = new RandomFloorEvent(this);
+                randomFloorEvent.start();
+            }
+            System.out.println("Starting random floor events");
+            eventFloorButton.setText("Cancel Floor Events");
         }
-        else if(eventButton.getText().contains("Cancel")) {
-            System.out.println("Cancelling random events");
-            RandomFireEvent.timer.cancel();
-            RandomFireEvent.timer.purge();
-            eventButton.setText("Start Random Events");
+        else if (eventFloorButton.getText().contains("Cancel")) {
+            System.out.println("Cancelling random floor events");
+            randomFloorEvent.stop();
+            eventFloorButton.setText("Start Floor Events");
+            randomFloorEvent = null;
+        }
+    }
+
+	@FXML
+	private void randomFireEventsButton() {
+	    if (eventFireButton.getText().contains("Start")) {
+
+	        if (randomFireEvent == null) {
+                randomFireEvent = new RandomFireEvent(this);
+            }
+            System.out.println("Starting random fire events");
+            eventFireButton.setText("Cancel Fire Events");
+        }
+        else if(eventFireButton.getText().contains("Cancel")) {
+            System.out.println("Cancelling fire random events");
+            eventFireButton.setText("Start Fire Events");
+            randomFireEvent.stopTimer();
+            randomFireEvent = null;
         }
 
 	}
@@ -275,16 +299,20 @@ public class Controller {
 		return cabins;
 	}
 
-	public List<Button> getElevatorButtons() {
-		return buttonList;
-	}
-
 	public List<Cabin> getCabins() {
 		return cabins;
 	}
 
     public Button getUpbutton10() {
         return upbutton10;
+    }
+
+    public static ArrayList<Button> getFloorDownButtonList() {
+        return floorDownButtonList;
+    }
+
+    public static ArrayList<Button> getFloorUpButtonList() {
+        return floorUpButtonList;
     }
 
 }

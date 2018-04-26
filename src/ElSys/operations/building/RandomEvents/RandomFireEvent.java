@@ -1,7 +1,8 @@
-package ElSys.operations.building;
+package ElSys.operations.building.RandomEvents;
 
 import ElSys.Controller;
-import java.util.Date;
+
+import java.awt.datatransfer.FlavorEvent;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,11 +11,11 @@ import java.util.concurrent.ThreadLocalRandom;
 /* *******************************************************************************
  * Creates a new random fire event for the "System control panel" (controller)
  * ******************************************************************************/
-public class RandomFireEvent{
+public class RandomFireEvent {
+
     //The time interval is in milliseconds. 20000 = 20 seconds.
     private static final int startInterval = 20000;
     private static final int endInterval = 30000;
-    public static final Timer timer = new Timer();
 
     /**
      * Constructor for random fire events. Called in controller class.
@@ -22,7 +23,13 @@ public class RandomFireEvent{
      */
     public RandomFireEvent(Controller controller) {
         Random random = new Random();
-        timer.schedule(new fireEvent(controller, timer, random), random.nextInt(startInterval));
+        Timer timer = new Timer();
+        timer.schedule(new fireEvent(controller,timer, random), ThreadLocalRandom.current().nextInt(startInterval, endInterval));
+    }
+
+    public void stopTimer() {
+        fireEvent.timer.cancel();
+        fireEvent.timer.purge();
     }
 
     /* *******************************************************************************
@@ -30,10 +37,10 @@ public class RandomFireEvent{
      * the fire events. The time interval is specified in the final ints startInterval
      * and endInterval.
      * ******************************************************************************/
-    static class fireEvent extends TimerTask {
+    private static class fireEvent extends TimerTask {
         private Controller controller;
         private Random random;
-        private Timer timer;
+        private static Timer timer;
 
         /**
          * Creates a fire event in the given final start interval and end interval.
@@ -43,7 +50,7 @@ public class RandomFireEvent{
          */
         fireEvent(Controller controller, Timer timer, Random random) {
             this.controller = controller;
-            this.timer = timer;
+            fireEvent.timer = timer;
             this.random = random;
         }
 
@@ -53,5 +60,6 @@ public class RandomFireEvent{
             controller.getUpbutton10().fire();
             timer.schedule(new fireEvent(controller,timer, random), ThreadLocalRandom.current().nextInt(startInterval, endInterval));
         }
+
     }
 }
