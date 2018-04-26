@@ -4,7 +4,6 @@ import ElSys.Controller;
 import ElSys.operations.building.BuildSpecs;
 import ElSys.operations.cabin.Cabin;
 import javafx.scene.control.Button;
-
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,7 +15,7 @@ public class RandomFloorEvent implements Runnable {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final List<Button> upButtons;
     private final List<Button> downButtons;
-    private final int sleepVal = 1000;
+    private final int sleepVal = 2000;
 
     public RandomFloorEvent(Controller controller) {
         this.controller = controller;
@@ -67,7 +66,7 @@ public class RandomFloorEvent implements Runnable {
                 floor = ThreadLocalRandom.current().nextInt(1, BuildSpecs.MAX_FLOORS - 1);
 //                System.out.println("Test: " + upButtons.get(floor - 1).getText() + " going up");
 //                System.out.println("Floor " + floor + " going " + "up");
-                upButtons.get(floor -1).fire();
+                upButtons.get(floor - 1).fire();
                 break;
             case "DOWN":
                 floor = ThreadLocalRandom.current().nextInt(2, BuildSpecs.MAX_FLOORS);
