@@ -217,12 +217,15 @@ public class BuildingHandler implements Runnable {
                 cabin.getButtons().get(floor.getFloor() - 1).setPressed(true);
                 Motion cabMotion = cabin.getMotion();
                 cabMotion.setTargetFloor(floor.getFloor());
-                Schedule.addIfAbsent(floor);
+                if(Absent(cabin,Schedule,floor)){
+                    Schedule.add(floor);
+                }
             }
         } else {
             cabin.getButtons().get(floor.getFloor() - 1).setPressed(true);
-            MotionTypes direction = cabin.getMotion().getMotionType();
-            Schedule.addIfAbsent(floor);
+            if(Absent(cabin,Schedule,floor)){
+                Schedule.add(floor);
+            }
             Comparator<request> floorComparotor;
             Object floorlock = cabin.getMotion();
 
@@ -240,6 +243,22 @@ public class BuildingHandler implements Runnable {
         }
     }
 
+
+    private boolean Absent(Cabin cabin, CopyOnWriteArrayList<request> schedule, request floor){
+        boolean absent = true;
+        for(request otherRequest: schedule){
+            if(otherRequest.equals(floor)){
+                absent = false;
+                break;
+            }
+        }
+
+        if(cabin.getMotion().getTargetFloor() == floor.getFloor()){
+            absent = false;
+        }
+
+        return absent;
+    }
     public void newFloorRequest(int floor, MotionTypes direction) {
         ServiceDirection requestedDirection;
 
