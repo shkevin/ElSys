@@ -4,6 +4,7 @@ import ElSys.Controller;
 import ElSys.operations.building.BuildSpecs;
 import ElSys.operations.cabin.Cabin;
 import javafx.scene.control.Button;
+
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -65,14 +66,16 @@ public class RandomFloorEvent implements Runnable {
             case "UP":
                 floor = ThreadLocalRandom.current().nextInt(1, BuildSpecs.MAX_FLOORS - 1);
 //                System.out.println("Test: " + upButtons.get(floor - 1).getText() + " going up");
-//                System.out.println("Floor " + floor + " going " + "up");
-                upButtons.get(floor - 1).fire();
+                if (((floor - 1) <= 10) && ((floor - 1) >= 1)) {
+                    upButtons.get(floor - 1).fire();
+                }
                 break;
             case "DOWN":
                 floor = ThreadLocalRandom.current().nextInt(2, BuildSpecs.MAX_FLOORS);
 //                System.out.println("Test: " + downButtons.get(floor - 1).getText() + " going down");
-//                System.out.println("Floor " + floor + " going " + "down");
-                downButtons.get(floor - 1).fire();
+                if (((floor - 1) <= 10) && ((floor - 1) >= 1)) {
+                    downButtons.get(floor - 1).fire();
+                }
                 break;
             default:
                 System.out.println("Error");
