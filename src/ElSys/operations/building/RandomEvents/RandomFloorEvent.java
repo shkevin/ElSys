@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RandomFloorEvent implements Runnable {
@@ -15,6 +16,7 @@ public class RandomFloorEvent implements Runnable {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final List<Button> upButtons;
     private final List<Button> downButtons;
+    private final int sleepVal = 1000;
 
     public RandomFloorEvent(Controller controller) {
         this.controller = controller;
@@ -38,7 +40,7 @@ public class RandomFloorEvent implements Runnable {
         while (running.get()) {
 
             try {
-                Thread.sleep(5000);
+                Thread.sleep(sleepVal);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 stop();
@@ -50,25 +52,28 @@ public class RandomFloorEvent implements Runnable {
     private void setRandomFloor() {
         Random random = new Random();
         List<Cabin> cabins = controller.getCabins();
-        int floor = random.nextInt(BuildSpecs.MAX_FLOORS);
+        int floor;
         int elevator = random.nextInt(cabins.size());
         int upOrDownVal = random.nextInt(2);
         String upOrDown;
 
-        if (upOrDownVal == 0) {
-            upOrDown = "UP";
-            System.out.println("Floor " + floor + " going " + "up");
-        } else {
-            upOrDown = "DOWN";
-            System.out.println("Floor " + floor + " going " + "down");
-        }
+        //Get the direction
+        if (upOrDownVal == 0) upOrDown = "UP";
+        else upOrDown = "DOWN";
 
+        //Complete a random floor request (up or down button)
         switch (upOrDown) {
             case "UP":
-                System.out.println("UP");
+                floor = ThreadLocalRandom.current().nextInt(1, BuildSpecs.MAX_FLOORS - 1);
+//                System.out.println("Test: " + upButtons.get(floor - 1).getText() + " going up");
+//                System.out.println("Floor " + floor + " going " + "up");
+                upButtons.get(floor -1).fire();
                 break;
             case "DOWN":
-                System.out.println("DOWN");
+                floor = ThreadLocalRandom.current().nextInt(2, BuildSpecs.MAX_FLOORS);
+//                System.out.println("Test: " + downButtons.get(floor - 1).getText() + " going down");
+//                System.out.println("Floor " + floor + " going " + "down");
+                downButtons.get(floor - 1).fire();
                 break;
             default:
                 System.out.println("Error");
